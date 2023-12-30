@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "750644874695",
+    "project_id": "quiz-8a2ac",
+    "storage_bucket": "quiz-8a2ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750644874695:android:26e44cd19107feaec2dde2",
+        "android_client_info": {
+          "package_name": "com.example.quiz_21_11"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoRDZU1YsckFP6KjhG0LPB4lN4Y9bsJ4I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750644874695:android:281245e45e703f54c2dde2",
+        "android_client_info": {
+          "package_name": "com.example.quiz_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoRDZU1YsckFP6KjhG0LPB4lN4Y9bsJ4I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750644874695:android:d87b06e86d0f02d0c2dde2",
+        "android_client_info": {
+          "package_name": "com.example.quiz_app_new"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoRDZU1YsckFP6KjhG0LPB4lN4Y9bsJ4I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750644874695:android:81ceb61251dbaf98c2dde2",
+        "android_client_info": {
+          "package_name": "com.example.quiz_firestore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoRDZU1YsckFP6KjhG0LPB4lN4Y9bsJ4I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
