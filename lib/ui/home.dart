@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
             const Gap(30),
             SizedBox(
               child: FilledButton(
-                  onPressed: () => context.push(progressScreen),
+                  onPressed: () => context.push(loginPage),
                   child: Text(AppLocalizations.of(context)!.progress)),
             ),
           ],
