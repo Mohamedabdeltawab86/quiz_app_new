@@ -43,6 +43,8 @@ class LoginPage extends StatelessWidget {
                 icon: const FaIcon(FontAwesomeIcons.user),
                 label:  Text(AppLocalizations.of(context)!.login)),
             const Gap(20),
+            Text("or"),
+            const Gap(20),
             ElevatedButton.icon(
                 onPressed: () {},
                 icon: const FaIcon(FontAwesomeIcons.google,),
