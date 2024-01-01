@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
             SizedBox(
               child: FilledButton(
                   onPressed: () => context.push(loginPage),
-                  child: Text(AppLocalizations.of(context)!.progress)),
+                  child: Text(AppLocalizations.of(context)!.login)),
             ),
           ],
         ),

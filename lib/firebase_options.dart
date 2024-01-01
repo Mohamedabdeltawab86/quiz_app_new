@@ -23,15 +23,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -65,5 +59,23 @@ class DefaultFirebaseOptions {
     messagingSenderId: '750644874695',
     projectId: 'quiz-8a2ac',
     storageBucket: 'quiz-8a2ac.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyC30FKfcn1PxLEhA78nyYBnmIjWPiUyAQw',
+    appId: '1:750644874695:ios:d331e2cff81c74b8c2dde2',
+    messagingSenderId: '750644874695',
+    projectId: 'quiz-8a2ac',
+    storageBucket: 'quiz-8a2ac.appspot.com',
+    iosBundleId: 'com.example.quizAppNew',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyC30FKfcn1PxLEhA78nyYBnmIjWPiUyAQw',
+    appId: '1:750644874695:ios:66567e7760f34e61c2dde2',
+    messagingSenderId: '750644874695',
+    projectId: 'quiz-8a2ac',
+    storageBucket: 'quiz-8a2ac.appspot.com',
+    iosBundleId: 'com.example.quizAppNew.RunnerTests',
   );
 }

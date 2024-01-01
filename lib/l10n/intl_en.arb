@@ -9,5 +9,7 @@
   "progress": "Progress",
   "googlelogin": "Sign in with Email",
   "login": "Sign in with Google Account",
-  "register": "Create Account"
+  "register": "Create Account",
+  "email": "E-mail",
+  "password": "Password"
 }
