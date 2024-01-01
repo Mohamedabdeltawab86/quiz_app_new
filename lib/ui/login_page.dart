@@ -22,7 +22,10 @@ class LoginPage extends StatelessWidget {
                   border:  const OutlineInputBorder(),
                   labelText: AppLocalizations.of(context)!.email,
                   // FIXME no email or password icons in awesome package
-                  prefixIcon: const Icon(Icons.email),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: FaIcon(FontAwesomeIcons.envelope),
+                  ),
                 ),
               ),
             ),
@@ -33,7 +36,10 @@ class LoginPage extends StatelessWidget {
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   labelText: AppLocalizations.of(context)!.password,
-                  prefixIcon: const Icon(Icons.password),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: FaIcon(FontAwesomeIcons.lock),
+                  ),
                 ),
               ),
             ),
@@ -43,7 +49,7 @@ class LoginPage extends StatelessWidget {
                 icon: const FaIcon(FontAwesomeIcons.user),
                 label:  Text(AppLocalizations.of(context)!.login)),
             const Gap(20),
-            Text("or"),
+            const Text("or"),
             const Gap(20),
             ElevatedButton.icon(
                 onPressed: () {},
