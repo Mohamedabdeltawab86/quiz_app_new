@@ -6,5 +6,8 @@
   "myName": "My Name",
   "date": "Date",
   "time": "Time",
-  "progress": "Progress"
+  "progress": "Progress",
+  "googlelogin": "Sign in with Email",
+  "login": "Sign in with Google Account",
+  "register": "Create Account"
 }
