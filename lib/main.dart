@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quiz_app_new/bloc/settings_bloc/bloc/app_settings_bloc.dart';
@@ -29,13 +30,15 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
       return BlocProvider(
         create: (context) => AppSettingsBloc()..add(AppSettingsStarted()),
         child: BlocBuilder<AppSettingsBloc, AppSettingsState>(
-          buildWhen: (previous, current) => previous.appSettings != current.appSettings,
+          buildWhen: (previous, current) =>
+              previous.appSettings != current.appSettings,
           builder: (context, state) {
             return MaterialApp.router(
               debugShowCheckedModeBanner: false,
@@ -53,7 +56,7 @@ class MyApp extends StatelessWidget {
               themeMode:
                   state.appSettings.light ? ThemeMode.light : ThemeMode.dark,
               localizationsDelegates: AppLocalizations.localizationsDelegates,
-
+              builder: EasyLoading.init(),
               supportedLocales: AppLocalizations.supportedLocales,
               locale: Locale(state.appSettings.local.languageCode),
               // home: const HomePage(),

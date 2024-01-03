@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -53,8 +54,9 @@ class HomePage extends StatelessWidget {
             const Gap(30),
             SizedBox(
               child: FilledButton(
-                  onPressed: () => context.push(loginPage),
-                  child: Text(AppLocalizations.of(context)!.login)),
+                onPressed: () => context.push(login),
+                child: Text(AppLocalizations.of(context)!.login),
+              ),
             ),
           ],
         ),
