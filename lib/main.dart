@@ -25,11 +25,13 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MyApp(appRouter: AppRouter()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.appRouter});
+
+  final AppRouter appRouter;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +43,7 @@ class MyApp extends StatelessWidget {
               previous.appSettings != current.appSettings,
           builder: (context, state) {
             return MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
+              title: 'Quiz App',
               theme: ThemeData(
                 useMaterial3: true,
                 colorScheme: lightColorScheme,
@@ -59,8 +60,7 @@ class MyApp extends StatelessWidget {
               builder: EasyLoading.init(),
               supportedLocales: AppLocalizations.supportedLocales,
               locale: Locale(state.appSettings.local.languageCode),
-              // home: const HomePage(),
-              routerConfig: router(),
+              routerConfig: appRouter.router,
             );
           },
         ),
