@@ -6,3 +6,5 @@ abstract class AuthEvent {}
 class LoginWithUserPassword extends AuthEvent {}
 
 class LoginWithGoogle extends AuthEvent {}
+
+class RegisterwithEmailPassword extends AuthEvent{}
