@@ -13,7 +13,6 @@ import 'common.dart';
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
-  // TODO switch between create account and login page
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<AuthBloc>();
@@ -35,12 +34,15 @@ class LoginPage extends StatelessWidget {
                   controller: bloc.emailController,
                   icon: FontAwesomeIcons.envelope,
                   label: l10n.email,
+                  validationMessage: 'Please enter your email!',
                 ),
                 heightGap,
                 LoginTextField(
                   controller: bloc.passController,
                   icon: FontAwesomeIcons.lock,
                   label: l10n.password,
+                  validationMessage: 'Please enter your password!',
+
                 ),
                 heightGap,
                 ElevatedButton.icon(

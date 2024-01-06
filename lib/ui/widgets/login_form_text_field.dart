@@ -12,7 +12,8 @@ class LoginTextField extends StatelessWidget {
     this.keyboardType,
     this.digitsOnly,
     required this.icon,
-    required this.label,
+    required this.label, 
+    required this.validationMessage,
   });
 
   final TextEditingController controller;
@@ -22,6 +23,7 @@ class LoginTextField extends StatelessWidget {
   final bool? digitsOnly;
   final IconData icon;
   final String label;
+  final String validationMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class LoginTextField extends StatelessWidget {
         ),
       ),
       controller: controller,
-      validator: validator,
+      validator: (val)=> val!.isEmpty ? validationMessage: null,
       enabled: enabled,
       keyboardType: keyboardType,
       inputFormatters: digitsOnly != null && digitsOnly!

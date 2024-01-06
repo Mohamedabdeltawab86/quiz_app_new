@@ -18,6 +18,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final emailController = TextEditingController();
   final passController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  late String validationMessage;
+
+  String? validate({validationMessage}) {
+    (val) => val!.isEmpty ? validationMessage : null;
+    return null;
+  }
 
   void _onEmailPasswordRegister(
       AuthEvent event, Emitter<AuthState> emit) async {
