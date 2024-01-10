@@ -1,6 +1,10 @@
 import 'lesson.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:equatable/equatable.dart';
+part 'module.g.dart';
 
-class Module {
+@JsonSerializable()
+class Module extends Equatable{
   int id;
   String? title;
   List<Lesson?> lessons;
@@ -14,26 +18,11 @@ class Module {
     required this.createdAt,
     required this.updatedAt,
   });
+  factory Module.fromJson(Map<String, dynamic>json)=>_$ModuleFromJson(json);
 
-  // Convert Module object to a map
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'lessons': lessons.map((lesson) => lesson.toJson()).toList(),
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
-    };
-  }
+  Map<String, dynamic> toJson() => _$ModuleToJson(this);
 
-  // Create a Module object from a map
-  factory Module.fromJson(Map<String, dynamic> json) {
-    return Module(
-      id: json['id'],
-      title: json['title'],
-      lessons: (json['lessons'] as List).map((lessonJson) => Lesson.fromJson(lessonJson)).toList(),
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-    );
-  }
+  @override
+
+  List<Object?> get props => [id, title, lessons,createdAt,updatedAt];
 }

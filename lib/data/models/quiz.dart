@@ -1,40 +1,37 @@
-import 'package:quiz_app_new/data/models/question.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:equatable/equatable.dart';
+part 'quiz.g.dart';
 
-class Quiz {
+@JsonSerializable()
+class Quiz extends Equatable{
+
   int id;
   String title;
-  //TODO: diff, weight, avg time
   List<String> questionsIds;
+  double? difficulty;
+  int? weight;
+  int? averageTime;
+
   DateTime createdAt;
   DateTime updatedAt;
 
   Quiz({
     required this.id,
     required this.title,
-    required this.questions,
+    required this.questionsIds,
     required this.createdAt,
     required this.updatedAt,
+    this.difficulty,
+    this.weight,
+    this.averageTime,
   });
 
-  // Convert Quiz object to a map
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'questions': questions.map((question) => question.toJson()).toList(),
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
-    };
-  }
+  factory Quiz.fromJson(Map<String, dynamic> json) => _$QuizFromJson(json);
 
-  // Create a Quiz object from a map
-  factory Quiz.fromJson(Map<String, dynamic> json) {
-    return Quiz(
-      id: json['id'],
-      title: json['title'],
-      questions: (json['questions'] as List).map((questionJson) => Question.fromJson(questionJson)).toList(),
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-    );
-  }
+  Map<String, dynamic> toJson() => _$QuizToJson(this);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id,title, questionsIds,createdAt,updatedAt];
+
 }

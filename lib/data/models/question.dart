@@ -1,31 +1,37 @@
+import 'dart:convert';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-enum QuestionType {radio, checkbox, trueFalse, complete}
+part 'question.g.dart';
 
-class Question {
-  String statement;
+enum QuestionType { radio, checkbox, trueFalse, complete }
 
-  // TODO: diff, weight, avg time
+@JsonSerializable()
+class Question extends Equatable{
+  String title;
   List<String> options;
   String correctAnswer;
+  double? difficulty; // Optional difficulty field
+  int? weight; // Optional weight field
+  QuestionType? type; // Question type from the enum
 
   Question({
-    required this.statement,
+    required this.title,
     required this.options,
+    required this.correctAnswer,
+    this.difficulty,
+    this.weight,
+    this.type,
   });
 
-  // Convert Question object to a map
-  Map<String, dynamic> toJson() {
-    return {
-      'statement': statement,
-      'options': options,
-    };
-  }
 
-  // Create a Question object from a map
-  factory Question.fromJson(Map<String, dynamic> json) {
-    return Question(
-      statement: json['statement'],
-      options: List<String>.from(json['options']),
-    );
-  }
+  factory Question.fromJson(Map<String, dynamic> json) => _$QuestionFromJson(json);
+
+  Map<String,dynamic> toJson()=> _$QuestionToJson(this);
+
+  @override
+
+  List<Object?> get props => [title, options, correctAnswer,difficulty,weight,type];
+
+
 }
