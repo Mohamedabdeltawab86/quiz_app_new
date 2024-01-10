@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
               previous.appSettings != current.appSettings,
           builder: (context, state) {
             return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
               title: 'Quiz App',
               theme: ThemeData(
                 useMaterial3: true,

@@ -7,9 +7,14 @@
   "date": "Date",
   "time": "Time",
   "progress": "Progress",
-  "googlelogin": "Sign in with Google Account",
+  "googleLogin": "Sign in with Google Account",
   "login": "Sign in with Email",
   "register": "Create an Account",
+  "signOut": "Sign Out",
   "email": "E-mail",
-  "password": "Password"
+  "mismatch": "Please enter the same password",
+  "emptyField": "This field can not be empty",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "passwordsDoNotMatch": "Passwords do not match"
 }

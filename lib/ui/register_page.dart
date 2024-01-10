@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quiz_app_new/ui/common.dart';
 import 'package:quiz_app_new/ui/widgets/login_form_text_field.dart';
+import 'package:quiz_app_new/utils/common_functions.dart';
 import 'package:quiz_app_new/utils/routes.dart';
 import 'package:sizer/sizer.dart';
 
@@ -18,57 +19,78 @@ class RegisterPage extends StatelessWidget {
     final bloc = context.read<AuthBloc>();
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    return Scaffold(
-      // TODO: READ => must add app bar to show the back button.
-      appBar: AppBar(),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30.sp),
-        child: Form(
-          key: bloc.formKey,
-          child: ListView(
-            children: [
-              heightGap,
-              Text(l10n.register, style: theme.textTheme.displayMedium),
-              heightGap,
-              // TODO: use the LoginTextField widget
-              LoginTextField(
-                controller: bloc.emailController,
-                icon: FontAwesomeIcons.envelope,
-                label: l10n.email,
-                validationMessage: 'Please enter your email!',
-                // validator: bloc.validate('Please enter your email!'),
-              ),
-              heightGap,
-              LoginTextField(
-                controller: bloc.passController,
-                icon: FontAwesomeIcons.lock,
-                label: l10n.password,
-                validationMessage: 'Please enter your password!',
-              ),
-              heightGap,
-              ElevatedButton.icon(
-                  onPressed: () {
-                    bloc.add(RegisterwithEmailPassword());
-                  },
-                  icon: const FaIcon(FontAwesomeIcons.user),
-                  label: Text(l10n.register),),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is RegisterSuccess) context.go(home);
+      },
+      // TODO: add gesture detector to remove focus when clicking elsewhere
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          // COMPLETED: READ => must add app bar to show the back button.
+          appBar: AppBar(backgroundColor: Colors.transparent),
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.sp),
+            child: Form(
+              key: bloc.registerFormKey,
+              child: ListView(
+                children: [
+                  heightGap,
+                  Text(l10n.register, style: theme.textTheme.displayMedium),
+                  heightGap,
+                  // TODO: use the LoginTextField widget
+                  LoginTextField(
+                    controller: bloc.emailRegisterController,
+                    icon: FontAwesomeIcons.envelope,
+                    label: l10n.email,
+                    // validator: bloc.validate('Please enter your email!'),
+                  ),
+                  heightGap,
+                  LoginTextField(
+                    controller: bloc.passRegisterController,
+                    icon: FontAwesomeIcons.lock,
+                    label: l10n.password,
+                    isEmail: false,
+                  ),
+                  heightGap,
+                  LoginTextField(
+                    controller: bloc.passConfirmController,
+                    icon: FontAwesomeIcons.lock,
+                    label: l10n.confirmPassword,
+                    isEmail: false,
+                    validator: (confirmedPassword) => isSamePassword(
+                      pass: bloc.passRegisterController.text,
+                      passConfirm: bloc.passConfirmController.text,
+                      emptyMessage: l10n.emptyField,
+                      mismatchMessage: l10n.mismatch,
+                    ),
+                  ),
+                  heightGap,
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      return ElevatedButton.icon(
+                        onPressed: () => bloc.add(RegisterWithEmailPassword()),
+                        icon: (state is RegisterLoading)
+                            ? const Center(child: CircularProgressIndicator())
+                            : const FaIcon(FontAwesomeIcons.user),
+                        label: (state is RegisterLoading)
+                            ? const Text("")
+                            : Text(l10n.register),
+                      );
+                    },
+                  ),
 
-              heightGap,
-              const Center(child: Text("or")),
-              heightGap,
-              ElevatedButton.icon(
-                onPressed: () => bloc.add(LoginWithGoogle()),
-                icon: const FaIcon(FontAwesomeIcons.google),
-                label: Text(AppLocalizations.of(context)!.googlelogin),
+                  heightGap,
+                  const Center(child: Text("or")),
+                  heightGap,
+                  ElevatedButton.icon(
+                    onPressed: () => bloc.add(LoginWithGoogle()),
+                    icon: const FaIcon(FontAwesomeIcons.google),
+                    label: Text(AppLocalizations.of(context)!.googleLogin),
+                  ),
+                ],
               ),
-              heightGap,
-              // TODO: read => see how the bloc closes when we leave the scope.
-              ElevatedButton.icon(
-                onPressed: () => context.go(home),
-                icon: const FaIcon(FontAwesomeIcons.house),
-                label: const Text('Home'),
-              ),
-            ],
+            ),
           ),
         ),
       ),

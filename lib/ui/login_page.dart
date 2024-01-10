@@ -19,58 +19,62 @@ class LoginPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     return GestureDetector(
-      // onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.sp),
-          // TODO: add validator and use the form.
-          child: Form(
-            child: ListView(
-              children: [
-                heightGap,
-                Text(l10n.login, style: theme.textTheme.displayMedium),
-                heightGap,
-                LoginTextField(
-                  controller: bloc.emailController,
-                  icon: FontAwesomeIcons.envelope,
-                  label: l10n.email,
-                  validationMessage: 'Please enter your email!',
-                ),
-                heightGap,
-                LoginTextField(
-                  controller: bloc.passController,
-                  icon: FontAwesomeIcons.lock,
-                  label: l10n.password,
-                  validationMessage: 'Please enter your password!',
-
-                ),
-                heightGap,
-                ElevatedButton.icon(
-                  onPressed: () => bloc.add(LoginWithUserPassword()),
-                  icon: const FaIcon(FontAwesomeIcons.user),
-                  label: Text(l10n.login),
-                ),
-                heightGap,
-                const Center(child: Text("or")),
-                heightGap,
-                ElevatedButton.icon(
-                  onPressed: () => bloc.add(LoginWithGoogle()),
-                  icon: const FaIcon(FontAwesomeIcons.google),
-                  label: Text(l10n.googlelogin),
-                ),
-                heightGap,
-                ElevatedButton.icon(
-                  /*
-                  TODO: READ =>
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is LoginSuccess) context.go(home);
+        },
+        child: Scaffold(
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.sp),
+            // TODO: add validator and use the form.
+            child: Form(
+              key: bloc.formKey,
+              child: ListView(
+                children: [
+                  heightGap,
+                  Text(l10n.login, style: theme.textTheme.displayMedium),
+                  heightGap,
+                  LoginTextField(
+                    controller: bloc.emailController,
+                    icon: FontAwesomeIcons.envelope,
+                    label: l10n.email,
+                  ),
+                  heightGap,
+                  LoginTextField(
+                    controller: bloc.passController,
+                    icon: FontAwesomeIcons.lock,
+                    label: l10n.password,
+                    isEmail: false,
+                  ),
+                  heightGap,
+                  ElevatedButton.icon(
+                    onPressed: () => bloc.add(LoginWithUserPassword()),
+                    icon: const FaIcon(FontAwesomeIcons.user),
+                    label: Text(l10n.login),
+                  ),
+                  heightGap,
+                  const Center(child: Text("or")),
+                  heightGap,
+                  ElevatedButton.icon(
+                    onPressed: () => bloc.add(LoginWithGoogle()),
+                    icon: const FaIcon(FontAwesomeIcons.google),
+                    label: Text(l10n.googleLogin),
+                  ),
+                  heightGap,
+                  ElevatedButton.icon(
+                    /*
+                  COMPLETED: READ =>
                     use push instead of go to keep the
                     previous stack the same (with the same context)
                     so you can pass the bloc
                   */
-                  onPressed: () => context.push(register, extra: bloc),
-                  icon: const FaIcon(FontAwesomeIcons.user),
-                  label: Text(l10n.register),
-                ),
-              ],
+                    onPressed: () => context.push(register, extra: bloc),
+                    icon: const FaIcon(FontAwesomeIcons.user),
+                    label: Text(l10n.register),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
