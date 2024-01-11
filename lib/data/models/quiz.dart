@@ -3,8 +3,7 @@ import 'package:equatable/equatable.dart';
 part 'quiz.g.dart';
 
 @JsonSerializable()
-class Quiz extends Equatable{
-
+class Quiz extends Equatable {
   int id;
   String title;
   List<String> questionsIds;
@@ -31,7 +30,6 @@ class Quiz extends Equatable{
   Map<String, dynamic> toJson() => _$QuizToJson(this);
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [id,title, questionsIds,createdAt,updatedAt];
-
+  // TODO: TODO: you can check for id and updatedAt only, no need to check for everything.
+  List<Object?> get props => [id, title, questionsIds, createdAt, updatedAt];
 }

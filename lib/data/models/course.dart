@@ -8,6 +8,7 @@ class Course extends Equatable {
   int id;
   String? title;
   String? description;
+  // TODO: naming should describe the variable, it should be imageUrl.
   String? image;
   int instructorId;
   List<Module?> modules;
@@ -25,12 +26,19 @@ class Course extends Equatable {
     required this.updatedAt,
   });
 
-factory Course.fromJson(Map<String, dynamic>json)=> _$CourseFromJson(json);
+  factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
 
-Map<String,dynamic> toJson()=> _$CourseToJson(this);
+  Map<String, dynamic> toJson() => _$CourseToJson(this);
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [id, title, description, image,modules, instructorId,createdAt,updatedAt];
-
+  List<Object?> get props => [
+        id,
+        title,
+        description,
+        image,
+        modules,
+        instructorId,
+        createdAt,
+        updatedAt
+      ];
 }
