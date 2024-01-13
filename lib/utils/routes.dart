@@ -14,7 +14,7 @@ const String login = '/login';
 const String register = '/register';
 
 /*
-TODO: READ =>
+DONE: READ =>
   see how we provide the router to the main app only once.
   now when we rebuild or refresh the bloc won't rebuild itself.
 */
@@ -34,7 +34,7 @@ class AppRouter {
       GoRoute(
         path: login,
         builder: (context, state) => BlocProvider(
-          // TODO: read => see how create the bloc and provide it to login page.
+          // DONE: read => see how create the bloc and provide it to login page.
           create: (context) => AuthBloc(),
           child: const LoginPage(),
         ),
@@ -42,7 +42,7 @@ class AppRouter {
       GoRoute(
         path: register,
         builder: (context, state) => BlocProvider.value(
-          // TODO: read => see how we pass the value of bloc from the login page.
+          // DONE: read => see how we pass the value of bloc from the login page.
           value: state.extra! as AuthBloc,
           child: const RegisterPage(),
         ),

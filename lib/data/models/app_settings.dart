@@ -4,7 +4,7 @@ import 'package:quiz_app_new/data/models/language.dart';
 class AppSettings extends Equatable {
   final Language local;
   final bool light;
-  const AppSettings({this.local = const Language.inital(), this.light = true});
+  const AppSettings({this.local = const Language.initial(), this.light = true});
 
   AppSettings copyWith({Language? local, bool? light}) {
     return AppSettings(

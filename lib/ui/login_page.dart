@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
         child: Scaffold(
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 30.sp),
-            // TODO: add validator and use the form.
+            // DONE: add validator and use the form.
             child: Form(
               key: bloc.formKey,
               child: ListView(

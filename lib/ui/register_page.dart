@@ -23,7 +23,7 @@ class RegisterPage extends StatelessWidget {
       listener: (context, state) {
         if (state is RegisterSuccess) context.go(home);
       },
-      // TODO: add gesture detector to remove focus when clicking elsewhere
+      // Done: add gesture detector to remove focus when clicking elsewhere
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
@@ -38,7 +38,7 @@ class RegisterPage extends StatelessWidget {
                   heightGap,
                   Text(l10n.register, style: theme.textTheme.displayMedium),
                   heightGap,
-                  // TODO: use the LoginTextField widget
+                  // DONE: use the LoginTextField widget
                   LoginTextField(
                     controller: bloc.emailRegisterController,
                     icon: FontAwesomeIcons.envelope,

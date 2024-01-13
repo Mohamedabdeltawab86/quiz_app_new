@@ -1,16 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 part 'lesson.g.dart';
 
 @JsonSerializable()
 class Lesson extends Equatable{
-  int id;
-  String title;
-  String content;
-  DateTime createdAt;
-  DateTime updatedAt;
+  final int id;
+  final String title;
+  final String content;
+  @JsonKey(
+    fromJson: _dateTimeFromTimestamp,
+    toJson: _dateTimeToTimestamp,
+  )
+  final DateTime createdAt;
+  @JsonKey(
+    fromJson: _dateTimeFromTimestamp,
+    toJson: _dateTimeToTimestamp,
+  )
+  final DateTime updatedAt;
 
-  Lesson({
+  const Lesson({
     required this.id,
     required this.title,
     required this.content,
@@ -22,8 +31,10 @@ class Lesson extends Equatable{
 
   Map<String, dynamic> toJson()=> _$LessonToJson(this);
 
-  @override
+  static DateTime _dateTimeFromTimestamp(Timestamp timestamp)=> timestamp.toDate();
+  static Timestamp _dateTimeToTimestamp(DateTime dateTime)=> Timestamp.fromDate(dateTime);
 
-  List<Object?> get props => [id,title,content, createdAt,updatedAt];
+  @override
+  List<Object?> get props => [id, updatedAt];
 }
 

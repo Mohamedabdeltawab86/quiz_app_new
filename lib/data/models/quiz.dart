@@ -1,25 +1,47 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 part 'quiz.g.dart';
 
 @JsonSerializable()
 class Quiz extends Equatable {
-  int id;
-  String title;
-  List<String> questionsIds;
-  double? difficulty;
-  int? weight;
-  int? averageTime;
+  final int id;
+  final String title;
+  final List<String> questionsIds;
+  final double? difficulty;
+  final int? weight;
+  final int? averageTime;
+  @JsonKey(
+    fromJson: _dateTimeFromTimestamp,
+    toJson: _dateTimeToTimestamp,
+  )
+  final  DateTime createdAt;
+  @JsonKey(
+    fromJson: _dateTimeFromTimestamp,
+    toJson: _dateTimeToTimestamp,
+  )
+  final  DateTime updatedAt;
+  @JsonKey(
+    fromJson: _dateTimeFromTimestamp,
+    toJson: _dateTimeToTimestamp,
+  )
+  final  DateTime solvedAt;
 
-  DateTime createdAt;
-  DateTime updatedAt;
+  @JsonKey(
+    fromJson: _dateTimeFromTimestamp,
+    toJson: _dateTimeToTimestamp,
+  )
+  final  DateTime dueAt;
 
-  Quiz({
+  const Quiz({
     required this.id,
     required this.title,
     required this.questionsIds,
     required this.createdAt,
     required this.updatedAt,
+    required this.solvedAt,
+    required this.dueAt,
+
     this.difficulty,
     this.weight,
     this.averageTime,
@@ -29,7 +51,10 @@ class Quiz extends Equatable {
 
   Map<String, dynamic> toJson() => _$QuizToJson(this);
 
+  static DateTime _dateTimeFromTimestamp(Timestamp timestamp)=> timestamp.toDate();
+  static Timestamp _dateTimeToTimestamp(DateTime dateTime)=> Timestamp.fromDate(dateTime);
+
   @override
-  // TODO: TODO: you can check for id and updatedAt only, no need to check for everything.
-  List<Object?> get props => [id, title, questionsIds, createdAt, updatedAt];
+  // DONE: you can check for id and updatedAt only, no need to check for everything.
+  List<Object?> get props => [id, updatedAt, solvedAt];
 }

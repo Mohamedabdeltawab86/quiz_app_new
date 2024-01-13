@@ -8,15 +8,22 @@ enum QuestionType { radio, checkbox, trueFalse, complete }
 
 @JsonSerializable()
 class Question extends Equatable {
-  String title;
-  List<String> options;
-  String correctAnswer;
-  double? difficulty; // Optional difficulty field
-  int? weight; // Optional weight field
-  // TODO: convert to String when sending to firestore and back when receiving.
-  QuestionType? type; // Question type from the enum
+  final String id;
+  final String title;
+  final List<String> options;
+  final String correctAnswer;
+  final double? difficulty;
+  final int? weight;
 
-  Question({
+  // Done: convert to String when sending to firestore and back when receiving.
+  @JsonKey(
+    fromJson: questionTypeFromJson,
+    toJson: questionTypeToJson,
+  )
+  final QuestionType? type;
+
+  const Question({
+    required this.id,
     required this.title,
     required this.options,
     required this.correctAnswer,
@@ -30,7 +37,25 @@ class Question extends Equatable {
 
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
+  static String questionTypeToJson(QuestionType? type) {
+    return type?.toString() ?? '';
+  }
+
+  static QuestionType? questionTypeFromJson(String type) {
+    switch (type) {
+      case 'QuestionType.radio':
+        return QuestionType.radio;
+      case 'QuestionType.checkbox':
+        return QuestionType.checkbox;
+      case 'QuestionType.trueFalse':
+        return QuestionType.trueFalse;
+      case 'QuestionType.complete':
+        return QuestionType.complete;
+      default:
+        return null;
+    }
+  }
+
   @override
-  List<Object?> get props =>
-      [title, options, correctAnswer, difficulty, weight, type];
+  List<Object?> get props => [id];
 }

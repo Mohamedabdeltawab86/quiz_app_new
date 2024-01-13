@@ -8,7 +8,7 @@ class Language extends Equatable {
 
   const Language(this.id, this.flag, this.name, this.languageCode);
 
-  const Language.inital({this.id = 1 , this.flag = "🇺🇸", this.name = "English", this.languageCode = "en"});
+  const Language.initial({this.id = 1 , this.flag = "🇺🇸", this.name = "English", this.languageCode = "en"});
 
   static List<Language> languageList() {
     return <Language>[
@@ -16,7 +16,6 @@ class Language extends Equatable {
       const Language(2, "🇪🇬", "العَرَبِيَّةُ", "ar"),
     ];
   }
-
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
