@@ -5,10 +5,8 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quiz_app_new/utils/routes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../bloc/auth/auth_bloc.dart';
-import '../bloc/settings_bloc/bloc/app_settings_bloc.dart';
-import 'widgets/language_dropdown_button.dart';
+import '../../bloc/settings_bloc/bloc/app_settings_bloc.dart';
+import '../widgets/language_dropdown_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

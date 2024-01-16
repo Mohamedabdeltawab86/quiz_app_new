@@ -14,7 +14,7 @@ String? isValidEmail(String? email, String message) {
 }
 
 String? isValidPassword(String? password, String message) {
-  if (password != null && password.length >= 10) {
+  if (password != null && password.length >= 8) {
     return null;
   } else {
     return message;

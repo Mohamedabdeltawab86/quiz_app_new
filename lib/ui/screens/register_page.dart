@@ -8,8 +8,9 @@ import 'package:quiz_app_new/ui/widgets/login_form_text_field.dart';
 import 'package:quiz_app_new/utils/common_functions.dart';
 import 'package:quiz_app_new/utils/routes.dart';
 import 'package:sizer/sizer.dart';
-
-import '../bloc/auth/auth_bloc.dart';
+import '../../bloc/auth/auth_bloc.dart';
+import '../../bloc/settings_bloc/bloc/app_settings_bloc.dart';
+import '../widgets/custom_image.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -21,14 +22,30 @@ class RegisterPage extends StatelessWidget {
     final theme = Theme.of(context);
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is RegisterSuccess) context.go(home);
+
+        if (state is RegisterSuccess) context.push(userType);
       },
-      // Done: add gesture detector to remove focus when clicking elsewhere
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           // COMPLETED: READ => must add app bar to show the back button.
-          appBar: AppBar(backgroundColor: Colors.transparent),
+          appBar: AppBar(actions: [
+            InkWell(
+              onTap: () {
+                context.read<AppSettingsBloc>().add(ChangeAppTheme());
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  FontAwesomeIcons.moon,
+                  color: context.read<AppSettingsBloc>().state.appSettings.light
+                      ? Colors.grey
+                      : Colors.black,
+                ),
+              ),
+            ),
+            // const LanguageDropdownButton(),
+          ], backgroundColor: Colors.transparent),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 30.sp),
             child: Form(
@@ -36,7 +53,13 @@ class RegisterPage extends StatelessWidget {
               child: ListView(
                 children: [
                   heightGap,
-                  Text(l10n.register, style: theme.textTheme.displayMedium),
+                  const CustomImage(
+                    imageUrl: "masar.png",
+                  ),
+                  heightGap,
+                  Center(
+                      child: Text(l10n.register,
+                          style: theme.textTheme.displayMedium)),
                   heightGap,
                   // DONE: use the LoginTextField widget
                   LoginTextField(
@@ -51,6 +74,7 @@ class RegisterPage extends StatelessWidget {
                     icon: FontAwesomeIcons.lock,
                     label: l10n.password,
                     isEmail: false,
+                    obscureText: true,
                   ),
                   heightGap,
                   LoginTextField(
@@ -58,6 +82,7 @@ class RegisterPage extends StatelessWidget {
                     icon: FontAwesomeIcons.lock,
                     label: l10n.confirmPassword,
                     isEmail: false,
+                    obscureText: true,
                     validator: (confirmedPassword) => isSamePassword(
                       pass: bloc.passRegisterController.text,
                       passConfirm: bloc.passConfirmController.text,
@@ -79,9 +104,8 @@ class RegisterPage extends StatelessWidget {
                       );
                     },
                   ),
-
                   heightGap,
-                  const Center(child: Text("or")),
+                  Center(child: Text(l10n.or)),
                   heightGap,
                   ElevatedButton.icon(
                     onPressed: () => bloc.add(LoginWithGoogle()),

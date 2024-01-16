@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
                 textTheme: textTheme,
               ),
               themeMode:
-                  state.appSettings.light ? ThemeMode.light : ThemeMode.dark,
+                  state.appSettings.light ? ThemeMode.dark : ThemeMode.light,
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               builder: EasyLoading.init(),
               supportedLocales: AppLocalizations.supportedLocales,

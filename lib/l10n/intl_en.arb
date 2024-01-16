@@ -16,5 +16,10 @@
   "emptyField": "This field can not be empty",
   "password": "Password",
   "confirmPassword": "Confirm Password",
-  "passwordsDoNotMatch": "Passwords do not match"
+  "passwordsDoNotMatch": "Passwords do not match",
+  "haveNoAccount": "If you haven't account, ",
+  "clickHere": "Click here.",
+  "or": "Or",
+  "registerTeacher": "Register as a Teacher",
+  "registerStudent": "Register as a Student"
 }

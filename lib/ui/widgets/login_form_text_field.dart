@@ -17,6 +17,7 @@ class LoginTextField extends StatelessWidget {
     required this.icon,
     required this.label,
     this.validator,
+    this.obscureText = false,
   });
 
   final TextEditingController controller;
@@ -27,6 +28,7 @@ class LoginTextField extends StatelessWidget {
   final bool? digitsOnly;
   final IconData icon;
   final String label;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +50,10 @@ class LoginTextField extends StatelessWidget {
       ),
       controller: controller,
       validator: validator ?? (value) => isEmail
-          ? isValidEmail(value, "email")
-          : isValidPassword(value, "password"),
+          ? isValidEmail(value, l10n.emptyField)
+          : isValidPassword(value, l10n.emptyField),
       enabled: enabled,
+      obscureText: obscureText,
       keyboardType: keyboardType,
       inputFormatters: digitsOnly != null && digitsOnly!
           ? [FilteringTextInputFormatter.digitsOnly]

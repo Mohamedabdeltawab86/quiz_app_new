@@ -1,23 +1,24 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:go_router/go_router.dart";
 import "package:quiz_app_new/bloc/auth/auth_bloc.dart";
-import "package:quiz_app_new/ui/login_page.dart";
-import "package:quiz_app_new/ui/register_page.dart";
-import "package:quiz_app_new/ui/settings.dart";
+import 'package:quiz_app_new/ui/screens/login_page.dart';
+import 'package:quiz_app_new/ui/screens/register_student.dart';
+import 'package:quiz_app_new/ui/screens/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:quiz_app_new/ui/screens/user_type.dart';
 
-import "../ui/home.dart";
+import '../ui/screens/home.dart';
+import '../ui/screens/register_page.dart';
+import '../ui/screens/register_teacher.dart';
 
 const String home = '/';
 const String settings = '/settings';
 const String login = '/login';
 const String register = '/register';
+const String registerStudent = '/register_student';
+const String registerTeacher = '/register_teacher';
+const String userType = '/user_type';
 
-/*
-DONE: READ =>
-  see how we provide the router to the main app only once.
-  now when we rebuild or refresh the bloc won't rebuild itself.
-*/
 class AppRouter {
   final router = GoRouter(
     // debugLogDiagnostics: true,
@@ -34,7 +35,6 @@ class AppRouter {
       GoRoute(
         path: login,
         builder: (context, state) => BlocProvider(
-          // DONE: read => see how create the bloc and provide it to login page.
           create: (context) => AuthBloc(),
           child: const LoginPage(),
         ),
@@ -42,10 +42,21 @@ class AppRouter {
       GoRoute(
         path: register,
         builder: (context, state) => BlocProvider.value(
-          // DONE: read => see how we pass the value of bloc from the login page.
           value: state.extra! as AuthBloc,
           child: const RegisterPage(),
         ),
+      ),
+      GoRoute(
+        path: registerTeacher,
+        builder: (context, state) => const TeacherRegisterPage(),
+      ),
+      GoRoute(
+        path: registerStudent,
+        builder: (context, state) => const StudentRegisterPage(),
+      ),
+      GoRoute(
+        path: userType,
+        builder: (context, state) => const UserType(),
       ),
     ],
   );
