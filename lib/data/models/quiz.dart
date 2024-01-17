@@ -26,6 +26,7 @@ class Quiz extends Equatable {
     toJson: _dateTimeToTimestamp,
   )
   final  DateTime solvedAt;
+  final int? score;
 
   @JsonKey(
     fromJson: _dateTimeFromTimestamp,
@@ -40,6 +41,7 @@ class Quiz extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     required this.solvedAt,
+    this.score,
     required this.dueAt,
 
     this.difficulty,
