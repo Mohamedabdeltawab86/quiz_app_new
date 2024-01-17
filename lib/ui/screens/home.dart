@@ -21,11 +21,7 @@ class HomePage extends StatelessWidget {
             ListTile(
               title: Text(l10n.theme),
               trailing: Switch(
-                value: context
-                    .read<AppSettingsBloc>()
-                    .state
-                    .appSettings
-                    .light,
+                value: context.read<AppSettingsBloc>().state.appSettings.light,
                 onChanged: (_) {
                   context.read<AppSettingsBloc>().add(ChangeAppTheme());
                 },
@@ -34,9 +30,10 @@ class HomePage extends StatelessWidget {
             const LanguageDropdownButton(),
             ListTile(
               leading: const Icon(Icons.exit_to_app),
-              title:  Text(l10n.signOut),
+              title: Text(l10n.signOut),
               onTap: () async {
                 // Sign out logic
+                // TODO: don't use context across async gaps. use then() to navigate.
                 await FirebaseAuth.instance.signOut();
                 context.go(login);
               },

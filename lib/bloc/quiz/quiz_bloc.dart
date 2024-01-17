@@ -49,6 +49,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           questions: questions.values.toList(), score: score));
     }
   }
+
   Future<List<Question>> fetchQuestions(List<String> questionIds) async {
     final fetchedQuestions = await Future.wait(
       questionIds.map((id) => questionRepository.getQuestionById(id)),
@@ -61,6 +62,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     for (final questionId in questionIds) {
       final userAnswer = answers[questionId];
       final correctAnswer = questions[questionId]!.correctAnswer;
+      // TODO: you're checking int vs Strings here!
       if (userAnswer == correctAnswer) {
         score++;
       }

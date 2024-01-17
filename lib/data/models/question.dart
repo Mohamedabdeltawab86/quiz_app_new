@@ -37,10 +37,13 @@ class Question extends Equatable {
 
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
+  // TODO: this is wrong too.
   static String questionTypeToJson(QuestionType? type) {
+    // TODO: use type?.name instead of type?.toString() ?? ''
     return type?.toString() ?? '';
   }
 
+  // TODO: this is wrong. kindly recheck.
   static QuestionType? questionTypeFromJson(String type) {
     switch (type) {
       case 'QuestionType.radio':

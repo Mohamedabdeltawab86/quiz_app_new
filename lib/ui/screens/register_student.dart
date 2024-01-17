@@ -10,11 +10,13 @@ class StudentRegisterPage extends StatelessWidget {
         title: const Text('Student Registration'),
       ),
       body: Padding(
+        // TODO: don't use const padding, use Sizer
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Add student-specific form fields and logic here
+            //TODO: translate const texts
             const Text('Student Registration Form'),
             // Add form fields for students
             // Example: TextFormFields, DropDowns, etc.

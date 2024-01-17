@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 part 'lesson.g.dart';
 
 @JsonSerializable()
-class Lesson extends Equatable{
+class Lesson extends Equatable {
   final int id;
   final String title;
   final String content;
@@ -27,14 +27,16 @@ class Lesson extends Equatable{
     required this.updatedAt,
   });
 
-  factory Lesson.fromJson(Map<String, dynamic>json)=> _$LessonFromJson(json);
+  factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
 
-  Map<String, dynamic> toJson()=> _$LessonToJson(this);
+  Map<String, dynamic> toJson() => _$LessonToJson(this);
 
-  static DateTime _dateTimeFromTimestamp(Timestamp timestamp)=> timestamp.toDate();
-  static Timestamp _dateTimeToTimestamp(DateTime dateTime)=> Timestamp.fromDate(dateTime);
+  //TODO: repeated code! make those functions public and put them in common functions.
+  static DateTime _dateTimeFromTimestamp(Timestamp timestamp) =>
+      timestamp.toDate();
+  static Timestamp _dateTimeToTimestamp(DateTime dateTime) =>
+      Timestamp.fromDate(dateTime);
 
   @override
   List<Object?> get props => [id, updatedAt];
 }
-
