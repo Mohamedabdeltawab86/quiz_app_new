@@ -12,9 +12,13 @@ Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
       options:
           (json['options'] as List<dynamic>).map((e) => e as String).toList(),
       correctAnswer: json['correctAnswer'] as String,
-      difficulty: (json['difficulty'] as num?)?.toDouble(),
+      difficulty: json['difficulty'] == null
+          ? QuestionDifficulty.normal
+          : Question.difficultyFromJson(json['difficulty']),
       weight: json['weight'] as int?,
-      type: Question.questionTypeFromJson(json['type'] as String),
+      type: json['type'] == null
+          ? QuestionType.radio
+          : Question.questionTypeFromJson(json['type'] as String),
     );
 
 Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
@@ -22,7 +26,7 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'title': instance.title,
       'options': instance.options,
       'correctAnswer': instance.correctAnswer,
-      'difficulty': instance.difficulty,
+      'difficulty': Question.questionDiffToJson(instance.difficulty),
       'weight': instance.weight,
       'type': Question.questionTypeToJson(instance.type),
     };

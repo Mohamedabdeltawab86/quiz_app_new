@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -6,30 +5,29 @@ part 'question.g.dart';
 
 enum QuestionType { radio, checkbox, trueFalse, complete }
 
+enum QuestionDifficulty { easy, normal, difficult }
+
 @JsonSerializable()
 class Question extends Equatable {
   final String id;
   final String title;
   final List<String> options;
   final String correctAnswer;
-  final double? difficulty;
+  @JsonKey(fromJson: difficultyFromJson, toJson: questionDiffToJson)
+  final QuestionDifficulty difficulty;
   final int? weight;
 
-  // Done: convert to String when sending to firestore and back when receiving.
-  @JsonKey(
-    fromJson: questionTypeFromJson,
-    toJson: questionTypeToJson,
-  )
-  final QuestionType? type;
+  @JsonKey(fromJson: questionTypeFromJson, toJson: questionTypeToJson)
+  final QuestionType type;
 
   const Question({
     required this.id,
     required this.title,
     required this.options,
     required this.correctAnswer,
-    this.difficulty,
+    this.difficulty = QuestionDifficulty.normal,
     this.weight,
-    this.type,
+    this.type = QuestionType.radio,
   });
 
   factory Question.fromJson(Map<String, dynamic> json) =>
@@ -37,25 +35,35 @@ class Question extends Equatable {
 
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
-  // TODO: this is wrong too.
-  static String questionTypeToJson(QuestionType? type) {
-    // TODO: use type?.name instead of type?.toString() ?? ''
-    return type?.toString() ?? '';
+  static String questionTypeToJson(QuestionType type) => type.name;
+
+  static String questionDiffToJson(QuestionDifficulty diff) => diff.name;
+
+  static QuestionDifficulty difficultyFromJson(difficulty) {
+    switch (difficulty) {
+      case 'easy':
+        return QuestionDifficulty.easy;
+      case 'normal':
+        return QuestionDifficulty.normal;
+      case 'difficult':
+        return QuestionDifficulty.difficult;
+      default:
+        return QuestionDifficulty.normal;
+    }
   }
 
-  // TODO: this is wrong. kindly recheck.
-  static QuestionType? questionTypeFromJson(String type) {
+  static QuestionType questionTypeFromJson(String type) {
     switch (type) {
-      case 'QuestionType.radio':
+      case 'radio':
         return QuestionType.radio;
-      case 'QuestionType.checkbox':
+      case 'checkbox':
         return QuestionType.checkbox;
-      case 'QuestionType.trueFalse':
+      case 'trueFalse':
         return QuestionType.trueFalse;
-      case 'QuestionType.complete':
+      case 'complete':
         return QuestionType.complete;
       default:
-        return null;
+        return QuestionType.radio;
     }
   }
 
