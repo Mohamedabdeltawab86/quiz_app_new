@@ -7,15 +7,15 @@ part of 'course.dart';
 // **************************************************************************
 
 Course _$CourseFromJson(Map<String, dynamic> json) => Course(
-      id: json['id'] as int,
-      title: json['title'] as String?,
+      id: json['id'] as int?,
+      title: json['title'] as String,
       description: json['description'] as String?,
       imageUrl: json['imageUrl'] as String?,
-      instructorId: json['instructorId'] as int,
-      moduleIds:
-          (json['moduleIds'] as List<dynamic>).map((e) => e as String).toList(),
-      createdAt: Course._dateTimeFromTimestamp(json['createdAt'] as Timestamp),
-      updatedAt: Course._dateTimeFromTimestamp(json['updatedAt'] as Timestamp),
+      moduleIds: (json['moduleIds'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      createdAt: dateTimeFromTimestamp(json['createdAt'] as Timestamp),
+      updatedAt: dateTimeFromTimestamp(json['updatedAt'] as Timestamp),
     );
 
 Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
@@ -23,8 +23,7 @@ Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
       'title': instance.title,
       'description': instance.description,
       'imageUrl': instance.imageUrl,
-      'instructorId': instance.instructorId,
       'moduleIds': instance.moduleIds,
-      'createdAt': Course._dateTimeToTimestamp(instance.createdAt),
-      'updatedAt': Course._dateTimeToTimestamp(instance.updatedAt),
+      'createdAt': dateTimeToTimestamp(instance.createdAt),
+      'updatedAt': dateTimeToTimestamp(instance.updatedAt),
     };

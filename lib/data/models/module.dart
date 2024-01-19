@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../utils/common_functions.dart';
 import 'lesson.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
@@ -11,16 +12,14 @@ class Module extends Equatable {
   final String? title;
   // Done: use IDs instead of whole objects, always remeber that you're using firestore not local db.
   final List<String> lessonIds;
-  // DONE: convert those dates to Timestamps when converting toJson.
-  // Done: convert them back to Datetime when receiveing from Json.
   @JsonKey(
-    fromJson: _dateTimeFromTimestamp,
-    toJson: _dateTimeToTimestamp,
+    fromJson: dateTimeFromTimestamp,
+    toJson: dateTimeToTimestamp,
   )
   final DateTime createdAt;
   @JsonKey(
-    fromJson: _dateTimeFromTimestamp,
-    toJson: _dateTimeToTimestamp,
+    fromJson: dateTimeFromTimestamp,
+    toJson: dateTimeToTimestamp,
   )
   final DateTime updatedAt;
 
@@ -34,11 +33,7 @@ class Module extends Equatable {
   factory Module.fromJson(Map<String, dynamic> json) => _$ModuleFromJson(json);
 
   Map<String, dynamic> toJson() => _$ModuleToJson(this);
-  static DateTime _dateTimeFromTimestamp(Timestamp timestamp) =>
-      timestamp.toDate();
 
-  static Timestamp _dateTimeToTimestamp(DateTime dateTime) =>
-      Timestamp.fromDate(dateTime);
   @override
   List<Object?> get props => [id, title, lessonIds, createdAt, updatedAt];
 }

@@ -6,8 +6,8 @@ import 'package:sizer/sizer.dart';
 
 import '../../utils/common_functions.dart';
 // TODO from session 4: messages, spaces between items, labels (appBar: done)_button shape, icons
-class LoginTextField extends StatelessWidget {
-  const LoginTextField({
+class QuizTextField extends StatelessWidget {
+  const QuizTextField({
     super.key,
     required this.controller,
     this.enabled,

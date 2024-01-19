@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
+
+import '../../utils/common_functions.dart';
 part 'quiz.g.dart';
 
 @JsonSerializable()
@@ -12,25 +14,25 @@ class Quiz extends Equatable {
   final int? weight;
   final int? averageTime;
   @JsonKey(
-    fromJson: _dateTimeFromTimestamp,
-    toJson: _dateTimeToTimestamp,
+    fromJson: dateTimeFromTimestamp,
+    toJson: dateTimeToTimestamp,
   )
   final  DateTime createdAt;
   @JsonKey(
-    fromJson: _dateTimeFromTimestamp,
-    toJson: _dateTimeToTimestamp,
+    fromJson: dateTimeFromTimestamp,
+    toJson: dateTimeToTimestamp,
   )
   final  DateTime updatedAt;
   @JsonKey(
-    fromJson: _dateTimeFromTimestamp,
-    toJson: _dateTimeToTimestamp,
+    fromJson: dateTimeFromTimestamp,
+    toJson: dateTimeToTimestamp,
   )
   final  DateTime solvedAt;
   final int? score;
 
   @JsonKey(
-    fromJson: _dateTimeFromTimestamp,
-    toJson: _dateTimeToTimestamp,
+    fromJson: dateTimeFromTimestamp,
+    toJson: dateTimeToTimestamp,
   )
   final  DateTime dueAt;
 
@@ -53,10 +55,7 @@ class Quiz extends Equatable {
 
   Map<String, dynamic> toJson() => _$QuizToJson(this);
 
-  static DateTime _dateTimeFromTimestamp(Timestamp timestamp)=> timestamp.toDate();
-  static Timestamp _dateTimeToTimestamp(DateTime dateTime)=> Timestamp.fromDate(dateTime);
 
   @override
-  // DONE: you can check for id and updatedAt only, no need to check for everything.
   List<Object?> get props => [id, updatedAt, solvedAt];
 }

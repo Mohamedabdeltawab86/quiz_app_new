@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
+
+import '../../utils/common_functions.dart';
 part 'lesson.g.dart';
 
 @JsonSerializable()
@@ -9,13 +11,13 @@ class Lesson extends Equatable {
   final String title;
   final String content;
   @JsonKey(
-    fromJson: _dateTimeFromTimestamp,
-    toJson: _dateTimeToTimestamp,
+    fromJson: dateTimeFromTimestamp,
+    toJson: dateTimeToTimestamp,
   )
   final DateTime createdAt;
   @JsonKey(
-    fromJson: _dateTimeFromTimestamp,
-    toJson: _dateTimeToTimestamp,
+    fromJson: dateTimeFromTimestamp,
+    toJson: dateTimeToTimestamp,
   )
   final DateTime updatedAt;
 
@@ -31,11 +33,6 @@ class Lesson extends Equatable {
 
   Map<String, dynamic> toJson() => _$LessonToJson(this);
 
-  //TODO: repeated code! make those functions public and put them in common functions.
-  static DateTime _dateTimeFromTimestamp(Timestamp timestamp) =>
-      timestamp.toDate();
-  static Timestamp _dateTimeToTimestamp(DateTime dateTime) =>
-      Timestamp.fromDate(dateTime);
 
   @override
   List<Object?> get props => [id, updatedAt];

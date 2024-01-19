@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
           buildWhen: (previous, current) =>
               previous.appSettings != current.appSettings,
           builder: (context, state) {
+            EasyLoading.instance.maskType = EasyLoadingMaskType.black;
             return MaterialApp.router(
               debugShowCheckedModeBanner: false,
               title: 'Quiz App',

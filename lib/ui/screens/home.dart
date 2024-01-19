@@ -33,34 +33,23 @@ class HomePage extends StatelessWidget {
               title: Text(l10n.signOut),
               onTap: () async {
                 // Sign out logic
-                // TODO: don't use context across async gaps. use then() to navigate.
-                await FirebaseAuth.instance.signOut();
-                context.go(login);
+                // DONE: don't use context across async gaps. use then() to navigate.
+                await FirebaseAuth.instance
+                    .signOut()
+                    .then((value) => context.go(login));
               },
             ),
           ],
         ),
       ),
       appBar: AppBar(
+        // TODO: change name to courses
         title: Text(AppLocalizations.of(context)!.appTitle),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              child: FilledButton(
-                  onPressed: () => context.push(settings),
-                  child: Text(AppLocalizations.of(context)!.settings)),
-            ),
-            const Gap(30),
-            SizedBox(
-              child: FilledButton(
-                onPressed: () => context.push(login),
-                child: Text(AppLocalizations.of(context)!.login),
-              ),
-            ),
-          ],
-        ),
+      body: ListView(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push(addEditCourse),
+        child: const Icon(Icons.add),
       ),
     );
   }

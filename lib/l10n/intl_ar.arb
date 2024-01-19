@@ -21,5 +21,11 @@
   "clickHere": "اضغط هنا..",
   "or": "أو",
   "registerTeacher": "سجل كطالب",
-  "registerStudent": "سجل كمدرس"
+  "student": "طالب",
+  "teacher": "مدرس",
+  "registerStudent": "سجل كمدرس",
+  "registerTeacher": "Register as a Teacher",
+  "registerStudent": "Register as a Student",
+  "registerTeacherForm": "نموذج تسجيل مدرس",
+  "registerStudentForm": "نموذج تسجيل طالب"
 }

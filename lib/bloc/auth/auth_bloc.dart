@@ -8,6 +8,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:quiz_app_new/utils/common_functions.dart';
 
+import '../../data/models/user_profile.dart';
 import '../../utils/constants.dart';
 
 part 'auth_event.dart';
@@ -20,6 +21,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginWithGoogle>(_onGoogleLogin);
     on<RegisterWithEmailPassword>(_onEmailPasswordRegister);
     on<SignOut>(_onSignOut);
+    on<TypeChanged>(_changeUserType);
+    on<UserInfoSubmitted>(_submitUserInfo);
   }
 
   final emailController = TextEditingController();
@@ -27,8 +30,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final emailRegisterController = TextEditingController();
   final passRegisterController = TextEditingController();
   final passConfirmController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final phoneNumberController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final registerFormKey = GlobalKey<FormState>();
+  final userInfoKey = GlobalKey<FormState>();
+  UserType userType = UserType.student;
 
   void _onEmailPasswordRegister(
       AuthEvent event, Emitter<AuthState> emit) async {
@@ -40,8 +48,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: emailRegisterController.text,
           password: passRegisterController.text,
         );
-        await saveUserInDB(userCredential);
-        emit(RegisterSuccess());
+
+        await saveUserInDB(UserProfile(
+          userId: userCredential.user!.uid,
+          firstName: firstNameController.text,
+          lastName: lastNameController.text,
+          phoneNumber: phoneNumberController.text,
+          email: emailRegisterController.text,
+          userType: userType,
+          updatedAt: DateTime.now(),
+        ));
+        emit(RegisterSuccess(hasInfo: true));
       } catch (e) {
         if (e is FirebaseAuthException) {
           final String eMessage =
@@ -60,14 +77,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     LoginWithUserPassword event,
     Emitter<AuthState> emit,
   ) async {
-    emit(LoginLoading());
     if (formKey.currentState!.validate()) {
+      emit(LoginLoading());
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text,
           password: passController.text,
         );
-        emit(LoginSuccess());
+        emit(LoginSuccess(hasInfo: true));
       } catch (e) {
         if (e is FirebaseAuthException) {
           final String eMessage =
@@ -86,7 +103,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(LoginLoading());
-
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -103,8 +119,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       // Once signed in, return the UserCredential
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      await saveUserInDB(userCredential);
-      emit(LoginSuccess());
+      await saveUserInDB(UserProfile.fromGoogle(userCredential));
+      emit(LoginSuccess(hasInfo: true));
     } catch (e) {
       if (e is FirebaseAuthException) {
         final String eMessage =
@@ -118,6 +134,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  Future<bool> doesUserHasInfo(String uid) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection(usersCollection)
+        .doc(uid)
+        .get();
+
+    return snapshot.data()!['userType'];
+  }
+
   Future<void> _onSignOut(
     SignOut event,
     Emitter<AuthState> emit,
@@ -127,6 +152,34 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(SignOutSuccess());
   }
 
+  Future<void> _changeUserType(
+    TypeChanged event,
+    Emitter<AuthState> emit,
+  ) async {
+    userType = event.userType;
+    emit(UserInfoUpdated());
+  }
+
+  Future<void> _submitUserInfo(
+    UserInfoSubmitted event,
+    Emitter<AuthState> emit,
+  ) async {
+    // TODO: complete
+    if (userInfoKey.currentState!.validate()) {
+      UserProfile userProfile = UserProfile(
+        userId: FirebaseAuth.instance.currentUser!.uid,
+        firstName: firstNameController.text,
+        lastName: lastNameController.text,
+        phoneNumber: phoneNumberController.text,
+        userType: userType,
+        email: FirebaseAuth.instance.currentUser!.email!,
+        updatedAt: DateTime.now()
+      );
+      await saveUserInDB(userProfile);
+      emit(UserInfoUpdated());
+    }
+  }
+
   @override
   Future<void> close() {
     emailController.dispose();
@@ -134,6 +187,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emailRegisterController.dispose();
     passRegisterController.dispose();
     passConfirmController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    phoneNumberController.dispose();
     return super.close();
   }
 }

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:quiz_app_new/data/models/user_profile.dart';
 
+import '../data/models/course.dart';
 import 'constants.dart';
 
 String? isValidEmail(String? email, String message) {
@@ -35,17 +37,25 @@ String? isSamePassword({
   return null;
 }
 
-Future<void> saveUserInDB(UserCredential userCredential) async {
+Future<void> saveUserInDB(UserProfile profile) async {
   await FirebaseFirestore.instance
       .collection(usersCollection)
-      .doc(userCredential.user!.uid)
-      .set(
-    {
-      'uid': userCredential.user!.uid,
-      'email': userCredential.user!.email,
-      'user': userCredential.user!.displayName,
-    },
-  );
+      .doc(profile.userId)
+      .set(profile.toJson(), SetOptions(merge: true));
 }
 
+Future<void> saveCourseInDB(Course course) async {
+  final courses = FirebaseFirestore.instance
+      .collection(coursesCollection)
+      .withConverter<Course>(
+        fromFirestore: (snapshot, options) => Course.fromJson(snapshot.data()!),
+        toFirestore: (course, options) => course.toJson(),
+      );
 
+  await courses.add(course);
+}
+
+DateTime dateTimeFromTimestamp(Timestamp timestamp) => timestamp.toDate();
+
+Timestamp dateTimeToTimestamp(DateTime dateTime) =>
+    Timestamp.fromDate(dateTime);

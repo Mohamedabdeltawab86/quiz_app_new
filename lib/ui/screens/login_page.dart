@@ -23,7 +23,13 @@ class LoginPage extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is LoginSuccess) context.go(userType);
+          if (state is LoginSuccess) {
+            if (state.hasInfo) {
+              context.go(home);
+            } else {
+              context.go(userTypeAndInfo, extra: bloc);
+            }
+          }
         },
         child: Scaffold(
           appBar: AppBar(
@@ -54,19 +60,19 @@ class LoginPage extends StatelessWidget {
               child: ListView(
                 children: <Widget>[
                   heightGap,
-                  const CustomImage(imageUrl: "masar.png"),
+                  const CustomImage(imagePath: "assets/masar.png"),
                   heightGap,
                   Center(
                       child: Text(l10n.login,
                           style: theme.textTheme.displayMedium)),
                   heightGap,
-                  LoginTextField(
+                  QuizTextField(
                     controller: bloc.emailController,
                     icon: FontAwesomeIcons.envelope,
                     label: l10n.email,
                   ),
                   heightGap,
-                  LoginTextField(
+                  QuizTextField(
                     controller: bloc.passController,
                     icon: FontAwesomeIcons.lock,
                     label: l10n.password,
