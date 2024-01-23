@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quiz_app_new/bloc/course/course_bloc.dart';
-import 'package:quiz_app_new/ui/widgets/CommanTextField.dart';
+import 'package:quiz_app_new/ui/widgets/CommonTextField.dart';
 import 'package:quiz_app_new/ui/widgets/common_button.dart';
 import 'package:sizer/sizer.dart';
 

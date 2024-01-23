@@ -20,6 +20,13 @@
   "haveNoAccount": "إذا لم يكن لديك حسابا ",
   "clickHere": "اضغط هنا..",
   "or": "أو",
+
+  "firstName": "الاسم الأول",
+  "lastName": "الاسم الأخير",
+  "phone": "رقم الهاتف",
+
+    "finish": "تسجيل",
+
   "registerTeacher": "سجل كطالب",
   "student": "طالب",
   "teacher": "مدرس",
@@ -27,5 +34,7 @@
   "registerTeacher": "Register as a Teacher",
   "registerStudent": "Register as a Student",
   "registerTeacherForm": "نموذج تسجيل مدرس",
-  "registerStudentForm": "نموذج تسجيل طالب"
+  "registerStudentForm": "نموذج تسجيل طالب",
+  "userInfoPage": "معلومات المستخدم",
+  "userType": "هل أنت طالب أم مدرس؟"
 }

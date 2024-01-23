@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +26,9 @@ class RegisterPage extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is RegisterSuccess) {
-          if (state.hasInfo){
+          if (state.hasInfo) {
             context.go(home);
-          }
-          else {
+          } else {
             context.push(userTypeAndInfo, extra: bloc);
           }
         }
@@ -39,6 +40,7 @@ class RegisterPage extends StatelessWidget {
           appBar: AppBar(actions: [
             InkWell(
               onTap: () {
+                print(context.read<AppSettingsBloc>().state.appSettings.light);
                 context.read<AppSettingsBloc>().add(ChangeAppTheme());
               },
               child: Padding(
@@ -80,12 +82,12 @@ class RegisterPage extends StatelessWidget {
                   QuizTextField(
                     controller: bloc.firstNameController,
                     icon: Icons.person,
-                    label: "first name",
+                    label: l10n.firstName,
                     validator: (value) {
                       if (value != null && value.isNotEmpty) {
                         return null;
                       } else {
-                        return "Field must not be empty";
+                        return l10n.emptyField;
                       }
                     },
                   ),
@@ -93,7 +95,7 @@ class RegisterPage extends StatelessWidget {
                   QuizTextField(
                     controller: bloc.lastNameController,
                     icon: Icons.person,
-                    label: "last name",
+                    label: l10n.lastName,
                     validator: (_) => null,
                   ),
                   Gap(5.sp),
@@ -102,7 +104,7 @@ class RegisterPage extends StatelessWidget {
                     icon: Icons.phone,
                     keyboardType: TextInputType.phone,
                     digitsOnly: true,
-                    label: "phone",
+                    label: l10n.phone,
                     // TODO: later: validate phone number passed on country
                     validator: (_) => null,
                   ),
@@ -130,7 +132,7 @@ class RegisterPage extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      const Text("Type:"),
+                      Text(l10n.userType),
                       Gap(5.sp),
                       Expanded(
                         child: BlocBuilder<AuthBloc, AuthState>(

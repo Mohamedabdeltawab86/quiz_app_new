@@ -18,9 +18,7 @@ class UserTypeAndInfo extends StatelessWidget {
     final bloc = context.read<AuthBloc>();
     return Scaffold(
       appBar: AppBar(
-        // Your existing app bar content
-        // todo: add page name
-        title: const Text("user info"),
+        title: Text(l10n.userInfoPage),
       ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -30,7 +28,7 @@ class UserTypeAndInfo extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Text("type:"),
+                  Text(l10n.userType),
                   Gap(5.sp),
                   Expanded(
                     child: BlocBuilder<AuthBloc, AuthState>(
@@ -50,12 +48,12 @@ class UserTypeAndInfo extends StatelessWidget {
               QuizTextField(
                 controller: bloc.firstNameController,
                 icon: Icons.person,
-                label: "first name",
+                label: l10n.firstName,
                 validator: (value) {
                   if (value != null && value.isNotEmpty) {
                     return null;
                   } else {
-                    return "Field must not be empty";
+                    return l10n.emptyField;
                   }
                 },
               ),
@@ -63,7 +61,7 @@ class UserTypeAndInfo extends StatelessWidget {
               QuizTextField(
                 controller: bloc.lastNameController,
                 icon: Icons.person,
-                label: "last name",
+                label: l10n.lastName,
                 validator: (_) => null,
               ),
               Gap(5.sp),
@@ -72,7 +70,7 @@ class UserTypeAndInfo extends StatelessWidget {
                 icon: Icons.phone,
                 keyboardType: TextInputType.phone,
                 digitsOnly: true,
-                label: "phone",
+                label: l10n.phone,
                 // TODO: later: validate phone number passed on country
                 validator: (_) => null,
               ),
@@ -80,7 +78,7 @@ class UserTypeAndInfo extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () => bloc.add(UserInfoSubmitted()),
                 icon: const FaIcon(FontAwesomeIcons.diceOne),
-                label: const Text("finish"),
+                label: Text(l10n.finish),
               ),
             ],
           ),

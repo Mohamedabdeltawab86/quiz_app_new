@@ -19,11 +19,21 @@
   "passwordsDoNotMatch": "Passwords do not match",
   "haveNoAccount": "If you haven't account, ",
   "clickHere": "Click here.",
+  "or": "Or",
+
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "phone": "Phone",
+
+  "finish": "Submit",
+
   "student": "student",
   "teacher": "teacher",
-  "or": "Or",
   "registerTeacher": "Register as a Teacher",
   "registerStudent": "Register as a Student",
   "registerTeacherForm": "Teacher Registration Form",
-  "registerStudentForm": "Student Registration Form"
+  "registerStudentForm": "Student Registration Form",
+
+  "userInfoPage": "User Info Page",
+  "userType": "Are you a student or a teacher?"
 }
