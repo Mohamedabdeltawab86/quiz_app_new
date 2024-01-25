@@ -56,19 +56,33 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           phoneNumber: phoneNumberController.text,
           email: emailRegisterController.text,
           userType: userType,
-          updatedAt: DateTime.now(),
+          createdAt: DateTime.now(),
         ));
         emit(RegisterSuccess(hasInfo: true));
-      } catch (e) {
-        if (e is FirebaseAuthException) {
-          final String eMessage =
-              e.message ?? "Unknown Firebase Auth Exception happened";
-          log("MESSAGE =============== $eMessage");
-          emit(AuthError(eMessage));
-          EasyLoading.showError(eMessage);
-        } else {
-          emit(AuthError("Unknown Error"));
+      } on FirebaseException catch (e) {
+        if (e.code == 'weak-password') {
+          const String message = 'The password provided is too weak.';
+          emit(AuthError(message));
+          EasyLoading.showError(message);
+        } else if (e.code == 'email-already-in-use') {
+          const String message = 'The account already exists for that email.';
+          emit(AuthError(message));
+          EasyLoading.showError(message);
+
         }
+
+      } catch (e) {
+        emit(AuthError(e.toString()));
+        EasyLoading.showError(e.toString());
+        // if (e is FirebaseAuthException) {
+        //   final String eMessage =
+        //       e.message ?? "Unknown Firebase Auth Exception happened";
+        //   log("MESSAGE =============== $eMessage");
+        //   emit(AuthError(eMessage));
+        //   EasyLoading.showError(eMessage);
+        // } else {
+        //   emit(AuthError("Unknown Error"));
+        // }
       }
     }
   }
@@ -85,15 +99,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           password: passController.text,
         );
         emit(LoginSuccess(hasInfo: true));
-      } catch (e) {
-        if (e is FirebaseAuthException) {
-          final String eMessage =
-              e.message ?? "Unknown Firebase Auth Exception happened";
-          emit(AuthError(eMessage));
-          EasyLoading.showError(eMessage);
-        } else {
-          emit(AuthError("Unknown Error happened"));
+      } on FirebaseException catch (e) {
+        if (e.code == 'user-not-found') {
+          const String message = 'No user found for that email.';
+          emit(AuthError(message));
+          EasyLoading.showError(message);
+        } else if (e.code == 'wrong-password') {
+          const String message = 'Wrong password provided for that user.';
+          emit(AuthError(message));
+          EasyLoading.showError(message);
+
         }
+
+      } catch (e) {
+        emit(AuthError(e.toString()));
+        EasyLoading.showError(e.toString());
       }
     }
   }
@@ -121,6 +141,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await FirebaseAuth.instance.signInWithCredential(credential);
       await saveUserInDB(UserProfile.fromGoogle(userCredential));
       emit(LoginSuccess(hasInfo: true));
+    } on FirebaseException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
     } catch (e) {
       if (e is FirebaseAuthException) {
         final String eMessage =
@@ -173,7 +199,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         phoneNumber: phoneNumberController.text,
         userType: userType,
         email: FirebaseAuth.instance.currentUser!.email!,
-        updatedAt: DateTime.now()
+        createdAt: FirebaseAuth.instance.currentUser!.metadata.creationTime!,
       );
       await saveUserInDB(userProfile);
       emit(UserInfoUpdated());

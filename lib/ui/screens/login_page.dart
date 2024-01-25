@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,8 @@ class LoginPage extends StatelessWidget {
                     controller: bloc.emailController,
                     icon: FontAwesomeIcons.envelope,
                     label: l10n.email,
+                    keyboardType: TextInputType.emailAddress,
+                    inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))],
                   ),
                   heightGap,
                   QuizTextField(

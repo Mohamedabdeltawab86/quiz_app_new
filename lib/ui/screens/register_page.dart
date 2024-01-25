@@ -1,5 +1,5 @@
-import 'dart:math';
-
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,9 @@ class RegisterPage extends StatelessWidget {
           appBar: AppBar(actions: [
             InkWell(
               onTap: () {
-                print(context.read<AppSettingsBloc>().state.appSettings.light);
+                if (kDebugMode) {
+                  print(context.read<AppSettingsBloc>().state.appSettings.light);
+                }
                 context.read<AppSettingsBloc>().add(ChangeAppTheme());
               },
               child: Padding(
@@ -76,6 +78,7 @@ class RegisterPage extends StatelessWidget {
                     icon: FontAwesomeIcons.envelope,
                     label: l10n.email,
                     keyboardType: TextInputType.emailAddress,
+                    inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))],
                     // validator: bloc.validate('Please enter your email!'),
                   ),
                   Gap(5.sp),

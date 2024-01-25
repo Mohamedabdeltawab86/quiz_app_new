@@ -7,7 +7,7 @@ part of 'user_profile.dart';
 // **************************************************************************
 
 UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => UserProfile(
-      updatedAt: dateTimeFromTimestamp(json['updatedAt'] as Timestamp),
+      createdAt: dateTimeFromTimestamp(json['createdAt'] as Timestamp),
       userId: json['userId'] as String,
       firstName: json['firstName'] as String?,
       email: json['email'] as String,
@@ -19,7 +19,7 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => UserProfile(
 
 Map<String, dynamic> _$UserProfileToJson(UserProfile instance) {
   final val = <String, dynamic>{
-    'updatedAt': dateTimeToTimestamp(instance.updatedAt),
+    'createdAt': dateTimeToTimestamp(instance.createdAt),
     'userId': instance.userId,
     'email': instance.email,
   };

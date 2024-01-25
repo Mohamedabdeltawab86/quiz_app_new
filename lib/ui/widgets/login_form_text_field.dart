@@ -18,6 +18,7 @@ class QuizTextField extends StatelessWidget {
     required this.label,
     this.validator,
     this.obscureText = false,
+    this.inputFormatters,
   });
 
   final TextEditingController controller;
@@ -29,6 +30,7 @@ class QuizTextField extends StatelessWidget {
   final IconData icon;
   final String label;
   final bool obscureText;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +51,14 @@ class QuizTextField extends StatelessWidget {
         ),
       ),
       controller: controller,
-      validator: validator ?? (value) => isEmail
+      validator: validator
+          ?? (value) => isEmail
           ? isValidEmail(value, l10n.emptyField)
           : isValidPassword(value, l10n.emptyField),
       enabled: enabled,
       obscureText: obscureText,
       keyboardType: keyboardType,
-      inputFormatters: digitsOnly != null && digitsOnly!
-          ? [FilteringTextInputFormatter.digitsOnly]
-          : null,
+      inputFormatters: inputFormatters,
     );
   }
 }

@@ -15,7 +15,7 @@ class UserProfile extends Equatable {
     fromJson: dateTimeFromTimestamp,
     toJson: dateTimeToTimestamp,
   )
-  final DateTime updatedAt;
+  final DateTime createdAt;
   final String userId;
   final String email;
   @JsonKey(includeIfNull: false)
@@ -33,7 +33,7 @@ class UserProfile extends Equatable {
   final String? photoUrl;
 
   const UserProfile({
-    required this.updatedAt,
+    required this.createdAt,
     required this.userId,
     this.firstName,
     required this.email,
@@ -50,7 +50,7 @@ class UserProfile extends Equatable {
 
   factory UserProfile.fromGoogle(UserCredential credential) {
     return UserProfile(
-      updatedAt: DateTime.now(),
+      createdAt: DateTime.now(),
       userId: credential.user!.uid,
       email: credential.user!.email!,
       photoUrl: credential.user!.photoURL,
