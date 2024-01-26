@@ -13,9 +13,10 @@ class ProfileScreen extends StatelessWidget {
     // final l10n = AppLocalizations.of(context)!;
     return Scaffold(
         appBar: AppBar(
-          title: const Text('kkk'),
+          title: const Text('Profile Screen'),
           actions: [
             IconButton(
+              // how to make loading in init state
               onPressed: () => bloc.add(LoadingProfileEvent()),
               icon: const Icon(Icons.refresh),
             ),

@@ -57,7 +57,6 @@ Future<DocumentSnapshot> readUserFromDB(String userId) async {
       .doc(userId)
       .get();
   print(userId);
-  print(userData);
   return userData;
 }
 

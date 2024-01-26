@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/src/widgets/basic.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:go_router/go_router.dart";
 import "package:quiz_app_new/bloc/auth/auth_bloc.dart";
@@ -38,7 +39,13 @@ class AppRouter {
     routes: [
       GoRoute(
         path: home,
-        builder: (context, state) => const HomePage(),
+        builder: (context, state) {
+          final String userId = FirebaseAuth.instance.currentUser!.uid;
+          return BlocProvider(
+            create: (context) => UserInfoBloc(userId),
+            child: const HomePage(),
+          );
+        },
       ),
       GoRoute(
         path: settings,
@@ -78,10 +85,9 @@ class AppRouter {
           final String userId = FirebaseAuth.instance.currentUser!.uid;
 
           return BlocProvider(
-          create: (context) =>
-              UserInfoBloc(userId),
-          child: const ProfileScreen(),
-        );
+            create: (context) => UserInfoBloc(userId),
+            child: const ProfileScreen(),
+          );
         },
       )
     ],

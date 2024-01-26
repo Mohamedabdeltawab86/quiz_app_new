@@ -26,8 +26,14 @@ class LoginPage extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSuccess) {
             if (state.hasInfo) {
+
               context.go(home);
-            } else {
+            }
+            // else if(state.)
+            // {
+            //
+            // }
+            else {
               context.go(userTypeAndInfo, extra: bloc);
             }
           }
