@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:quiz_app_new/utils/constants.dart';
 
 import '../../utils/common_functions.dart';
 
@@ -40,8 +41,25 @@ class UserProfile extends Equatable {
     this.lastName,
     this.phoneNumber,
     this.userType,
-    this.photoUrl,
+    this.photoUrl = dummyProfilePicUrl,
   });
+
+  UserProfile copyWith({
+    String? firstName,
+    String? lastName,
+    String? phoneNumber,
+    UserType? userType,
+    String? photoUrl,
+  }) {
+    return UserProfile(
+        createdAt: createdAt,
+        userId: userId,
+        email: email,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        phoneNumber: phoneNumber ?? this.phoneNumber,
+        photoUrl: photoUrl ?? this.photoUrl);
+  }
 
   Map<String, dynamic> toJson() => _$UserProfileToJson(this);
 

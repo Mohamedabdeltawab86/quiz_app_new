@@ -51,6 +51,14 @@ Future<void> saveUserInDB(UserProfile profile) async {
       .set(profile.toJson(), SetOptions(merge: true));
 }
 
+Future<DocumentSnapshot> readUserFromDB(User userId) async {
+  DocumentSnapshot userData = await FirebaseFirestore.instance
+      .collection(usersCollection)
+      .doc(userId.toString())
+      .get();
+  return userData;
+}
+
 Future<void> saveCourseInDB(Course course) async {
   final courses = FirebaseFirestore.instance
       .collection(coursesCollection)

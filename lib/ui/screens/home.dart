@@ -45,6 +45,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         // TODO: change name to courses
         title: Text(AppLocalizations.of(context)!.appTitle),
+        actions: [IconButton(onPressed: ()=> context.push(profile), icon: const Icon(Icons.verified_user_outlined))],
       ),
       body: ListView(),
       floatingActionButton: FloatingActionButton(

@@ -14,7 +14,7 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => UserProfile(
       lastName: json['lastName'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
       userType: UserProfile.userTypeFromJson(json['userType']),
-      photoUrl: json['photoUrl'] as String?,
+      photoUrl: json['photoUrl'] as String? ?? dummyProfilePicUrl,
     );
 
 Map<String, dynamic> _$UserProfileToJson(UserProfile instance) {
