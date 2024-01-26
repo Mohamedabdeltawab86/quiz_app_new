@@ -11,27 +11,36 @@ part 'user_info_event.dart';
 part 'user_info_state.dart';
 
 class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
-  final User? userId;
+  final String userId;
 
   UserInfoBloc(this.userId) : super(UserInfoInitial()) {
     on<LoadingProfileEvent>(_loadUserInfo);
     on<UpdateProfileEvent>(_updateUserInfo);
   }
 
+  void initInfoPage() {}
+
   void _loadUserInfo(
     LoadingProfileEvent event,
     Emitter<UserInfoState> emit,
   ) async {
-    emit(UserInfoLoading());
-    DocumentSnapshot userData = await readUserFromDB(userId!);
-    // DocumentSnapshot userData = await FirebaseFirestore.instance
-    //     .collection(usersCollection)
-    //     .doc(userId?.uid)
-    //     .get();
-    UserProfile userProfile =
-        UserProfile.fromJson(userData as Map<String, dynamic>);
-    print(userProfile);
-    emit(UserInfoLoaded(userProfile));
+    try {
+      print(userId);
+      emit(UserInfoLoading());
+      DocumentSnapshot userData = await readUserFromDB(userId);
+
+      if (userData.exists) {
+        Map<String, dynamic> userDataMap =
+            userData.data() as Map<String, dynamic>;
+        UserProfile userProfile = UserProfile.fromJson(userDataMap);
+        print(userProfile);
+        emit(UserInfoLoaded(userProfile));
+      } else {
+        emit(UserInfoError("User NOT fOUND"));
+      }
+    } catch (e) {
+      emit(UserInfoError(e.toString()));
+    }
   }
 
   Future<void> _updateUserInfo(

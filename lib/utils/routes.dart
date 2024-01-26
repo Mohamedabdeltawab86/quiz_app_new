@@ -75,10 +75,11 @@ class AppRouter {
       GoRoute(
         path: profile,
         builder: (context, state) {
+          final String userId = FirebaseAuth.instance.currentUser!.uid;
 
           return BlocProvider(
           create: (context) =>
-              UserInfoBloc(state.extra as User?),
+              UserInfoBloc(userId),
           child: const ProfileScreen(),
         );
         },

@@ -14,6 +14,12 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('kkk'),
+          actions: [
+            IconButton(
+              onPressed: () => bloc.add(LoadingProfileEvent()),
+              icon: const Icon(Icons.refresh),
+            ),
+          ],
         ),
         body:
             BlocBuilder<UserInfoBloc, UserInfoState>(builder: (context, state) {
@@ -28,13 +34,13 @@ class ProfileScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(profile.userType!.toString()),
+                Text(profile.userType.toString()),
                 CircleAvatar(
                   backgroundImage: NetworkImage(profile.photoUrl!),
                 ),
-                Text('${profile.firstName!} + ${profile.lastName!}'),
+                Text('${profile.firstName}  ${profile.lastName}' ),
                 Text(profile.email),
-                Text(profile.phoneNumber!),
+                Text(profile.phoneNumber ?? "1111111"),
               ],
             );
           }

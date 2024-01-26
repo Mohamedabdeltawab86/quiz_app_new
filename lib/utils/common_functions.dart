@@ -51,11 +51,13 @@ Future<void> saveUserInDB(UserProfile profile) async {
       .set(profile.toJson(), SetOptions(merge: true));
 }
 
-Future<DocumentSnapshot> readUserFromDB(User userId) async {
+Future<DocumentSnapshot> readUserFromDB(String userId) async {
   DocumentSnapshot userData = await FirebaseFirestore.instance
       .collection(usersCollection)
-      .doc(userId.toString())
+      .doc(userId)
       .get();
+  print(userId);
+  print(userData);
   return userData;
 }
 
