@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserTypeDropdownButton extends StatelessWidget {
   final void Function(UserType?) onChanged;
-  final UserType value;
+  final UserType? value;
 
   const UserTypeDropdownButton({
     super.key,
@@ -16,12 +16,18 @@ class UserTypeDropdownButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return DropdownButton<UserType>(
-      items: UserType.values
-          .map((e) => DropdownMenuItem(
-                value: e,
-                child: Center(child: Text(l10n.translateUserType(e))),
-              ))
-          .toList(),
+      items: [
+        const DropdownMenuItem(
+          value: null,
+          child: Text("nothing"),
+        ),
+        ...UserType.values.map(
+          (e) => DropdownMenuItem(
+            value: e,
+            child: Center(child: Text(l10n.translateUserType(e))),
+          ),
+        )
+      ],
       onChanged: onChanged,
       value: value,
       isExpanded: true,

@@ -15,10 +15,13 @@ class UserProfile extends Equatable {
   @JsonKey(
     fromJson: dateTimeFromTimestamp,
     toJson: dateTimeToTimestamp,
+    includeIfNull: false,
   )
-  final DateTime createdAt;
-  final String userId;
-  final String email;
+  final DateTime? createdAt;
+  @JsonKey(includeIfNull: false)
+  final String? userId;
+  @JsonKey(includeIfNull: false)
+  final String? email;
   @JsonKey(includeIfNull: false)
   final String? firstName;
   @JsonKey(includeIfNull: false)
@@ -34,10 +37,10 @@ class UserProfile extends Equatable {
   final String? photoUrl;
 
   const UserProfile({
-    required this.createdAt,
-    required this.userId,
+    this.createdAt,
+    this.userId,
     this.firstName,
-    required this.email,
+    this.email,
     this.lastName,
     this.phoneNumber,
     this.userType,

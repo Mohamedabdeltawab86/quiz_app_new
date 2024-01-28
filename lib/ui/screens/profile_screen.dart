@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sizer/sizer.dart';
 import '../../bloc/user/user_info_bloc.dart';
+import '../widgets/login_form_text_field.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -10,42 +16,67 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<UserInfoBloc>();
-    // final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Profile Screen'),
-          actions: [
-            IconButton(
-              // how to make loading in init state
-              onPressed: () => bloc.add(LoadingProfileEvent()),
-              icon: const Icon(Icons.refresh),
-            ),
-          ],
-        ),
-        body:
-            BlocBuilder<UserInfoBloc, UserInfoState>(builder: (context, state) {
-          if (state is UserInfoError) {
-            print(state.error);
-          } else if (state is UserInfoLoading) {
-            print("state");
-          } else if (state is UserInfoLoaded) {
-            final profile = state.user;
-            print(profile);
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(profile.userType.toString()),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(profile.photoUrl!),
-                ),
-                Text('${profile.firstName}  ${profile.lastName}' ),
-                Text(profile.email),
-                Text(profile.phoneNumber ?? "1111111"),
-              ],
-            );
+      appBar: AppBar(
+        title: const Text('Profile Screen'),
+      ),
+      body: BlocConsumer<UserInfoBloc, UserInfoState>(
+        listener: (context, state) {
+          if(state is UserInfoLoading){
+            EasyLoading.show(status: "Loading");
+          } else {
+            EasyLoading.dismiss();
           }
-          return Container();
-        }));
+        },
+        buildWhen: (previous, current) => current is UserInfoLoaded,
+        builder: (context, state) {
+          return Form(
+            key: bloc.profileFormKey,
+            child: ListView(
+              children: [
+                QuizTextField(
+                  controller: bloc.firstNameController,
+                  icon: Icons.person,
+                  label: l10n.firstName,
+                  validator: (value) {
+                    if (value != null && value.isNotEmpty) {
+                      return null;
+                    } else {
+                      return l10n.emptyField;
+                    }
+                  },
+                ),
+                Gap(5.sp),
+                QuizTextField(
+                  controller: bloc.lastNameController,
+                  icon: Icons.person,
+                  label: l10n.lastName,
+                  validator: (_) => null,
+                ),
+                Gap(5.sp),
+                QuizTextField(
+                  controller: bloc.phoneNumberController,
+                  icon: Icons.phone,
+                  keyboardType: TextInputType.phone,
+                  digitsOnly: true,
+                  label: l10n.phone,
+                  // TODO: later: validate phone number passed on country
+                  validator: (_) => null,
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    bloc.add(UpdateProfile());
+                    context.pop();
+                  },
+                  icon: const FaIcon(FontAwesomeIcons.diceOne),
+                  label: Text(l10n.finish),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }

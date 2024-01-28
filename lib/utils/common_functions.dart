@@ -22,7 +22,6 @@ String? isValidEmail(String? email, String message) {
 }
 
 String? isValidPassword(String? password, String message) {
-
   if (password != null && password.length >= 8) {
     return null;
   } else {
@@ -48,16 +47,26 @@ Future<void> saveUserInDB(UserProfile profile) async {
   await FirebaseFirestore.instance
       .collection(usersCollection)
       .doc(profile.userId)
-      .set(profile.toJson(), SetOptions(merge: true));
+      .set(profile.toJson(), SetOptions(merge: true)).then((value) => print(profile.toJson()));
 }
 
-Future<DocumentSnapshot> readUserFromDB(String userId) async {
+Future<UserProfile> readUserFromDB() async {
   DocumentSnapshot userData = await FirebaseFirestore.instance
       .collection(usersCollection)
-      .doc(userId)
+      .doc(getUid())
       .get();
-  print(userId);
-  return userData;
+  return UserProfile.fromJson(userData.data()! as Map<String, dynamic>);
+}
+
+Future<List<Course>> readCoursesFromDB() async {
+  QuerySnapshot snapshot =
+      await FirebaseFirestore.instance.collection(coursesCollection).get();
+
+  List<Course> courseData = snapshot.docs
+      .map((doc) => Course.fromJson(doc.data() as Map<String, dynamic>))
+      .toList();
+
+  return courseData;
 }
 
 Future<void> saveCourseInDB(Course course) async {
@@ -73,5 +82,21 @@ Future<void> saveCourseInDB(Course course) async {
 
 DateTime dateTimeFromTimestamp(Timestamp timestamp) => timestamp.toDate();
 
-Timestamp dateTimeToTimestamp(DateTime dateTime) =>
-    Timestamp.fromDate(dateTime);
+Timestamp? dateTimeToTimestamp(DateTime? dateTime) {
+  if(dateTime != null){
+    return Timestamp.fromDate(dateTime);
+  } else {
+    return null;
+  }
+}
+
+Future<bool> doesUserHasInfo(String uid) async {
+  final snapshot = await FirebaseFirestore.instance
+      .collection(usersCollection)
+      .doc(uid)
+      .get();
+
+  return snapshot.data()!['userType'] != null;
+}
+
+String getUid()=> FirebaseAuth.instance.currentUser!.uid;

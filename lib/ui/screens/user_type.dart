@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:quiz_app_new/utils/common_functions.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../bloc/auth/auth_bloc.dart';
@@ -35,7 +37,7 @@ class UserTypeAndInfo extends StatelessWidget {
                       buildWhen: (_, current) => current is UserInfoUpdated,
                       builder: (context, state) {
                         return UserTypeDropdownButton(
-                          onChanged: (type) => bloc.add(TypeChanged(type!)),
+                          onChanged: (t) => bloc.add(ChangeType(t)),
                           value: bloc.userType,
                         );
                       },
@@ -43,40 +45,15 @@ class UserTypeAndInfo extends StatelessWidget {
                   ),
                 ],
               ),
-              // TODO: add circle avatar to choose photo
-              Gap(5.sp),
-              QuizTextField(
-                controller: bloc.firstNameController,
-                icon: Icons.person,
-                label: l10n.firstName,
-                validator: (value) {
-                  if (value != null && value.isNotEmpty) {
-                    return null;
-                  } else {
-                    return l10n.emptyField;
-                  }
-                },
-              ),
-              Gap(5.sp),
-              QuizTextField(
-                controller: bloc.lastNameController,
-                icon: Icons.person,
-                label: l10n.lastName,
-                validator: (_) => null,
-              ),
-              Gap(5.sp),
-              QuizTextField(
-                controller: bloc.phoneNumberController,
-                icon: Icons.phone,
-                keyboardType: TextInputType.phone,
-                digitsOnly: true,
-                label: l10n.phone,
-                // TODO: later: validate phone number passed on country
-                validator: (_) => null,
-              ),
               Divider(height: 15.sp, endIndent: 10.w, indent: 10.w),
+              // TODO: quiz: make sure the new type reflects on the button.
               ElevatedButton.icon(
-                onPressed: () => bloc.add(UserInfoSubmitted()),
+                onPressed: bloc.userType != null
+                    ? () {
+                      bloc.add(UserInfoSubmitted());
+                      context.pop();
+                    }
+                    : null,
                 icon: const FaIcon(FontAwesomeIcons.diceOne),
                 label: Text(l10n.finish),
               ),
@@ -84,9 +61,6 @@ class UserTypeAndInfo extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        bloc.doesUserHasInfo("A1kZSAg7qTSbLmFBJewbCMKQBCC2").toString();
-      }),
     );
   }
 }

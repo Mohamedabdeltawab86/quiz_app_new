@@ -1,51 +1,61 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:quiz_app_new/utils/common_functions.dart';
 
 import '../../data/models/user_profile.dart';
-import '../../utils/constants.dart';
 
 part 'user_info_event.dart';
 
 part 'user_info_state.dart';
 
 class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
-  final String userId;
-
-  UserInfoBloc(this.userId) : super(UserInfoInitial()) {
-    on<LoadingProfileEvent>(_loadUserInfo);
-    on<UpdateProfileEvent>(_updateUserInfo);
+  UserInfoBloc() : super(UserInfoInitial()) {
+    on<LoadProfile>(_loadUserInfo);
+    on<UpdateProfile>(_updateUserInfo);
   }
 
-  void initInfoPage() {}
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final phoneNumberController = TextEditingController();
+  final profileFormKey = GlobalKey<FormState>();
 
-  void _loadUserInfo(
-    LoadingProfileEvent event,
-    Emitter<UserInfoState> emit,
-  ) async {
+  void initInfoPage(UserProfile profile) {
+    firstNameController.text = profile.firstName ?? "";
+    lastNameController.text = profile.lastName ?? "";
+    phoneNumberController.text = profile.phoneNumber ?? "";
+  }
+
+  void _loadUserInfo(LoadProfile event,
+      Emitter<UserInfoState> emit,) async {
     try {
-      print(userId);
       emit(UserInfoLoading());
-      DocumentSnapshot userData = await readUserFromDB(userId);
-
-      if (userData.exists) {
-        Map<String, dynamic> userDataMap =
-            userData.data() as Map<String, dynamic>;
-        UserProfile userProfile = UserProfile.fromJson(userDataMap);
-        print(userProfile);
-        emit(UserInfoLoaded(userProfile));
-      } else {
-        emit(UserInfoError("User NOT fOUND"));
-      }
+      // todo use hydrated 1
+      UserProfile profile = await readUserFromDB();
+      initInfoPage(profile);
+      emit(UserInfoLoaded());
     } catch (e) {
       emit(UserInfoError(e.toString()));
     }
   }
 
-  Future<void> _updateUserInfo(
-      UpdateProfileEvent event, Emitter<UserInfoState> emit) async {
+  Future<void> _updateUserInfo(UpdateProfile event,
+      Emitter<UserInfoState> emit) async {
     emit(UserInfoUpdating());
-    // emit(UserInfoLoaded(UserProfile: ));
+    final updatedProfile = UserProfile(
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+      phoneNumber: phoneNumberController.text,
+    );
+    await saveUserInDB(updatedProfile);
+    emit(UserInfoUpdated());
+  }
+
+  @override
+  Future<void> close() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    phoneNumberController.dispose();
+    return super.close();
   }
 }

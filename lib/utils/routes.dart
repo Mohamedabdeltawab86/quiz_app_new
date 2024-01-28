@@ -1,11 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/src/widgets/basic.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:go_router/go_router.dart";
 import "package:quiz_app_new/bloc/auth/auth_bloc.dart";
-import 'package:quiz_app_new/bloc/profile/profile_bloc.dart';
 import 'package:quiz_app_new/data/models/course.dart';
-import 'package:quiz_app_new/data/models/user_profile.dart';
 import 'package:quiz_app_new/ui/screens/login_page.dart';
 import 'package:quiz_app_new/ui/screens/settings.dart';
 import 'package:quiz_app_new/ui/screens/user_type.dart';
@@ -40,9 +37,8 @@ class AppRouter {
       GoRoute(
         path: home,
         builder: (context, state) {
-          final String userId = FirebaseAuth.instance.currentUser!.uid;
           return BlocProvider(
-            create: (context) => UserInfoBloc(userId),
+            create: (context) => CourseBloc()..add(FetchCourses()),
             child: const HomePage(),
           );
         },
@@ -82,10 +78,8 @@ class AppRouter {
       GoRoute(
         path: profile,
         builder: (context, state) {
-          final String userId = FirebaseAuth.instance.currentUser!.uid;
-
           return BlocProvider(
-            create: (context) => UserInfoBloc(userId),
+            create: (context) => UserInfoBloc()..add(LoadProfile()),
             child: const ProfileScreen(),
           );
         },

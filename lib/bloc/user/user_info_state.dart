@@ -5,16 +5,9 @@ abstract class UserInfoState {}
 
 class UserInfoInitial extends UserInfoState {}
 
-class UserInfoLoading extends UserInfoState {
+class UserInfoLoading extends UserInfoState {}
 
-
-}
-
-class UserInfoLoaded extends UserInfoState {
-  final UserProfile user;
-
-  UserInfoLoaded(this.user);
-}
+class UserInfoLoaded extends UserInfoState {}
 
 class UserInfoUpdating extends UserInfoState {}
 class UserInfoUpdated extends UserInfoState {}

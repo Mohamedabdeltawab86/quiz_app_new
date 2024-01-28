@@ -11,10 +11,9 @@ class RegisterWithEmailPassword extends AuthEvent{}
 
 class SignOut extends AuthEvent{}
 
-class TypeChanged extends AuthEvent{
-  final UserType userType;
-  TypeChanged(this.userType);
-
+class ChangeType extends AuthEvent{
+  final UserType? userType;
+  ChangeType(this.userType);
 }
 
 class UserInfoSubmitted extends AuthEvent{}

@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,7 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginWithGoogle>(_onGoogleLogin);
     on<RegisterWithEmailPassword>(_onEmailPasswordRegister);
     on<SignOut>(_onSignOut);
-    on<TypeChanged>(_changeUserType);
+    on<ChangeType>(_changeUserType);
     on<UserInfoSubmitted>(_submitUserInfo);
   }
 
@@ -36,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final formKey = GlobalKey<FormState>();
   final registerFormKey = GlobalKey<FormState>();
   final userInfoKey = GlobalKey<FormState>();
-  UserType userType = UserType.student;
+  UserType? userType;
 
   void _onEmailPasswordRegister(
       AuthEvent event, Emitter<AuthState> emit) async {
@@ -68,21 +67,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           const String message = 'The account already exists for that email.';
           emit(AuthError(message));
           EasyLoading.showError(message);
-
         }
-
       } catch (e) {
         emit(AuthError(e.toString()));
-        EasyLoading.showError(e.toString());
-        // if (e is FirebaseAuthException) {
-        //   final String eMessage =
-        //       e.message ?? "Unknown Firebase Auth Exception happened";
-        //   log("MESSAGE =============== $eMessage");
-        //   emit(AuthError(eMessage));
-        //   EasyLoading.showError(eMessage);
-        // } else {
-        //   emit(AuthError("Unknown Error"));
-        // }
+        log(e.toString());
       }
     }
   }
@@ -140,7 +128,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       await saveUserInDB(UserProfile.fromGoogle(userCredential));
-      emit(LoginSuccess(hasInfo: true));
+      bool hasData = await doesUserHasInfo(userCredential.user!.uid);
+      // TODO: if user doesn't have info, go to user info screen ONLY to update the user type.
+      emit(LoginSuccess(hasInfo: hasData));
     } on FirebaseException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -160,15 +150,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<bool> doesUserHasInfo(String uid) async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection(usersCollection)
-        .doc(uid)
-        .get();
-
-    return snapshot.data()!['userType'];
-  }
-
   Future<void> _onSignOut(
     SignOut event,
     Emitter<AuthState> emit,
@@ -179,7 +160,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _changeUserType(
-    TypeChanged event,
+    ChangeType event,
     Emitter<AuthState> emit,
   ) async {
     userType = event.userType;

@@ -15,6 +15,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     if (course != null) initCourse();
     //TODO: add functions
     on<AddCourse>(_addCourse);
+    on<FetchCourses>(_fetchCourses);
   }
 
   final TextEditingController titleController = TextEditingController();
@@ -37,6 +38,15 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       await saveCourseInDB(course);
     emit(AddingCourseLoaded());
     }
+  }
+  List<Course> _fetchCourses(FetchCourses event, Emitter<CourseState>emit){
+
+    emit(CourseFetchingState());
+    List<Course> courses = readCoursesFromDB() as List<Course>;
+    emit(CourseFetchedState(courses));
+
+    return courses;
+
   }
 
   @override
