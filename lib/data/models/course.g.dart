@@ -11,6 +11,7 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       title: json['title'] as String,
       description: json['description'] as String?,
       imageUrl: json['imageUrl'] as String?,
+      createdBy: json['createdBy'] as String? ?? "Test",
       moduleIds: (json['moduleIds'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -23,6 +24,7 @@ Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
       'title': instance.title,
       'description': instance.description,
       'imageUrl': instance.imageUrl,
+      'createdBy': instance.createdBy,
       'moduleIds': instance.moduleIds,
       'createdAt': dateTimeToTimestamp(instance.createdAt),
       'updatedAt': dateTimeToTimestamp(instance.updatedAt),

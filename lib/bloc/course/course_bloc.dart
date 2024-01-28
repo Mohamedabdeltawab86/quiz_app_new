@@ -18,6 +18,8 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     on<FetchCourses>(_fetchCourses);
   }
 
+  List<Course> courses = [];
+
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final courseKey = GlobalKey<FormState>();
@@ -33,19 +35,18 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
         title: titleController.text,
         description: descriptionController.text,
         createdAt: this.course?.createdAt ?? DateTime.now(),
+        createdBy: getUid(),
         updatedAt: DateTime.now(),
       );
       await saveCourseInDB(course);
-    emit(AddingCourseLoaded());
+    emit(AddingCourseDone());
     }
   }
-  List<Course> _fetchCourses(FetchCourses event, Emitter<CourseState>emit){
+  Future<void> _fetchCourses(FetchCourses event, Emitter<CourseState>emit) async {
 
-    emit(CourseFetchingState());
-    List<Course> courses = readCoursesFromDB() as List<Course>;
-    emit(CourseFetchedState(courses));
-
-    return courses;
+    emit(CourseFetching());
+    courses = await readCoursesFromDB();
+    emit(CourseFetched());
 
   }
 

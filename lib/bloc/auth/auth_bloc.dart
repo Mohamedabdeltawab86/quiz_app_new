@@ -42,14 +42,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (registerFormKey.currentState!.validate()) {
       emit(RegisterLoading());
       try {
-        final userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailRegisterController.text,
           password: passRegisterController.text,
         );
-
         await saveUserInDB(UserProfile(
-          userId: userCredential.user!.uid,
           firstName: firstNameController.text,
           lastName: lastNameController.text,
           phoneNumber: phoneNumberController.text,
@@ -96,9 +93,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           const String message = 'Wrong password provided for that user.';
           emit(AuthError(message));
           EasyLoading.showError(message);
-
         }
-
       } catch (e) {
         emit(AuthError(e.toString()));
         EasyLoading.showError(e.toString());
@@ -174,7 +169,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // TODO: complete
     if (userInfoKey.currentState!.validate()) {
       UserProfile userProfile = UserProfile(
-        userId: FirebaseAuth.instance.currentUser!.uid,
         firstName: firstNameController.text,
         lastName: lastNameController.text,
         phoneNumber: phoneNumberController.text,

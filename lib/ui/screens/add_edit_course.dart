@@ -25,7 +25,7 @@ class AddEditCourse extends StatelessWidget {
           listener: (context, state) async {
             if (state is AddingCourseLoading) {
               EasyLoading.show(status: 'Loading');
-            } else if (state is AddingCourseLoaded) {
+            } else if (state is AddingCourseDone) {
               EasyLoading.showSuccess("Done");
               context.pop();
             } else if (state is AddingCourseError) {

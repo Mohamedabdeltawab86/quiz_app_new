@@ -5,11 +5,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class UserTypeDropdownButton extends StatelessWidget {
   final void Function(UserType?) onChanged;
   final UserType? value;
+  final bool isRegister;
 
   const UserTypeDropdownButton({
     super.key,
     required this.onChanged,
     required this.value,
+    this.isRegister = false,
   });
 
   @override
@@ -17,9 +19,10 @@ class UserTypeDropdownButton extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return DropdownButton<UserType>(
       items: [
+        if(!isRegister)
         const DropdownMenuItem(
           value: null,
-          child: Text("nothing"),
+          child: Center(child: Text("nothing")),
         ),
         ...UserType.values.map(
           (e) => DropdownMenuItem(

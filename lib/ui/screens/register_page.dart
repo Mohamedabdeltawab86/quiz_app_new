@@ -142,6 +142,7 @@ class RegisterPage extends StatelessWidget {
                           buildWhen: (_, current) => current is UserInfoUpdated,
                           builder: (context, state) {
                             return UserTypeDropdownButton(
+                              isRegister: true,
                               onChanged: (type) => bloc.add(ChangeType(type!)),
                               value: bloc.userType,
                             );

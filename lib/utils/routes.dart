@@ -70,8 +70,8 @@ class AppRouter {
       ),
       GoRoute(
         path: addEditCourse,
-        builder: (context, state) => BlocProvider(
-          create: (context) => CourseBloc(course: state.extra as Course?),
+        builder: (context, state) => BlocProvider.value(
+          value: state.extra as CourseBloc,
           child: const AddEditCourse(),
         ),
       ),

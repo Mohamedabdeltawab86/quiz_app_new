@@ -12,6 +12,7 @@ class Course extends Equatable {
   final String title;
   final String? description;
   final String? imageUrl;
+  final String createdBy;
   final List<String>? moduleIds;
   @JsonKey(
     fromJson: dateTimeFromTimestamp,
@@ -29,6 +30,7 @@ class Course extends Equatable {
     required this.title,
     this.description,
     this.imageUrl,
+    this.createdBy = "Test",
     this.moduleIds,
     required this.createdAt,
     required this.updatedAt,

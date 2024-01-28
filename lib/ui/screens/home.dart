@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quiz_app_new/bloc/course/course_bloc.dart';
 import 'package:quiz_app_new/utils/routes.dart';
@@ -14,7 +15,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
+    final bloc = context.read<CourseBloc>();
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -22,8 +23,7 @@ class HomePage extends StatelessWidget {
             ListTile(
               title: Text(l10n.theme),
               trailing: Switch(
-                value:
-                    context.read<AppSettingsBloc>().state.appSettings.light,
+                value: context.read<AppSettingsBloc>().state.appSettings.light,
                 onChanged: (_) {
                   context.read<AppSettingsBloc>().add(ChangeAppTheme());
                 },
@@ -41,38 +41,49 @@ class HomePage extends StatelessWidget {
                     .then((value) => context.go(login));
               },
             ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text("user info"),
+              onTap: () => context.push(profile),
+            ),
           ],
         ),
       ),
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.appTitle),
-        actions: [
-          IconButton(
-              onPressed: () => context.push(profile),
-              icon: const Icon(Icons.verified_user_outlined))
-        ],
       ),
-        body: BlocBuilder<CourseBloc, CourseState>(
-            builder: (context, state) {
-              if (state is CourseFetchingState) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (state is CourseFetchedState) {
-                return ListView.builder(
-                  itemCount: state. courses.length,
-                  itemBuilder: (context, index) {
-                    return Text(state.courses[index].title);
-                  },
+      body: BlocConsumer<CourseBloc, CourseState>(
+        listener: (context, state) {
+          if (state is CourseFetching) {
+            EasyLoading.show(status: "Loading");
+          } else if (state is AddingCourseDone) {
+            bloc.add(FetchCourses());
+          } else {
+            EasyLoading.dismiss();
+          }
+        },
+        buildWhen: (previous, current) => current is CourseFetched,
+        builder: (context, state) {
+          if (bloc.courses.isNotEmpty) {
+            return ListView.builder(
+              itemCount: bloc.courses.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ListTile(
+                    title: Text(bloc.courses[index].title),
+                    subtitle: Text(bloc.courses[index].createdAt.toString()),
+                  ),
                 );
-              }
-
-              // Handle error state
-            return const SizedBox();
-            }
-        ),
+              },
+            );
+          } else {
+            return Center(child: Text("No courses available"));
+          }
+        },
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push(addEditCourse),
+        onPressed: () => context.push(addEditCourse, extra: bloc),
         child: const Icon(Icons.add),
       ),
     );

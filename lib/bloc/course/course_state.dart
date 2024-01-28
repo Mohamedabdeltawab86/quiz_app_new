@@ -5,17 +5,14 @@ abstract class CourseState {}
 
 class CourseInitial extends CourseState {}
 
-class AddingCourseLoading extends CourseState{}
-class AddingCourseLoaded extends CourseState{}
-class AddingCourseError extends CourseState{}
+class AddingCourseLoading extends CourseState {}
 
-class CourseFetchingState extends CourseState{}
-class CourseFetchedState extends CourseState{
-final List<Course> courses;
+class AddingCourseDone extends CourseState {}
 
-  CourseFetchedState(this.courses);
+class AddingCourseError extends CourseState {}
 
-}
-class CourseFetchError extends CourseState{}
+class CourseFetching extends CourseState {}
 
+class CourseFetched extends CourseState {}
 
+class CourseFetchError extends CourseState {}

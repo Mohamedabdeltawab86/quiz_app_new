@@ -46,8 +46,9 @@ String? isSamePassword({
 Future<void> saveUserInDB(UserProfile profile) async {
   await FirebaseFirestore.instance
       .collection(usersCollection)
-      .doc(profile.userId)
-      .set(profile.toJson(), SetOptions(merge: true)).then((value) => print(profile.toJson()));
+      .doc(profile.userId ?? getUid())
+      .set(profile.toJson(), SetOptions(merge: true))
+      .then((value) => print(profile.toJson()));
 }
 
 Future<UserProfile> readUserFromDB() async {
@@ -59,8 +60,10 @@ Future<UserProfile> readUserFromDB() async {
 }
 
 Future<List<Course>> readCoursesFromDB() async {
-  QuerySnapshot snapshot =
-      await FirebaseFirestore.instance.collection(coursesCollection).get();
+  QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collection(coursesCollection)
+      .where("createdBy", isEqualTo: getUid())
+      .get();
 
   List<Course> courseData = snapshot.docs
       .map((doc) => Course.fromJson(doc.data() as Map<String, dynamic>))
@@ -83,7 +86,7 @@ Future<void> saveCourseInDB(Course course) async {
 DateTime dateTimeFromTimestamp(Timestamp timestamp) => timestamp.toDate();
 
 Timestamp? dateTimeToTimestamp(DateTime? dateTime) {
-  if(dateTime != null){
+  if (dateTime != null) {
     return Timestamp.fromDate(dateTime);
   } else {
     return null;
@@ -99,4 +102,4 @@ Future<bool> doesUserHasInfo(String uid) async {
   return snapshot.data()!['userType'] != null;
 }
 
-String getUid()=> FirebaseAuth.instance.currentUser!.uid;
+String getUid() => FirebaseAuth.instance.currentUser!.uid;

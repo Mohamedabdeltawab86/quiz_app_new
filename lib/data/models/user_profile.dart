@@ -72,7 +72,7 @@ class UserProfile extends Equatable {
   factory UserProfile.fromGoogle(UserCredential credential) {
     return UserProfile(
       createdAt: DateTime.now(),
-      userId: credential.user!.uid,
+      userId: getUid(),
       email: credential.user!.email!,
       photoUrl: credential.user!.photoURL,
     );
