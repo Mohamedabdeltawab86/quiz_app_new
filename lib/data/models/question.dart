@@ -3,9 +3,25 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'question.g.dart';
 
-enum QuestionType { radio, checkbox, trueFalse, complete }
+enum QuestionType {
+  @JsonValue("radio")
+  radio,
+  @JsonValue("checkbox")
+  checkbox,
+  @JsonValue("trueFalse")
+  trueFalse,
+  @JsonValue("complete")
+  complete,
+}
 
-enum QuestionDifficulty { easy, normal, difficult }
+enum QuestionDifficulty {
+  @JsonValue('easy')
+  easy,
+  @JsonValue('normal')
+  normal,
+  @JsonValue('difficult')
+  difficult,
+}
 
 @JsonSerializable()
 class Question extends Equatable {
@@ -13,11 +29,8 @@ class Question extends Equatable {
   final String title;
   final List<String> options;
   final String correctAnswer;
-  @JsonKey(fromJson: difficultyFromJson, toJson: questionDiffToJson)
   final QuestionDifficulty difficulty;
   final int? weight;
-
-  @JsonKey(fromJson: questionTypeFromJson, toJson: questionTypeToJson)
   final QuestionType type;
 
   const Question({
@@ -34,38 +47,6 @@ class Question extends Equatable {
       _$QuestionFromJson(json);
 
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
-
-  static String questionTypeToJson(QuestionType type) => type.name;
-
-  static String questionDiffToJson(QuestionDifficulty diff) => diff.name;
-
-  static QuestionDifficulty difficultyFromJson(difficulty) {
-    switch (difficulty) {
-      case 'easy':
-        return QuestionDifficulty.easy;
-      case 'normal':
-        return QuestionDifficulty.normal;
-      case 'difficult':
-        return QuestionDifficulty.difficult;
-      default:
-        return QuestionDifficulty.normal;
-    }
-  }
-
-  static QuestionType questionTypeFromJson(String type) {
-    switch (type) {
-      case 'radio':
-        return QuestionType.radio;
-      case 'checkbox':
-        return QuestionType.checkbox;
-      case 'trueFalse':
-        return QuestionType.trueFalse;
-      case 'complete':
-        return QuestionType.complete;
-      default:
-        return QuestionType.radio;
-    }
-  }
 
   @override
   List<Object?> get props => [id];
