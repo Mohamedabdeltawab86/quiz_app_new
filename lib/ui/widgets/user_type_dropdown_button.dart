@@ -26,7 +26,7 @@ class UserTypeDropdownButton extends StatelessWidget {
         ),
         ...UserType.values.map(
           (e) => DropdownMenuItem(
-            value: e,
+            value: e ,
             child: Center(child: Text(l10n.translateUserType(e))),
           ),
         )

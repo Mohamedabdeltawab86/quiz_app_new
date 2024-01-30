@@ -10,28 +10,21 @@ part 'user_profile.g.dart';
 
 enum UserType { student, teacher }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class UserProfile extends Equatable {
   @JsonKey(
     fromJson: dateTimeFromTimestamp,
     toJson: dateTimeToTimestamp,
-    includeIfNull: false,
   )
   final DateTime? createdAt;
-  @JsonKey(includeIfNull: false)
   final String? userId;
-  @JsonKey(includeIfNull: false)
   final String? email;
-  @JsonKey(includeIfNull: false)
   final String? firstName;
-  @JsonKey(includeIfNull: false)
   final String? lastName;
-  @JsonKey(includeIfNull: false)
   final String? phoneNumber;
   @JsonKey(
     toJson: usertypeToJson,
     fromJson: userTypeFromJson,
-    includeIfNull: false,
   )
   final UserType? userType;
   final String? photoUrl;

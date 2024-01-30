@@ -6,6 +6,7 @@ import 'package:quiz_app_new/data/models/course.dart';
 import 'package:quiz_app_new/ui/screens/login_page.dart';
 import 'package:quiz_app_new/ui/screens/settings.dart';
 import 'package:quiz_app_new/ui/screens/user_type.dart';
+import 'package:quiz_app_new/utils/common_functions.dart';
 
 import '../bloc/course/course_bloc.dart';
 import '../bloc/user/user_info_bloc.dart';
@@ -31,6 +32,7 @@ late QuestionRepository questionRepository;
 class AppRouter {
   final router = GoRouter(
     // debugLogDiagnostics: true,
+    // TODO: send to me.
     initialLocation: FirebaseAuth.instance.currentUser != null ? home : login,
 
     routes: [

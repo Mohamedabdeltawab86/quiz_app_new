@@ -35,5 +35,7 @@
   "registerStudentForm": "Student Registration Form",
 
   "userInfoPage": "User Info Page",
-  "userType": "Are you a student or a teacher?"
+  "userType": "Are you a student or a teacher?",
+
+  "courses": "My Course"
 }

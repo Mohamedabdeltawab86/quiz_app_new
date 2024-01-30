@@ -36,5 +36,7 @@
   "registerTeacherForm": "نموذج تسجيل مدرس",
   "registerStudentForm": "نموذج تسجيل طالب",
   "userInfoPage": "معلومات المستخدم",
-  "userType": "هل أنت طالب أم مدرس؟"
+  "userType": "هل أنت طالب أم مدرس؟",
+
+  "courses": "مساراتي"
 }

@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../utils/common_functions.dart';
 
 part 'question.g.dart';
 
@@ -23,24 +26,30 @@ enum QuestionDifficulty {
   difficult,
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class Question extends Equatable {
-  final String id;
-  final String title;
-  final List<String> options;
-  final String correctAnswer;
-  final QuestionDifficulty difficulty;
+  final String? id;
+  final String? title;
+  final List<String>? options;
+  final String? correctAnswer;
+  final QuestionDifficulty? difficulty;
   final int? weight;
-  final QuestionType type;
+  final QuestionType? type;
+  @JsonKey(
+    fromJson: dateTimeFromTimestamp,
+    toJson: dateTimeToTimestamp,
+  )
+  final DateTime? updatedAt;
 
   const Question({
-    required this.id,
-    required this.title,
-    required this.options,
-    required this.correctAnswer,
-    this.difficulty = QuestionDifficulty.normal,
+    this.id,
+    this.title,
+    this.options,
+    this.correctAnswer,
+    this.difficulty,
     this.weight,
-    this.type = QuestionType.radio,
+    this.type,
+    this.updatedAt,
   });
 
   factory Question.fromJson(Map<String, dynamic> json) =>
@@ -49,5 +58,5 @@ class Question extends Equatable {
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [id, ];
 }

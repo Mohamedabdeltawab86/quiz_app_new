@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:quiz_app_new/utils/common_functions.dart';
 
 import '../../data/models/user_profile.dart';
@@ -9,7 +10,7 @@ part 'user_info_event.dart';
 
 part 'user_info_state.dart';
 
-class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
+class UserInfoBloc extends HydratedBloc<UserInfoEvent, UserInfoState> {
   UserInfoBloc() : super(UserInfoInitial()) {
     on<LoadProfile>(_loadUserInfo);
     on<UpdateProfile>(_updateUserInfo);
@@ -57,5 +58,15 @@ class UserInfoBloc extends Bloc<UserInfoEvent, UserInfoState> {
     lastNameController.dispose();
     phoneNumberController.dispose();
     return super.close();
+  }
+
+  @override
+  UserInfoState? fromJson(Map<String, dynamic> json) {
+
+  }
+
+  @override
+  Map<String, dynamic>? toJson(UserInfoState state) {
+
   }
 }

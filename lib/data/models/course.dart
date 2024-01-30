@@ -6,14 +6,15 @@ import '../../utils/common_functions.dart';
 
 part 'course.g.dart';
 
-@JsonSerializable()
+
+
+@JsonSerializable(includeIfNull:  false)
 class Course extends Equatable {
-  final int? id;
+  final String? id;
   final String title;
   final String? description;
   final String? imageUrl;
   final String createdBy;
-  final List<String>? moduleIds;
   @JsonKey(
     fromJson: dateTimeFromTimestamp,
     toJson: dateTimeToTimestamp,
@@ -31,7 +32,6 @@ class Course extends Equatable {
     this.description,
     this.imageUrl,
     this.createdBy = "Test",
-    this.moduleIds,
     required this.createdAt,
     required this.updatedAt,
   });

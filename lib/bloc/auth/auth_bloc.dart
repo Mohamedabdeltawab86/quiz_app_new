@@ -8,7 +8,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:quiz_app_new/utils/common_functions.dart';
 
 import '../../data/models/user_profile.dart';
-import '../../utils/constants.dart';
 
 part 'auth_event.dart';
 
@@ -168,14 +167,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     // TODO: complete
     if (userInfoKey.currentState!.validate()) {
-      UserProfile userProfile = UserProfile(
-        firstName: firstNameController.text,
-        lastName: lastNameController.text,
-        phoneNumber: phoneNumberController.text,
-        userType: userType,
-        email: FirebaseAuth.instance.currentUser!.email!,
-        createdAt: FirebaseAuth.instance.currentUser!.metadata.creationTime!,
-      );
+      UserProfile userProfile = UserProfile(userType: userType);
       await saveUserInDB(userProfile);
       emit(UserInfoUpdated());
     }

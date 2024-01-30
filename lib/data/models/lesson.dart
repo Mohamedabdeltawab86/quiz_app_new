@@ -5,21 +5,21 @@ import 'package:equatable/equatable.dart';
 import '../../utils/common_functions.dart';
 part 'lesson.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class Lesson extends Equatable {
-  final int id;
-  final String title;
-  final String content;
+  final String? id;
+  final String? title;
+  final String? content;
   @JsonKey(
     fromJson: dateTimeFromTimestamp,
     toJson: dateTimeToTimestamp,
   )
-  final DateTime createdAt;
+  final DateTime? createdAt;
   @JsonKey(
     fromJson: dateTimeFromTimestamp,
     toJson: dateTimeToTimestamp,
   )
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   const Lesson({
     required this.id,

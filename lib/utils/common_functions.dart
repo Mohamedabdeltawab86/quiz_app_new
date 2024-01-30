@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quiz_app_new/data/models/user_profile.dart';
+import 'package:quiz_app_new/utils/routes.dart';
 
 import '../data/models/course.dart';
+import '../data/models/lesson.dart';
 import 'constants.dart';
 
 String? isValidEmail(String? email, String message) {
@@ -72,7 +74,7 @@ Future<List<Course>> readCoursesFromDB() async {
   return courseData;
 }
 
-Future<void> saveCourseInDB(Course course) async {
+Future<void> saveCourseInDB(Course course, List<Lesson> lessons) async {
   final courses = FirebaseFirestore.instance
       .collection(coursesCollection)
       .withConverter<Course>(
@@ -80,7 +82,17 @@ Future<void> saveCourseInDB(Course course) async {
         toFirestore: (course, options) => course.toJson(),
       );
 
-  await courses.add(course);
+  // step 1: adding the course
+  await courses.doc(course.id).set(course);
+
+  // step 2: adding the lessons inside the course sub collection
+  final batch = FirebaseFirestore.instance.batch();
+  final lessonsReference = courses.doc(course.id).collection(lessonCollection);
+  for(Lesson lesson in lessons){
+    final ref = lessonsReference.doc(lesson.id);
+    batch.set(ref, lesson.toJson());
+  }
+  await batch.commit();
 }
 
 DateTime dateTimeFromTimestamp(Timestamp timestamp) => timestamp.toDate();
@@ -103,3 +115,14 @@ Future<bool> doesUserHasInfo(String uid) async {
 }
 
 String getUid() => FirebaseAuth.instance.currentUser!.uid;
+
+Future<String?> getInitialLocation() async {
+  if (FirebaseAuth.instance.currentUser != null) {
+    if (await doesUserHasInfo(getUid())) {
+      return home;
+    }
+    return userTypeAndInfo;
+  } else {
+    return login;
+  }
+}

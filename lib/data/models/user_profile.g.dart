@@ -33,6 +33,6 @@ Map<String, dynamic> _$UserProfileToJson(UserProfile instance) {
   writeNotNull('lastName', instance.lastName);
   writeNotNull('phoneNumber', instance.phoneNumber);
   writeNotNull('userType', UserProfile.usertypeToJson(instance.userType));
-  val['photoUrl'] = instance.photoUrl;
+  writeNotNull('photoUrl', instance.photoUrl);
   return val;
 }

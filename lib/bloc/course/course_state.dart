@@ -15,4 +15,7 @@ class CourseFetching extends CourseState {}
 
 class CourseFetched extends CourseState {}
 
+class LessonAdded extends CourseState {}
+class LessonDeleted extends CourseState {}
+
 class CourseFetchError extends CourseState {}

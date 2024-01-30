@@ -17,65 +17,68 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.read<UserInfoBloc>();
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile Screen'),
-      ),
-      body: BlocConsumer<UserInfoBloc, UserInfoState>(
-        listener: (context, state) {
-          if(state is UserInfoLoading){
-            EasyLoading.show(status: "Loading");
-          } else {
-            EasyLoading.dismiss();
-          }
-        },
-        buildWhen: (previous, current) => current is UserInfoLoaded,
-        builder: (context, state) {
-          return Form(
-            key: bloc.profileFormKey,
-            child: ListView(
-              children: [
-                QuizTextField(
-                  controller: bloc.firstNameController,
-                  icon: Icons.person,
-                  label: l10n.firstName,
-                  validator: (value) {
-                    if (value != null && value.isNotEmpty) {
-                      return null;
-                    } else {
-                      return l10n.emptyField;
-                    }
-                  },
-                ),
-                Gap(5.sp),
-                QuizTextField(
-                  controller: bloc.lastNameController,
-                  icon: Icons.person,
-                  label: l10n.lastName,
-                  validator: (_) => null,
-                ),
-                Gap(5.sp),
-                QuizTextField(
-                  controller: bloc.phoneNumberController,
-                  icon: Icons.phone,
-                  keyboardType: TextInputType.phone,
-                  digitsOnly: true,
-                  label: l10n.phone,
-                  // TODO: later: validate phone number passed on country
-                  validator: (_) => null,
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    bloc.add(UpdateProfile());
-                    context.pop();
-                  },
-                  icon: const FaIcon(FontAwesomeIcons.diceOne),
-                  label: Text(l10n.finish),
-                ),
-              ],
-            ),
-          );
-        },
+    return Padding(
+      padding:  EdgeInsets.all(8.0.sp),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Profile Screen'),
+        ),
+        body: BlocConsumer<UserInfoBloc, UserInfoState>(
+          listener: (context, state) {
+            if(state is UserInfoLoading){
+              EasyLoading.show(status: "Loading");
+            } else {
+              EasyLoading.dismiss();
+            }
+          },
+          buildWhen: (previous, current) => current is UserInfoLoaded,
+          builder: (context, state) {
+            return Form(
+              key: bloc.profileFormKey,
+              child: ListView(
+                children: [
+                  QuizTextField(
+                    controller: bloc.firstNameController,
+                    icon: Icons.person,
+                    label: l10n.firstName,
+                    validator: (value) {
+                      if (value != null && value.isNotEmpty) {
+                        return null;
+                      } else {
+                        return l10n.emptyField;
+                      }
+                    },
+                  ),
+                  Gap(5.sp),
+                  QuizTextField(
+                    controller: bloc.lastNameController,
+                    icon: Icons.person,
+                    label: l10n.lastName,
+                    validator: (_) => null,
+                  ),
+                  Gap(5.sp),
+                  QuizTextField(
+                    controller: bloc.phoneNumberController,
+                    icon: Icons.phone,
+                    keyboardType: TextInputType.phone,
+                    digitsOnly: true,
+                    label: l10n.phone,
+                    // TODO: later: validate phone number passed on country
+                    validator: (_) => null,
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      bloc.add(UpdateProfile());
+                      context.pop();
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.diceOne),
+                    label: Text(l10n.finish),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

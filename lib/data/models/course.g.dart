@@ -7,25 +7,30 @@ part of 'course.dart';
 // **************************************************************************
 
 Course _$CourseFromJson(Map<String, dynamic> json) => Course(
-      id: json['id'] as int?,
+      id: json['id'] as String?,
       title: json['title'] as String,
       description: json['description'] as String?,
       imageUrl: json['imageUrl'] as String?,
       createdBy: json['createdBy'] as String? ?? "Test",
-      moduleIds: (json['moduleIds'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
       createdAt: dateTimeFromTimestamp(json['createdAt'] as Timestamp),
       updatedAt: dateTimeFromTimestamp(json['updatedAt'] as Timestamp),
     );
 
-Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'description': instance.description,
-      'imageUrl': instance.imageUrl,
-      'createdBy': instance.createdBy,
-      'moduleIds': instance.moduleIds,
-      'createdAt': dateTimeToTimestamp(instance.createdAt),
-      'updatedAt': dateTimeToTimestamp(instance.updatedAt),
-    };
+Map<String, dynamic> _$CourseToJson(Course instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  val['title'] = instance.title;
+  writeNotNull('description', instance.description);
+  writeNotNull('imageUrl', instance.imageUrl);
+  val['createdBy'] = instance.createdBy;
+  writeNotNull('createdAt', dateTimeToTimestamp(instance.createdAt));
+  writeNotNull('updatedAt', dateTimeToTimestamp(instance.updatedAt));
+  return val;
+}

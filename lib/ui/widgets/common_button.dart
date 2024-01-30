@@ -15,10 +15,12 @@ class CommonButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: FaIcon(icon),
-      label: Text(label),
+    return SizedBox(
+      child: ElevatedButton.icon(
+        onPressed: onPressed,
+        icon: FaIcon(icon),
+        label: Text(label),
+      ),
     );
   }
 }
