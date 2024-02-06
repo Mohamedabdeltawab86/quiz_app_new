@@ -36,7 +36,6 @@ class AddEditCourse extends StatelessWidget {
                 } else if (state is AddingCourseDone) {
                   EasyLoading.showSuccess("Done");
                   context.pop();
-                  bloc.clearCourseTextFields();
                 } else if (state is AddingCourseError) {
                   EasyLoading.showError("ERROR!!");
                 }

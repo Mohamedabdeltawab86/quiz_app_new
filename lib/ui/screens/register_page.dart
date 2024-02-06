@@ -133,6 +133,7 @@ class RegisterPage extends StatelessWidget {
                       mismatchMessage: l10n.mismatch,
                     ),
                   ),
+
                   Row(
                     children: [
                       Text(l10n.userType),
@@ -141,6 +142,7 @@ class RegisterPage extends StatelessWidget {
                         child: BlocBuilder<AuthBloc, AuthState>(
                           buildWhen: (_, current) => current is UserInfoUpdated,
                           builder: (context, state) {
+                            // TODO: make sure you have a default value here.
                             return UserTypeDropdownButton(
                               isRegister: true,
                               onChanged: (type) => bloc.add(ChangeType(type!)),
