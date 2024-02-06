@@ -12,7 +12,7 @@ class AddEditLesson extends StatelessWidget {
     required this.removeLesson,
   });
 
-  final AddLessonDataModel data;
+  final LessonData data;
   final int lessonNumber;
   final void Function() removeLesson;
 

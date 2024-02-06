@@ -5,6 +5,7 @@ import 'package:quiz_app_new/data/models/lesson.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../data/models/add_lesson_data_model.dart';
+import '../../data/models/module.dart';
 import '../../utils/common_functions.dart';
 
 part 'course_event.dart';
@@ -19,7 +20,9 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
 
     on<AddCourse>(_addCourse);
     on<FetchCourses>(_fetchCourses);
+    on<AddModule>(_addModule);
     on<AddLesson>(_addLesson);
+    on<DeleteModule>(_deleteModule);
     on<DeleteLesson>(_deleteLesson);
   }
 
@@ -30,7 +33,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
 
   // TODO 2: Add image of the course
   final courseKey = GlobalKey<FormState>();
-  List<AddLessonDataModel> lessonsData = [];
+  List<ModuleData> addEditmodulesData = [];
 
   void initCourse() {
     titleController.text = course!.title;
@@ -47,16 +50,27 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
         createdBy: getUid(),
         updatedAt: DateTime.now(),
       );
-      List<Lesson> lessons = lessonsData.map((e) {
-        return Lesson(
+      List<(Module, List<Lesson>)> modulesData = addEditmodulesData.map((m) {
+        final now = DateTime.now();
+        final Module module = Module(
           id: const Uuid().v4(),
-          title: e.lessonTitleController.text,
-          content: e.lessonContentController.text,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
+          title: m.nameController.text,
+          createdAt: now,
+          updatedAt: now,
         );
+        final List<Lesson> lessons = m.lessons.map((l) {
+          return Lesson(
+            id: const Uuid().v4(),
+            title: l.lessonTitleController.text,
+            content: l.lessonContentController.text,
+            createdAt: now,
+            updatedAt: now,
+            moduleId: module.id,
+          );
+        }).toList();
+        return (module, lessons);
       }).toList();
-      await saveCourseInDB(course, lessons);
+      await saveCourseInDB(course, modulesData);
       emit(AddingCourseDone());
     }
   }
@@ -68,29 +82,47 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     emit(CourseFetched());
   }
 
-  void _addLesson(AddLesson event, Emitter<CourseState> emit) {
-    lessonsData.add(
-      AddLessonDataModel(
-        lessonTitleController: TextEditingController(),
-        lessonContentController: TextEditingController(),
+  void _addModule(AddModule event, Emitter<CourseState> emit) {
+    addEditmodulesData.add(
+      ModuleData(
+        nameController: TextEditingController(),
+        lessons: [],
       ),
     );
+    emit(ModuleAdded());
+  }
+
+  void _addLesson(AddLesson event, Emitter<CourseState> emit) {
+    addEditmodulesData[event.moduleIndex].lessons.add(
+          LessonData(
+            lessonTitleController: TextEditingController(),
+            lessonContentController: TextEditingController(),
+          ),
+        );
     emit(LessonAdded());
   }
 
-  void _deleteLesson(DeleteLesson event, Emitter<CourseState> emit) {
-    lessonsData.removeAt(event.index);
+  void _deleteModule(DeleteModule event, Emitter<CourseState> emit) {
+    addEditmodulesData.removeAt(event.index);
     emit(LessonDeleted());
   }
 
-  void clearCourseTextFields(){
+  void _deleteLesson(DeleteLesson event, Emitter<CourseState> emit) {
+    addEditmodulesData[event.moduleIndex].lessons.removeAt(event.lessonIndex);
+    emit(LessonDeleted());
+  }
+
+  void clearCourseTextFields() {
     titleController.text = '';
     descriptionController.text = '';
-    for(var lessonData in lessonsData){
-      lessonData.lessonContentController.dispose();
-      lessonData.lessonTitleController.dispose();
+    for (var module in addEditmodulesData) {
+      module.nameController.dispose();
+      for (var lesson in module.lessons) {
+        lesson.lessonTitleController.dispose();
+        lesson.lessonContentController.dispose();
+      }
     }
-    lessonsData.clear();
+    addEditmodulesData.clear();
   }
 
   @override

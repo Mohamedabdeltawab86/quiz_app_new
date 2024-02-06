@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quiz_app_new/data/models/add_lesson_data_model.dart';
+
+import '../../utils/common_functions.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../utils/common_functions.dart';
-part 'lesson.g.dart';
+part 'module.g.dart';
 
 @JsonSerializable(includeIfNull: false)
-class Lesson extends Equatable {
+class Module extends Equatable {
   final String? id;
-  final String? moduleId;
   final String? title;
-  final String? content;
   @JsonKey(
     fromJson: dateTimeFromTimestamp,
     toJson: dateTimeToTimestamp,
@@ -22,19 +22,16 @@ class Lesson extends Equatable {
   )
   final DateTime? updatedAt;
 
-  const Lesson({
+  const Module({
     required this.id,
     required this.title,
-    required this.content,
     required this.createdAt,
     required this.updatedAt,
-    required this.moduleId,
   });
 
-  factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);
+  factory Module.fromJson(Map<String, dynamic> json) => _$ModuleFromJson(json);
 
-  Map<String, dynamic> toJson() => _$LessonToJson(this);
-
+  Map<String, dynamic> toJson() => _$ModuleToJson(this);
 
   @override
   List<Object?> get props => [id, updatedAt];

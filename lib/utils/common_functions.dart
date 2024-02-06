@@ -5,6 +5,7 @@ import 'package:quiz_app_new/utils/routes.dart';
 
 import '../data/models/course.dart';
 import '../data/models/lesson.dart';
+import '../data/models/module.dart';
 import 'constants.dart';
 
 String? isValidEmail(String? email, String message) {
@@ -74,7 +75,8 @@ Future<List<Course>> readCoursesFromDB() async {
   return courseData;
 }
 
-Future<void> saveCourseInDB(Course course, List<Lesson> lessons) async {
+Future<void> saveCourseInDB(
+    Course course, List<(Module, List<Lesson>)> modulesData) async {
   final courses = FirebaseFirestore.instance
       .collection(coursesCollection)
       .withConverter<Course>(
@@ -87,12 +89,17 @@ Future<void> saveCourseInDB(Course course, List<Lesson> lessons) async {
 
   // step 2: adding the lessons inside the course sub collection
   final batch = FirebaseFirestore.instance.batch();
-  final lessonsReference = courses.doc(course.id).collection(lessonCollection);
-  for(Lesson lesson in lessons){
-    final ref = lessonsReference.doc(lesson.id);
-    batch.set(ref, lesson.toJson());
+  final modulesReference = courses.doc(course.id).collection(modulesCollection);
+  for (var moduleData in modulesData) {
+    final moduleRef = modulesReference.doc(moduleData.$1.id);
+    batch.set(moduleRef, moduleData.$1.toJson());
+    for(Lesson lesson in moduleData.$2){
+      final lessonRef = moduleRef.collection(lessonCollection).doc(lesson.id);
+      batch.set(lessonRef, lesson.toJson());
+    }
   }
   await batch.commit();
+  print("committed to firebase");
 }
 
 DateTime dateTimeFromTimestamp(Timestamp timestamp) => timestamp.toDate();
@@ -111,7 +118,7 @@ Future<bool> doesUserHasInfo(String uid) async {
       .doc(uid)
       .get();
 
-  return snapshot.data()!['userType'] != null;
+  return snapshot.data()?['userType'] != null;
 }
 
 String getUid() => FirebaseAuth.instance.currentUser!.uid;

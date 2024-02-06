@@ -5,12 +5,13 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quiz_app_new/bloc/course/course_bloc.dart';
 import 'package:quiz_app_new/ui/widgets/CommonTextField.dart';
+import 'package:quiz_app_new/ui/widgets/add_edit_module.dart';
 import 'package:quiz_app_new/ui/widgets/common_button.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../utils/routes.dart';
 import '../common.dart';
-import '../widgets/add_edit_lesson.dart';
 
 class AddEditCourse extends StatelessWidget {
   const AddEditCourse({super.key});
@@ -22,14 +23,15 @@ class AddEditCourse extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: PopScope(
+        // TODO: fix by ibrahim
         canPop: true,
         onPopInvoked: (_) => bloc.clearCourseTextFields(),
         child: Padding(
           padding: EdgeInsets.all(8.0.sp),
           child: Scaffold(
             appBar: AppBar(
-              title:
-                  Text(bloc.course != null ? l10n.editCourse : "Add New Course"),
+              title: Text(
+                  bloc.course != null ? l10n.editCourse : "Add New Course"),
             ),
             body: BlocListener<CourseBloc, CourseState>(
               listener: (context, state) async {
@@ -38,6 +40,7 @@ class AddEditCourse extends StatelessWidget {
                 } else if (state is AddingCourseDone) {
                   EasyLoading.showSuccess("Done");
                   context.pop();
+                  bloc.clearCourseTextFields();
                 } else if (state is AddingCourseError) {
                   EasyLoading.showError("ERROR!!");
                 }
@@ -59,23 +62,33 @@ class AddEditCourse extends StatelessWidget {
                       controller: bloc.descriptionController,
                       // TODO session 8-1: done
                       keyboardType: TextInputType.multiline,
-
                     ),
                     //   TODO 1 : Add image picker to let user change user profile and save it on firebase storage
                     const Divider(),
                     BlocBuilder<CourseBloc, CourseState>(
-                      buildWhen: (previous, current) =>
-                          current is LessonAdded || current is LessonDeleted,
+                      buildWhen: (_, c) =>
+                          c is LessonAdded ||
+                          c is LessonDeleted ||
+                          c is ModuleDeleted ||
+                          c is ModuleAdded,
                       builder: (context, state) {
                         return ListView.builder(
-                          itemCount: bloc.lessonsData.length,
+                          itemCount: bloc.addEditmodulesData.length,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return AddEditLesson(
-                              lessonNumber: index + 1,
-                              data: bloc.lessonsData[index],
-                              removeLesson: () => bloc.add(DeleteLesson(index)),
+                          itemBuilder: (context, mIndex) {
+                            return AddEditModule(
+                              moduleNumber: mIndex + 1,
+                              data: bloc.addEditmodulesData[mIndex],
+                              removeModule: () =>
+                                  bloc.add(DeleteModule(mIndex)),
+                              removeLesson: (lIndex) => bloc.add(
+                                DeleteLesson(
+                                  moduleIndex: mIndex,
+                                  lessonIndex: lIndex,
+                                ),
+                              ),
+                              addLesson: () => bloc.add(AddLesson(mIndex)),
                             );
                           },
                         );
@@ -88,9 +101,9 @@ class AddEditCourse extends StatelessWidget {
                         SizedBox(
                           width: 50.w,
                           child: CommonButton(
-                            onPressed: () => bloc.add(AddLesson()),
+                            onPressed: () => bloc.add(AddModule()),
                             icon: Icons.add,
-                            label: "Add lesson",
+                            label: "Add Module",
                           ),
                         ),
                       ],

@@ -1,21 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'lesson.dart';
+part of 'module.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Lesson _$LessonFromJson(Map<String, dynamic> json) => Lesson(
+Module _$ModuleFromJson(Map<String, dynamic> json) => Module(
       id: json['id'] as String?,
       title: json['title'] as String?,
-      content: json['content'] as String?,
       createdAt: dateTimeFromTimestamp(json['createdAt'] as Timestamp),
       updatedAt: dateTimeFromTimestamp(json['updatedAt'] as Timestamp),
-      moduleId: json['moduleId'] as String?,
     );
 
-Map<String, dynamic> _$LessonToJson(Lesson instance) {
+Map<String, dynamic> _$ModuleToJson(Module instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -25,9 +23,7 @@ Map<String, dynamic> _$LessonToJson(Lesson instance) {
   }
 
   writeNotNull('id', instance.id);
-  writeNotNull('moduleId', instance.moduleId);
   writeNotNull('title', instance.title);
-  writeNotNull('content', instance.content);
   writeNotNull('createdAt', dateTimeToTimestamp(instance.createdAt));
   writeNotNull('updatedAt', dateTimeToTimestamp(instance.updatedAt));
   return val;

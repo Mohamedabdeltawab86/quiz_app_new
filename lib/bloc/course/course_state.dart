@@ -21,4 +21,8 @@ class LessonAdded extends CourseState {}
 
 class LessonDeleted extends CourseState {}
 
+class ModuleAdded extends CourseState {}
+
+class ModuleDeleted extends CourseState {}
+
 

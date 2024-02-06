@@ -7,9 +7,22 @@ class AddCourse extends CourseEvent {}
 
 class FetchCourses extends CourseEvent {}
 
-class AddLesson extends CourseEvent {}
+class AddLesson extends CourseEvent {
+  final int moduleIndex;
+  AddLesson(this.moduleIndex);
+}
+
+class AddModule extends CourseEvent {}
+
+class DeleteModule extends CourseEvent {
+  final int index;
+
+  DeleteModule(this.index);
+}
 
 class DeleteLesson extends CourseEvent {
-  final int index;
-  DeleteLesson(this.index);
+  final int moduleIndex;
+  final int lessonIndex;
+
+  DeleteLesson({required this.moduleIndex, required this.lessonIndex});
 }
