@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:quiz_app_new/bloc/settings_bloc/bloc/app_settings_bloc.dart';
 import 'package:quiz_app_new/bloc_observer.dart';
 import 'package:quiz_app_new/utils/color_schemes.g.dart';
+import 'package:quiz_app_new/utils/common_functions.dart';
 import 'package:quiz_app_new/utils/routes.dart';
 import 'package:quiz_app_new/utils/typography.dart';
 import 'package:sizer/sizer.dart';
@@ -25,7 +26,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp(appRouter: AppRouter()));
+  runApp(MyApp(appRouter: AppRouter(await getInitialLocation())));
 }
 
 class MyApp extends StatelessWidget {

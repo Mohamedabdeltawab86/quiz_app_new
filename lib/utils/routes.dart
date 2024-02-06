@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:go_router/go_router.dart";
 import "package:quiz_app_new/bloc/auth/auth_bloc.dart";
-import 'package:quiz_app_new/data/models/course.dart';
 import 'package:quiz_app_new/ui/screens/login_page.dart';
 import 'package:quiz_app_new/ui/screens/settings.dart';
 import 'package:quiz_app_new/ui/screens/user_type.dart';
-import 'package:quiz_app_new/utils/common_functions.dart';
 
 import '../bloc/course/course_bloc.dart';
 import '../bloc/user/user_info_bloc.dart';
@@ -30,62 +27,73 @@ const String profile = '/profile';
 late QuestionRepository questionRepository;
 
 class AppRouter {
-  final router = GoRouter(
-    // debugLogDiagnostics: true,
-    // TODO: send to me.
-    initialLocation: FirebaseAuth.instance.currentUser != null ? home : login,
+  // TODO: Pass initialLocation through the constructor
+  final String initialLocation;
+  // TODO: note that the router is late, as we will init it using _initRouter()
+  late final GoRouter router;
 
-    routes: [
-      GoRoute(
-        path: home,
-        builder: (context, state) {
-          return BlocProvider(
-            create: (context) => CourseBloc()..add(FetchCourses()),
-            child: const HomePage(),
-          );
-        },
-      ),
-      GoRoute(
-        path: settings,
-        builder: (context, state) => const Settings(),
-      ),
-      GoRoute(
-        path: login,
-        builder: (context, state) => BlocProvider(
-          create: (context) => AuthBloc(),
-          child: const LoginPage(),
+  AppRouter(this.initialLocation) {
+    // TODO: Initialize the router with the provided initialLocation
+    _initRouter();
+  }
+
+  _initRouter() {
+    router = GoRouter(
+      // debugLogDiagnostics: true,
+      initialLocation: initialLocation,
+
+      routes: [
+        GoRoute(
+          path: home,
+          builder: (context, state) {
+            return BlocProvider(
+              create: (context) => CourseBloc()..add(FetchCourses()),
+              child: const HomePage(),
+            );
+          },
         ),
-      ),
-      GoRoute(
-        path: register,
-        builder: (context, state) => BlocProvider.value(
-          value: state.extra! as AuthBloc,
-          child: const RegisterPage(),
+        GoRoute(
+          path: settings,
+          builder: (context, state) => const Settings(),
         ),
-      ),
-      GoRoute(
-        path: userTypeAndInfo,
-        builder: (context, state) => BlocProvider(
-          create: (context) => AuthBloc(),
-          child: const UserTypeAndInfo(),
+        GoRoute(
+          path: login,
+          builder: (context, state) => BlocProvider(
+            create: (context) => AuthBloc(),
+            child: const LoginPage(),
+          ),
         ),
-      ),
-      GoRoute(
-        path: addEditCourse,
-        builder: (context, state) => BlocProvider.value(
-          value: state.extra as CourseBloc,
-          child: const AddEditCourse(),
+        GoRoute(
+          path: register,
+          builder: (context, state) => BlocProvider.value(
+            value: state.extra! as AuthBloc,
+            child: const RegisterPage(),
+          ),
         ),
-      ),
-      GoRoute(
-        path: profile,
-        builder: (context, state) {
-          return BlocProvider(
-            create: (context) => UserInfoBloc()..add(LoadProfile()),
-            child: const ProfileScreen(),
-          );
-        },
-      )
-    ],
-  );
+        GoRoute(
+          path: userTypeAndInfo,
+          builder: (context, state) => BlocProvider(
+            create: (context) => AuthBloc(),
+            child: const UserTypeAndInfo(),
+          ),
+        ),
+        GoRoute(
+          path: addEditCourse,
+          builder: (context, state) => BlocProvider.value(
+            value: state.extra as CourseBloc,
+            child: const AddEditCourse(),
+          ),
+        ),
+        GoRoute(
+          path: profile,
+          builder: (context, state) {
+            return BlocProvider(
+              create: (context) => UserInfoBloc()..add(LoadProfile()),
+              child: const ProfileScreen(),
+            );
+          },
+        )
+      ],
+    );
+  }
 }

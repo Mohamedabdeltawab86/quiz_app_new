@@ -116,7 +116,7 @@ Future<bool> doesUserHasInfo(String uid) async {
 
 String getUid() => FirebaseAuth.instance.currentUser!.uid;
 
-Future<String?> getInitialLocation() async {
+Future<String> getInitialLocation() async {
   if (FirebaseAuth.instance.currentUser != null) {
     if (await doesUserHasInfo(getUid())) {
       return home;
