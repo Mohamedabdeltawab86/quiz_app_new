@@ -38,5 +38,17 @@
   "userInfoPage": "معلومات المستخدم",
   "userType": "هل أنت طالب أم مدرس؟",
 
-  "courses": "مساراتي"
+  "courses": "مساراتي",
+
+  "lesson": "درس",
+  "title": "عنوان",
+  "description": "وصف",
+  "content": "محتوى",
+
+  "loading": "جارٍ التحميل",
+  "done": "تم",
+  "error": "يبدو أن هناك خطأ!!",
+  "editCourse": "عدل المساق",
+  "addNewCourse":"إضافة مساق جديد",
+  "addLesson":"إضافة درس"
 }

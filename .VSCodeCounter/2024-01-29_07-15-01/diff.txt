@@ -1,0 +1,63 @@
+Date : 2024-01-29 07:15:01
+Directory : g:\quiz_app_new
+Total : 27 files,  520 codes, 6 comments, 72 blanks, all 598 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Dart     |         27 |        520 |          6 |         72 |        598 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                          | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                             |         27 |        520 |          6 |         72 |        598 |
+| lib                                                           |         27 |        520 |          6 |         72 |        598 |
+| lib (Files)                                                   |          1 |          1 |          0 |          0 |          1 |
+| lib\bloc                                                      |          8 |        133 |          3 |         41 |        177 |
+| lib\bloc\auth                                                 |          2 |          5 |          1 |         -6 |          0 |
+| lib\bloc\course                                               |          3 |         62 |          1 |         26 |         89 |
+| lib\bloc\user                                                 |          3 |         66 |          1 |         21 |         88 |
+| lib\data                                                      |          5 |         48 |          4 |          5 |         57 |
+| lib\data\models                                               |          5 |         48 |          4 |          5 |         57 |
+| lib\ui                                                        |         10 |        267 |          4 |         16 |        287 |
+| lib\ui\screens                                                |          6 |        196 |          4 |          8 |        208 |
+| lib\ui\widgets                                                |          4 |         71 |          0 |          8 |         79 |
+| lib\utils                                                     |          3 |         71 |         -5 |         10 |         76 |
++---------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                      | language | code       | comment    | blank      | total      |
++---------------------------------------------------------------+----------+------------+------------+------------+------------+
+| g:\quiz_app_new\lib\bloc\auth\auth_bloc.dart                  | Dart     |          5 |          1 |         -5 |          1 |
+| g:\quiz_app_new\lib\bloc\auth\auth_event.dart                 | Dart     |          0 |          0 |         -1 |         -1 |
+| g:\quiz_app_new\lib\bloc\course\course_bloc.dart              | Dart     |         46 |          1 |         13 |         60 |
+| g:\quiz_app_new\lib\bloc\course\course_event.dart             | Dart     |          6 |          0 |          4 |         10 |
+| g:\quiz_app_new\lib\bloc\course\course_state.dart             | Dart     |         10 |          0 |          9 |         19 |
+| g:\quiz_app_new\lib\bloc\user\user_info_bloc.dart             | Dart     |         51 |          1 |          9 |         61 |
+| g:\quiz_app_new\lib\bloc\user\user_info_event.dart            | Dart     |          4 |          0 |          3 |          7 |
+| g:\quiz_app_new\lib\bloc\user\user_info_state.dart            | Dart     |         11 |          0 |          9 |         20 |
+| g:\quiz_app_new\lib\data\models\course.g.dart                 | Dart     |          1 |          0 |          0 |          1 |
+| g:\quiz_app_new\lib\data\models\question.dart                 | Dart     |        -14 |          0 |         -5 |        -19 |
+| g:\quiz_app_new\lib\data\models\question.g.dart               | Dart     |         10 |          0 |          2 |         12 |
+| g:\quiz_app_new\lib\data\models\user_profile.dart             | Dart     |         23 |          0 |          1 |         24 |
+| g:\quiz_app_new\lib\data\models\user_profile.g.dart           | Dart     |         28 |          4 |          7 |         39 |
+| g:\quiz_app_new\lib\main.dart                                 | Dart     |          1 |          0 |          0 |          1 |
+| g:\quiz_app_new\lib\ui\screens\add_edit_course.dart           | Dart     |         65 |          2 |          4 |         71 |
+| g:\quiz_app_new\lib\ui\screens\home.dart                      | Dart     |         25 |          0 |         -1 |         24 |
+| g:\quiz_app_new\lib\ui\screens\login_page.dart                | Dart     |          3 |          0 |          0 |          3 |
+| g:\quiz_app_new\lib\ui\screens\profile_screen.dart            | Dart     |         78 |          1 |          4 |         83 |
+| g:\quiz_app_new\lib\ui\screens\register_page.dart             | Dart     |         51 |          4 |          1 |         56 |
+| g:\quiz_app_new\lib\ui\screens\user_type.dart                 | Dart     |        -26 |         -3 |          0 |        -29 |
+| g:\quiz_app_new\lib\ui\widgets\CommonTextField.dart           | Dart     |         40 |          0 |          4 |         44 |
+| g:\quiz_app_new\lib\ui\widgets\common_button.dart             | Dart     |         21 |          0 |          4 |         25 |
+| g:\quiz_app_new\lib\ui\widgets\login_form_text_field.dart     | Dart     |          1 |          0 |          0 |          1 |
+| g:\quiz_app_new\lib\ui\widgets\user_type_dropdown_button.dart | Dart     |          9 |          0 |          0 |          9 |
+| g:\quiz_app_new\lib\utils\common_functions.dart               | Dart     |         41 |          5 |         10 |         56 |
+| g:\quiz_app_new\lib\utils\constants.dart                      | Dart     |          2 |          0 |          2 |          4 |
+| g:\quiz_app_new\lib\utils\routes.dart                         | Dart     |         28 |        -10 |         -2 |         16 |
+| Total                                                         |          |        520 |          6 |         72 |        598 |
++---------------------------------------------------------------+----------+------------+------------+------------+------------+

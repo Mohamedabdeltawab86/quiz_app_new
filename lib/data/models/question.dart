@@ -58,5 +58,5 @@ class Question extends Equatable {
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
   @override
-  List<Object?> get props => [id, ];
+  List<Object?> get props => [id,updatedAt];
 }

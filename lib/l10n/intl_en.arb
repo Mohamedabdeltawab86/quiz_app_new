@@ -37,5 +37,17 @@
   "userInfoPage": "User Info Page",
   "userType": "Are you a student or a teacher?",
 
-  "courses": "My Course"
+  "courses": "My Course",
+
+  "lesson": "Lesson",
+  "title": "Title",
+  "description": "Description",
+  "content": "Content",
+
+  "loading": "Loading",
+  "done": "Done",
+  "error": "ERROR!!",
+  "editCourse": "Edit Course",
+  "addNewCourse":"Add New Course",
+  "addLesson":"Add Lesson"
 }

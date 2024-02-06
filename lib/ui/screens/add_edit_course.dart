@@ -7,6 +7,7 @@ import 'package:quiz_app_new/bloc/course/course_bloc.dart';
 import 'package:quiz_app_new/ui/widgets/CommonTextField.dart';
 import 'package:quiz_app_new/ui/widgets/common_button.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common.dart';
 import '../widgets/add_edit_lesson.dart';
@@ -17,6 +18,7 @@ class AddEditCourse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<CourseBloc>();
+    final l10n = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: PopScope(
@@ -27,7 +29,7 @@ class AddEditCourse extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               title:
-                  Text(bloc.course != null ? "Edit Course" : "Add New Course"),
+                  Text(bloc.course != null ? l10n.editCourse : "Add New Course"),
             ),
             body: BlocListener<CourseBloc, CourseState>(
               listener: (context, state) async {
@@ -55,6 +57,9 @@ class AddEditCourse extends StatelessWidget {
                       label: "Description",
                       icon: Icons.text_fields,
                       controller: bloc.descriptionController,
+                      // TODO session 8-1: done
+                      keyboardType: TextInputType.multiline,
+
                     ),
                     //   TODO 1 : Add image picker to let user change user profile and save it on firebase storage
                     const Divider(),
