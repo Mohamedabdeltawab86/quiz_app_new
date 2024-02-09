@@ -3,14 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:quiz_app_new/bloc/course/course_bloc.dart';
 import 'package:quiz_app_new/ui/widgets/CommonTextField.dart';
 import 'package:quiz_app_new/ui/widgets/add_edit_module.dart';
 import 'package:quiz_app_new/ui/widgets/common_button.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../utils/routes.dart';
+import '../../bloc/courses/courses_bloc.dart';
 import '../common.dart';
 
 class AddEditCourse extends StatelessWidget {
@@ -18,7 +17,7 @@ class AddEditCourse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<CourseBloc>();
+    final bloc = context.read<CoursesBloc>();
     final l10n = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -31,9 +30,9 @@ class AddEditCourse extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               title: Text(
-                  bloc.course != null ? l10n.editCourse : "Add New Course"),
+                  bloc.course != null ? l10n.editCourse : l10n.addNewCourse),
             ),
-            body: BlocListener<CourseBloc, CourseState>(
+            body: BlocListener<CoursesBloc, CoursesState>(
               listener: (context, state) async {
                 if (state is AddingCourseLoading) {
                   EasyLoading.show(status: 'Loading');
@@ -51,13 +50,13 @@ class AddEditCourse extends StatelessWidget {
                   children: [
                     //Todo: add image button
                     CommonTextField(
-                      label: "Title",
+                      label: l10n.title,
                       icon: Icons.abc,
                       controller: bloc.titleController,
                     ),
                     heightGap,
                     CommonTextField(
-                      label: "Description",
+                      label: l10n.description,
                       icon: Icons.text_fields,
                       controller: bloc.descriptionController,
                       // TODO session 8-1: done
@@ -65,7 +64,7 @@ class AddEditCourse extends StatelessWidget {
                     ),
                     //   TODO 1 : Add image picker to let user change user profile and save it on firebase storage
                     const Divider(),
-                    BlocBuilder<CourseBloc, CourseState>(
+                    BlocBuilder<CoursesBloc, CoursesState>(
                       buildWhen: (_, c) =>
                           c is LessonAdded ||
                           c is LessonDeleted ||
@@ -73,13 +72,13 @@ class AddEditCourse extends StatelessWidget {
                           c is ModuleAdded,
                       builder: (context, state) {
                         return ListView.builder(
-                          itemCount: bloc.addEditmodulesData.length,
+                          itemCount: bloc.addEditModulesData.length,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, mIndex) {
                             return AddEditModule(
                               moduleNumber: mIndex + 1,
-                              data: bloc.addEditmodulesData[mIndex],
+                              data: bloc.addEditModulesData[mIndex],
                               removeModule: () =>
                                   bloc.add(DeleteModule(mIndex)),
                               removeLesson: (lIndex) => bloc.add(
@@ -103,7 +102,7 @@ class AddEditCourse extends StatelessWidget {
                           child: CommonButton(
                             onPressed: () => bloc.add(AddModule()),
                             icon: Icons.add,
-                            label: "Add Module",
+                            label: l10n.addModule,
                           ),
                         ),
                       ],
@@ -112,7 +111,7 @@ class AddEditCourse extends StatelessWidget {
                     CommonButton(
                       onPressed: () => bloc.add(AddCourse()),
                       icon: Icons.add,
-                      label: "add Course",
+                      label: l10n.addNewCourse,
                     ),
                   ],
                 ),

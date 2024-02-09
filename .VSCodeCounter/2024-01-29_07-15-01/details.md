@@ -45,9 +45,9 @@ Total : 121 files,  4389 codes, 356 comments, 680 blanks, all 5425 lines
 | [lib/bloc/auth/auth_bloc.dart](/lib/bloc/auth/auth_bloc.dart) | Dart | 175 | 6 | 16 | 197 |
 | [lib/bloc/auth/auth_event.dart](/lib/bloc/auth/auth_event.dart) | Dart | 12 | 0 | 8 | 20 |
 | [lib/bloc/auth/auth_state.dart](/lib/bloc/auth/auth_state.dart) | Dart | 21 | 0 | 14 | 35 |
-| [lib/bloc/course/course_bloc.dart](/lib/bloc/course/course_bloc.dart) | Dart | 46 | 1 | 13 | 60 |
-| [lib/bloc/course/course_event.dart](/lib/bloc/course/course_event.dart) | Dart | 6 | 0 | 4 | 10 |
-| [lib/bloc/course/course_state.dart](/lib/bloc/course/course_state.dart) | Dart | 10 | 0 | 9 | 19 |
+| [lib/bloc/course/course_bloc.dart](/lib/bloc/courses/courses_bloc.dart) | Dart | 46 | 1 | 13 | 60 |
+| [lib/bloc/course/course_event.dart](/lib/bloc/courses/courses_event.dart) | Dart | 6 | 0 | 4 | 10 |
+| [lib/bloc/course/course_state.dart](/lib/bloc/courses/courses_state.dart) | Dart | 10 | 0 | 9 | 19 |
 | [lib/bloc/profile/profile_bloc.dart](/lib/bloc/profile/profile_bloc.dart) | Dart | 54 | 0 | 10 | 64 |
 | [lib/bloc/profile/profile_event.dart](/lib/bloc/profile/profile_event.dart) | Dart | 9 | 0 | 3 | 12 |
 | [lib/bloc/profile/profile_state.dart](/lib/bloc/profile/profile_state.dart) | Dart | 26 | 0 | 9 | 35 |

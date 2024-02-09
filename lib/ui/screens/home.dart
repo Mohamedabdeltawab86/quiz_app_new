@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
-import 'package:quiz_app_new/bloc/course/course_bloc.dart';
+
 import 'package:quiz_app_new/utils/routes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../bloc/courses/courses_bloc.dart';
 import '../widgets/home_widgets/drawer.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,7 +16,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final bloc = context.read<CourseBloc>();
+    final bloc = context.read<CoursesBloc>();
     return Padding(
       padding: EdgeInsets.all(8.0.sp),
       child: Scaffold(
@@ -23,7 +24,7 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.courses),
         ),
-        body: BlocConsumer<CourseBloc, CourseState>(
+        body: BlocConsumer<CoursesBloc, CoursesState>(
           listener: (context, state) {
             if (state is CourseFetching) {
               EasyLoading.show(status: "Loading");
@@ -43,23 +44,21 @@ class HomePage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Card(
                       // TODO 3: make edit available
-                      child: GestureDetector(
-                        onTap: () => context.push(addEditCourse, extra: bloc),
-                        child: ListTile(
-                          title: Text(
-                            bloc.courses[index].title,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle:
-                              Text(bloc.courses[index].description.toString()),
+                      child: ListTile(
+                        title: Text(
+                          bloc.courses[index].title,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
+                        onTap: () => context.push(course, extra: bloc.courses[index]),
+                        subtitle:
+                            Text(bloc.courses[index].description.toString()),
                       ),
                     );
                   },
                 ),
               );
             } else {
-              return const Center(child: Text("No courses available"));
+              return Center(child: Text(l10n.noCourses));
             }
           },
         ),

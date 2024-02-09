@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:quiz_app_new/data/models/add_lesson_data_model.dart';
@@ -6,6 +8,7 @@ import 'package:sizer/sizer.dart';
 import 'add_edit_lesson.dart';
 import 'common_button.dart';
 import 'login_form_text_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddEditModule extends StatelessWidget {
   const AddEditModule({
@@ -25,6 +28,7 @@ class AddEditModule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Stack(
       children: [
         Positioned(
@@ -34,12 +38,12 @@ class AddEditModule extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Module: $moduleNumber"),
+                  Text("${l10n.module}: $moduleNumber"),
                   Gap(5.sp),
                   QuizTextField(
                     controller: data.nameController,
                     icon: Icons.tag,
-                    label: "module name",
+                    label: l10n.moduleName,
                     validator: (_) => null,
                   ),
                   Gap(5.sp),
@@ -64,7 +68,7 @@ class AddEditModule extends StatelessWidget {
                         child: CommonButton(
                           onPressed: addLesson,
                           icon: Icons.add,
-                          label: "Add lesson",
+                          label: l10n.addLesson,
                         ),
                       ),
                     ],

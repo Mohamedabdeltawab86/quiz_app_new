@@ -13,9 +13,9 @@ Total : 27 files,  520 codes, 6 comments, 72 blanks, all 598 lines
 | :--- | :--- | ---: | ---: | ---: | ---: |
 | [lib/bloc/auth/auth_bloc.dart](/lib/bloc/auth/auth_bloc.dart) | Dart | 5 | 1 | -5 | 1 |
 | [lib/bloc/auth/auth_event.dart](/lib/bloc/auth/auth_event.dart) | Dart | 0 | 0 | -1 | -1 |
-| [lib/bloc/course/course_bloc.dart](/lib/bloc/course/course_bloc.dart) | Dart | 46 | 1 | 13 | 60 |
-| [lib/bloc/course/course_event.dart](/lib/bloc/course/course_event.dart) | Dart | 6 | 0 | 4 | 10 |
-| [lib/bloc/course/course_state.dart](/lib/bloc/course/course_state.dart) | Dart | 10 | 0 | 9 | 19 |
+| [lib/bloc/course/course_bloc.dart](/lib/bloc/courses/courses_bloc.dart) | Dart | 46 | 1 | 13 | 60 |
+| [lib/bloc/course/course_event.dart](/lib/bloc/courses/courses_event.dart) | Dart | 6 | 0 | 4 | 10 |
+| [lib/bloc/course/course_state.dart](/lib/bloc/courses/courses_state.dart) | Dart | 10 | 0 | 9 | 19 |
 | [lib/bloc/user/user_info_bloc.dart](/lib/bloc/user/user_info_bloc.dart) | Dart | 51 | 1 | 9 | 61 |
 | [lib/bloc/user/user_info_event.dart](/lib/bloc/user/user_info_event.dart) | Dart | 4 | 0 | 3 | 7 |
 | [lib/bloc/user/user_info_state.dart](/lib/bloc/user/user_info_state.dart) | Dart | 11 | 0 | 9 | 20 |

@@ -39,8 +39,9 @@
   "userType": "هل أنت طالب أم مدرس؟",
 
   "courses": "مساراتي",
-
   "lesson": "درس",
+  "module": "الوحدة",
+  "moduleName": "اسم الوحدة",
   "title": "عنوان",
   "description": "وصف",
   "content": "محتوى",
@@ -50,5 +51,7 @@
   "error": "يبدو أن هناك خطأ!!",
   "editCourse": "عدل المساق",
   "addNewCourse":"إضافة مساق جديد",
-  "addLesson":"إضافة درس"
+  "addLesson":"إضافة درس",
+  "addModule":"إضافة وحدة",
+  "noCourses":"لا مساقات متاحة"
 }

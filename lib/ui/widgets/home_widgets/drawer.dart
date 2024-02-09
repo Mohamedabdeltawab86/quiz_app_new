@@ -28,6 +28,15 @@ class HomeDrawer extends StatelessWidget {
           ),
           const LanguageDropdownButton(),
           ListTile(
+            leading: const Icon(Icons.person),
+            title: const Text("user info"),
+            onTap: () {
+              context.pop();
+              context.push(profile);
+            },
+          ),
+          const Divider(),
+          ListTile(
             leading: const Icon(Icons.exit_to_app),
             title: Text(l10n.signOut),
             onTap: () async {
@@ -36,15 +45,6 @@ class HomeDrawer extends StatelessWidget {
               await FirebaseAuth.instance
                   .signOut()
                   .then((value) => context.go(login));
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text("user info"),
-            onTap: () {
-              context.pop();
-              context.push(profile);
             },
           ),
         ],

@@ -38,8 +38,9 @@
   "userType": "Are you a student or a teacher?",
 
   "courses": "My Course",
-
   "lesson": "Lesson",
+  "module": "Module",
+  "moduleName": "Module Name",
   "title": "Title",
   "description": "Description",
   "content": "Content",
@@ -49,5 +50,8 @@
   "error": "ERROR!!",
   "editCourse": "Edit Course",
   "addNewCourse":"Add New Course",
-  "addLesson":"Add Lesson"
+  "addLesson":"Add Lesson",
+  "addModule":"Add Module",
+  "noCourses":"No courses available"
+
 }
