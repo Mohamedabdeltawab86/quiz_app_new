@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app_new/data/models/course.dart';
 import 'package:quiz_app_new/data/models/lesson.dart';
+import 'package:quiz_app_new/utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../data/models/add_lesson_data_model.dart';
@@ -20,9 +22,11 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
 
     on<AddCourse>(_addCourse);
     on<FetchCourses>(_fetchCourses);
-    on<SelectCourse>(_selectCourse);
+
     on<AddModule>(_addModule);
     on<AddLesson>(_addLesson);
+    // add delete course
+    on<DeleteCourse>(_deleteCourse);
     on<DeleteModule>(_deleteModule);
     on<DeleteLesson>(_deleteLesson);
 
@@ -44,22 +48,6 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     return courses.firstWhere((course) => course.id == id);
   }
 
-  Future<void> _selectCourse(
-      SelectCourse event, Emitter<CoursesState> emit) async {
-    emit(CourseInitial());
-    final modules = await getModules(event.course.id.toString());
-    final lessons = await getLesson(
-      event.course.id.toString(),
-      modules.first.id.toString(),
-    );
-    emit(
-      CourseSelected(
-        event.course,
-        modules: modules,
-        lessons: lessons,
-      ),
-    );
-  }
 
   Future<void> _addCourse(AddCourse event, Emitter<CoursesState> emit) async {
     if (courseKey.currentState!.validate()) {
@@ -125,6 +113,11 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
           ),
         );
     emit(LessonAdded());
+  }
+  Future<void> _deleteCourse(DeleteCourse event, Emitter<CoursesState> emit) async {
+    emit(DeletingCourseLoading());
+    await FirebaseFirestore.instance.collection(coursesCollection).doc(event.courseId).delete();
+    emit(DeletingCourseSuccess());
   }
 
   void _deleteModule(DeleteModule event, Emitter<CoursesState> emit) {

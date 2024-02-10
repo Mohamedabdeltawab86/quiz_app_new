@@ -25,14 +25,7 @@ class ModuleAdded extends CoursesState {}
 
 class ModuleDeleted extends CoursesState {}
 
-class CourseSelected extends CoursesState {
-  final Course course;
-  final List<Module> modules;
-  final List<Lesson> lessons;
+class DeletingCourseLoading extends CoursesState {}
+class DeletingCourseSuccess extends CoursesState {}
 
-  CourseSelected(
-    this.course, {
-    required this.modules,
-    required this.lessons,
-  });
-}
+

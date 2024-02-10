@@ -6,11 +6,8 @@ abstract class CoursesEvent {}
 class AddCourse extends CoursesEvent {}
 
 class FetchCourses extends CoursesEvent {}
-class SelectCourse extends CoursesEvent{
-  final Course course;
 
-  SelectCourse(this.course);
-}
+
 class AddLesson extends CoursesEvent {
   final int moduleIndex;
   AddLesson(this.moduleIndex);
@@ -18,6 +15,12 @@ class AddLesson extends CoursesEvent {
 
 class AddModule extends CoursesEvent {}
 
+class DeleteCourse extends CoursesEvent{
+  final String courseId;
+
+  DeleteCourse(this.courseId);
+
+}
 class DeleteModule extends CoursesEvent {
   final int index;
 

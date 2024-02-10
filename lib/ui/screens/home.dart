@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:quiz_app_new/utils/routes.dart';
@@ -30,7 +31,10 @@ class HomePage extends StatelessWidget {
               EasyLoading.show(status: "Loading");
             } else if (state is AddingCourseDone) {
               bloc.add(FetchCourses());
-            } else {
+            } else if (state is DeletingCourseSuccess){
+              bloc.add(FetchCourses());
+            }
+            else {
               EasyLoading.dismiss();
             }
           },
@@ -42,16 +46,44 @@ class HomePage extends StatelessWidget {
                 child: ListView.builder(
                   itemCount: bloc.courses.length,
                   itemBuilder: (context, index) {
+                    final selectedCourse = bloc.courses[index];
                     return Card(
                       // TODO 3: make edit available
-                      child: ListTile(
-                        title: Text(
-                          bloc.courses[index].title,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                      child: Slidable(
+                        endActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              label: 'Delete',
+                              backgroundColor: Colors.amber,
+                              icon: Icons.delete,
+                              spacing: 8,
+                              onPressed: (context) => bloc.add(
+                                DeleteCourse(selectedCourse.id!),
+                              ),
+                            ),
+                            SlidableAction(
+                              label: 'Edit',
+                              backgroundColor: Colors.amber,
+                              icon: Icons.edit,
+                              spacing: 8,
+                              onPressed: (context) => bloc.add(
+                                DeleteCourse(selectedCourse.id!),
+                              ),
+                            ),
+                          ],
                         ),
-                        onTap: () => context.push(course, extra: bloc.courses[index]),
-                        subtitle:
-                            Text(bloc.courses[index].description.toString()),
+                        child: ListTile(
+                          title: Text(
+                            bloc.courses[index].title,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          onTap: () =>
+                              context.push(course, extra: bloc.courses[index]),
+                          subtitle: Text(
+                            bloc.courses[index].description.toString(),
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -63,11 +95,13 @@ class HomePage extends StatelessWidget {
           },
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => context.push(addEditCourse, extra: bloc),
+          onPressed: () => context.push(
+            addEditCourse,
+            extra: bloc,
+          ),
           child: const Icon(Icons.add),
         ),
       ),
     );
   }
 }
-
