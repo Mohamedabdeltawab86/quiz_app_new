@@ -21,10 +21,15 @@ class AddEditCourse extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      // TODO: fixed by trial and error. the current way works with no problems.
       child: PopScope(
-        // TODO: fix by ibrahim
-        canPop: true,
-        onPopInvoked: (_) => bloc.clearCourseTextFields(),
+        canPop: false,
+        onPopInvoked: (bool didPop) {
+          if (!didPop && bloc.state is! AddingCourseDone) {
+            bloc.clearCourseTextFields();
+          }
+          context.pop();
+        },
         child: Padding(
           padding: EdgeInsets.all(8.0.sp),
           child: Scaffold(
