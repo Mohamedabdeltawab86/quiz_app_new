@@ -14,3 +14,12 @@ class ModulesLoaded extends CourseState {
 class ModulesLoading extends CourseState {}
 
 class DeletingModuleLoading extends CourseState {}
+
+
+class LessonLoading extends CourseState{}
+
+class LessonLoaded extends CourseState{
+  final List<Lesson> lessons;
+
+  LessonLoaded(this.lessons);
+}

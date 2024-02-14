@@ -29,3 +29,5 @@ class DeletingCourseLoading extends CoursesState {}
 class DeletingCourseSuccess extends CoursesState {}
 
 
+class UpdatingCourseLoading extends CoursesState {}
+class UpdatingCourseSuccess extends CoursesState {}

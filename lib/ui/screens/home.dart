@@ -31,10 +31,11 @@ class HomePage extends StatelessWidget {
               EasyLoading.show(status: "Loading");
             } else if (state is AddingCourseDone) {
               bloc.add(FetchCourses());
-            } else if (state is DeletingCourseSuccess){
+            } else if (state is DeletingCourseSuccess) {
               bloc.add(FetchCourses());
-            }
-            else {
+            } else if (state is UpdatingCourseSuccess) {
+              bloc.add(FetchCourses());
+            } else {
               EasyLoading.dismiss();
             }
           },
@@ -67,9 +68,47 @@ class HomePage extends StatelessWidget {
                               backgroundColor: Colors.amber,
                               icon: Icons.edit,
                               spacing: 8,
-                              onPressed: (context) => bloc.add(
-                                DeleteCourse(selectedCourse.id!),
-                              ),
+                              onPressed: (context) {
+                                bloc.selectedCourse;
+
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return SizedBox(
+                                      height: 600,
+                                      child: AlertDialog(
+                                        title: const Text("Edit Course title"),
+                                        content: Column(
+                                          children: [
+                                            TextField(
+                                              controller: bloc.titleController,
+                                            ),
+                                            TextField(
+                                              controller:
+                                                  bloc.descriptionController,
+                                            ),
+                                          ],
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => context.pop(),
+                                            child: const Text("Cancel"),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              bloc.add(
+                                                UpdateCourse(selectedCourse.id!),
+                                              );
+                                              context.pop();
+                                            },
+                                            child: const Text("OK"),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -78,8 +117,7 @@ class HomePage extends StatelessWidget {
                             bloc.courses[index].title,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          onTap: () =>
-                              context.push(course, extra: bloc.courses[index]),
+                          onTap: () => context.push(course, extra: selectedCourse),
                           subtitle: Text(
                             bloc.courses[index].description.toString(),
                           ),

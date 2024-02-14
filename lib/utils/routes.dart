@@ -1,5 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quiz_app_new/bloc/lesson/lesson_bloc.dart';
+import 'package:quiz_app_new/data/models/lesson.dart';
+import 'package:quiz_app_new/ui/screens/lesson_screen.dart';
 
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/course/course_bloc.dart';
@@ -27,6 +30,7 @@ const String addEditCourse = '/addEditCourse';
 const String quiz = '/quiz';
 const String profile = '/profile';
 const String course = "/course";
+const String lessonsPage = '/lesson';
 
 late QuestionRepository questionRepository;
 
@@ -106,7 +110,22 @@ class AppRouter {
               child: const ProfileScreen(),
             );
           },
-        )
+        ),
+        GoRoute(
+          path: lessonsPage,
+          builder: (context, state) {
+            final courseId = state.pathParameters['course']!;
+            final moduleId = state.pathParameters['moduleId']!;
+
+            return BlocProvider.value(
+              value: BlocProvider.of<CourseBloc>(context),
+              child: LessonScreen(
+                moduleId: moduleId,
+                courseId: courseId,
+              ),
+            );
+          },
+        ),
       ],
     );
   }

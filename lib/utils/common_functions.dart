@@ -80,6 +80,7 @@ Future<List<Module>> getModules(String courseId) async {
       .collection(coursesCollection)
       .doc(courseId)
       .collection(modulesCollection)
+      .orderBy('title')
       .get();
   List<Module> moduleData = modules.docs
       .map((doc) => Module.fromJson(doc.data() as Map<String, dynamic>))
@@ -87,18 +88,42 @@ Future<List<Module>> getModules(String courseId) async {
   return moduleData;
 }
 
-Future<List<Lesson>> getLesson(String courseId, String moduleId) async {
-  QuerySnapshot lessons = await FirebaseFirestore.instance
+Future<List<Lesson>> getLessons(String courseId, String moduleId) async {
+  QuerySnapshot lessons = (await FirebaseFirestore.instance
       .collection(coursesCollection)
       .doc(courseId)
       .collection(modulesCollection)
       .doc(moduleId)
       .collection(lessonCollection)
-      .get();
+      .orderBy('title')
+      .get());
   List<Lesson> lessonsData = lessons.docs
       .map((doc) => Lesson.fromJson(doc.data() as Map<String, dynamic>))
       .toList();
   return lessonsData;
+}
+
+Future<Lesson> getLesson(
+    String courseId, String moduleId, String lessonId) async {
+  DocumentSnapshot lessonSnapshot = await FirebaseFirestore.instance
+      .collection(coursesCollection)
+      .doc(courseId)
+      .collection(modulesCollection)
+      .doc(moduleId)
+      .collection(lessonCollection)
+      .doc(lessonId)
+      .get();
+  return Lesson.fromJson(lessonSnapshot.data() as Map<String, dynamic>);
+}
+
+Future<void> saveOneCourse(Course course) async {
+  final updatedCourse = FirebaseFirestore.instance
+      .collection(coursesCollection)
+      .withConverter<Course>(
+        fromFirestore: (snapshot, options) => Course.fromJson(snapshot.data()!),
+        toFirestore: (course, options) => course.toJson(),
+      );
+  await updatedCourse.doc(course.id).set(course);
 }
 
 Future<void> saveCourseInDB(

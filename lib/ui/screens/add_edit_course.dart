@@ -18,6 +18,8 @@ class AddEditCourse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<CoursesBloc>();
+    final course = bloc.selectedCourse;
+
     final l10n = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -48,23 +50,24 @@ class AddEditCourse extends StatelessWidget {
                 } else if (state is AddingCourseError) {
                   EasyLoading.showError("ERROR!!");
                 }
+
               },
               child: Form(
                 key: bloc.courseKey,
                 child: ListView(
                   children: [
-                    //Todo: add image button
+
                     CommonTextField(
                       label: l10n.title,
                       icon: Icons.abc,
-                      controller: bloc.titleController,
+                      controller:  bloc.titleController,
                     ),
                     heightGap,
                     CommonTextField(
                       label: l10n.description,
                       icon: Icons.text_fields,
                       controller: bloc.descriptionController,
-                      // TODO session 8-1: done
+
                       keyboardType: TextInputType.multiline,
                     ),
                     //   TODO 1 : Add image picker to let user change user profile and save it on firebase storage

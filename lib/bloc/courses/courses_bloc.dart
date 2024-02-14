@@ -27,13 +27,23 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     on<AddLesson>(_addLesson);
     // add delete course
     on<DeleteCourse>(_deleteCourse);
+    // edit course
+    on<UpdateCourse>(_updateCourse);
     on<DeleteModule>(_deleteModule);
     on<DeleteLesson>(_deleteLesson);
+  }
+
+  void initInfoPage(Course course) {
+    titleController.text = course.title ?? "";
+    descriptionController.text = course.description ?? "";
 
   }
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+ Course? selectedCourse;
+
+
 
   // TODO 2: Add image of the course
   final courseKey = GlobalKey<FormState>();
@@ -42,12 +52,14 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
 
   Future<void> initCourse() async {
     titleController.text = course!.title;
+    descriptionController.text = course!.description!;
+    // titleController.text = course!.title;
     courses = await readCoursesFromDB();
   }
-  Course getCourseByID(String id){
+
+  Course getCourseByID(String id) {
     return courses.firstWhere((course) => course.id == id);
   }
-
 
   Future<void> _addCourse(AddCourse event, Emitter<CoursesState> emit) async {
     if (courseKey.currentState!.validate()) {
@@ -114,9 +126,31 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
         );
     emit(LessonAdded());
   }
-  Future<void> _deleteCourse(DeleteCourse event, Emitter<CoursesState> emit) async {
+
+
+  Future<void> _updateCourse(
+      UpdateCourse event, Emitter<CoursesState> emit) async {
+    emit(UpdatingCourseLoading());
+    final updatedCourse = Course(
+      id: event.courseId,
+      title: titleController.text,
+      description: descriptionController.text,
+      createdBy: getUid(),
+      createdAt: course?.createdAt ?? DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+
+    await saveOneCourse(updatedCourse);
+    emit(UpdatingCourseSuccess());
+  }
+
+  Future<void> _deleteCourse(
+      DeleteCourse event, Emitter<CoursesState> emit) async {
     emit(DeletingCourseLoading());
-    await FirebaseFirestore.instance.collection(coursesCollection).doc(event.courseId).delete();
+    await FirebaseFirestore.instance
+        .collection(coursesCollection)
+        .doc(event.courseId)
+        .delete();
     emit(DeletingCourseSuccess());
   }
 

@@ -4,10 +4,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:quiz_app_new/bloc/course/course_bloc.dart';
+import 'package:quiz_app_new/utils/common_functions.dart';
+
+import '../../data/models/lesson.dart';
+import '../../data/models/module.dart';
+import '../../utils/routes.dart';
 
 class CoursePage extends StatelessWidget {
   const CoursePage({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -17,73 +21,103 @@ class CoursePage extends StatelessWidget {
         title: Text(bloc.course.title),
       ),
       body: BlocConsumer<CourseBloc, CourseState>(
-        listener: (context, state) {
-          if (state is ModulesLoading) {
-            EasyLoading.show(status: "Loading ..");
-          } else {
-            EasyLoading.dismiss();
-          }
-        },
-        buildWhen: (_, current) => current is ModulesLoaded,
-        builder: (context, state) {
-          if (state is ModulesLoaded) {
-            if (state.modules.isEmpty) {
-              return const Center(child: Text("No Modules available"));
+          listener: (context, state) {
+            if (state is ModulesLoading) {
+              EasyLoading.show(status: "Loading..");
+            } else {
+              EasyLoading.dismiss();
             }
-            return ListView.builder(
-              itemCount: state.modules.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(state.modules[index].title ?? "N/A"),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.edit),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text("Confirm deleting Module?"),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => context.pop(),
-                                    child: const Text("Cancel"),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      bloc.add(
-                                        DeleteModule(
-                                          moduleID: state.modules[index].id!,
-                                        ),
-                                      );
-                                      context.pop();
-                                    },
-                                    child: const Text("OK"),
-                                  ),
-                                ],
+          },
+          buildWhen: (_, current) => current is ModulesLoaded,
+          builder: (context, state) {
+            if (state is ModulesLoaded) {
+              if (state.modules.isEmpty) {
+                return const Center(child: Text("No Modules available"));
+              }
+              return ListView.builder(
+                  itemCount: state.modules.length,
+                  itemBuilder: (context, index) {
+                    final Module module = state.modules[index];
+
+                    return ExpansionTile(
+                      leading:
+                          const Icon(Icons.arrow_drop_down_circle_outlined),
+                      title: Text(module.title ?? 'N/A'),
+                      subtitle:
+                          Text(DateFormat.MMMEd().format(module.updatedAt!)),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.edit),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title:
+                                        const Text("Confirm deleting Module?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => context.pop(),
+                                        child: const Text("Cancel"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          bloc.add(
+                                            DeleteModule(
+                                              moduleID:
+                                                  state.modules[index].id!,
+                                            ),
+                                          );
+                                          context.pop();
+                                        },
+                                        child: const Text("OK"),
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                        icon: const Icon(Icons.delete),
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  subtitle: Text(
-                    DateFormat.MMMEd().format(state.modules[index].updatedAt!),
-                  ),
-                );
-              },
-            );
-          }
-          return const SizedBox();
-        },
-      ),
+                      onExpansionChanged: (bool expanded) {
+                        if (expanded) {
+                          bloc.add(LoadLessons(module.id!));
+                        }
+                      },
+                      children: [
+                        BlocBuilder<CourseBloc, CourseState>(
+                          builder: (context, state) {
+                            if (state is LessonLoaded) {
+                              return Column(
+                                children: state.lessons
+                                    .map((lesson) => ListTile(
+                                          title: Text(lesson.title!),
+                                          onTap: () {
+                                            context.push(lessonsPage, extra: {
+                                              'course': bloc.course,
+                                              "moduleId": module.id
+                                            });
+                                          },
+                                        ))
+                                    .toList(),
+                              );
+                            }
+                            return const SizedBox();
+                          },
+                        ),
+                      ],
+                    );
+                  });
+            }
+            return const SizedBox();
+          }),
     );
   }
 }
