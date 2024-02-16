@@ -11,3 +11,10 @@ class LoadLesson extends LessonEvent{
   LoadLesson({required this.courseId, required this.moduleId, required this.lessonId});
 
 }
+
+class ChangeQuestionState extends LessonEvent {
+  final bool state;
+  final int index;
+
+  ChangeQuestionState({required this.state, required this.index});
+}

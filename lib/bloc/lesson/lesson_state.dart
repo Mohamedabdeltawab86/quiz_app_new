@@ -6,14 +6,15 @@ abstract class LessonState {}
 class LessonInitial extends LessonState {}
 
 class LessonLoading extends LessonState{}
-class LessonError extends LessonState{
-  final String error;
+class LessonError extends LessonState{}
+class QuestionStateChanged extends LessonState{
+  final int index;
 
-  LessonError(this.error);
+  QuestionStateChanged(this.index);
 }
 
 class LessonLoaded extends LessonState{
-  final Lesson lesson;
+  final List<Question> questions;
 
-  LessonLoaded(this.lesson);
+  LessonLoaded(this.questions);
 }

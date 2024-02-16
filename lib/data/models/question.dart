@@ -7,22 +7,22 @@ import '../../utils/common_functions.dart';
 part 'question.g.dart';
 
 enum QuestionType {
-  @JsonValue("radio")
+  @JsonValue("Radio")
   radio,
-  @JsonValue("checkbox")
+  @JsonValue("Checkbox")
   checkbox,
-  @JsonValue("trueFalse")
+  @JsonValue("TrueFalse")
   trueFalse,
-  @JsonValue("complete")
+  @JsonValue("Complete")
   complete,
 }
 
 enum QuestionDifficulty {
-  @JsonValue('easy')
+  @JsonValue('Easy')
   easy,
-  @JsonValue('normal')
+  @JsonValue('Normal')
   normal,
-  @JsonValue('difficult')
+  @JsonValue('Difficult')
   difficult,
 }
 
@@ -31,13 +31,15 @@ class Question extends Equatable {
   final String? id;
   final String? title;
   final List<String>? options;
-  final String? correctAnswer;
+  @JsonKey(name: "correct_answer")
+  final int? correctAnswer;
   final QuestionDifficulty? difficulty;
   final int? weight;
   final QuestionType? type;
   @JsonKey(
     fromJson: dateTimeFromTimestamp,
     toJson: dateTimeToTimestamp,
+    name: "updated_at",
   )
   final DateTime? updatedAt;
 
@@ -58,5 +60,5 @@ class Question extends Equatable {
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
   @override
-  List<Object?> get props => [id,updatedAt];
+  List<Object?> get props => [id, updatedAt];
 }

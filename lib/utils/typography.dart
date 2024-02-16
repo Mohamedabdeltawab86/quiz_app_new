@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
+// todo: check for current language.
 final textTheme = TextTheme(
   displayLarge: GoogleFonts.cairo(
     fontWeight: FontWeight.w400,

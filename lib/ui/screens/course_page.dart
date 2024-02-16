@@ -4,11 +4,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:quiz_app_new/bloc/course/course_bloc.dart';
-import 'package:quiz_app_new/utils/common_functions.dart';
 
-import '../../data/models/lesson.dart';
 import '../../data/models/module.dart';
-import '../../utils/routes.dart';
 
 class CoursePage extends StatelessWidget {
   const CoursePage({super.key});
@@ -49,6 +46,7 @@ class CoursePage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
+                            // todo: edit course
                             onPressed: () {},
                             icon: const Icon(Icons.edit),
                           ),
@@ -95,18 +93,22 @@ class CoursePage extends StatelessWidget {
                         BlocBuilder<CourseBloc, CourseState>(
                           builder: (context, state) {
                             if (state is LessonLoaded) {
-                              return Column(
-                                children: state.lessons
-                                    .map((lesson) => ListTile(
-                                          title: Text(lesson.title!),
-                                          onTap: () {
-                                            context.push(lessonsPage, extra: {
-                                              'course': bloc.course,
-                                              "moduleId": module.id
-                                            });
-                                          },
-                                        ))
-                                    .toList(),
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: state.lessons.length,
+                                itemBuilder: (context, index) {
+                                  final lesson = state.lessons[index];
+                                  return ListTile(
+                                    title: Text(lesson.title!),
+                                    onTap: () {
+                                      final lessonId = state.lessons[index].id;
+                                      context.push(
+                                          '/courses/${bloc.course.id}/modules/${module.id}/lessons/$lessonId/lesson/${lesson.title}');
+                                    },
+                                  );
+                                },
+
                               );
                             }
                             return const SizedBox();

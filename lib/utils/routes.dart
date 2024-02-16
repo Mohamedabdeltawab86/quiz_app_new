@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quiz_app_new/bloc/lesson/lesson_bloc.dart';
-import 'package:quiz_app_new/data/models/lesson.dart';
 import 'package:quiz_app_new/ui/screens/lesson_screen.dart';
 
 import '../bloc/auth/auth_bloc.dart';
@@ -112,17 +111,22 @@ class AppRouter {
           },
         ),
         GoRoute(
-          path: lessonsPage,
+          path:
+              '/courses/:courseId/modules/:moduleId/lessons/:lessonId/lesson/:lessonTitle',
           builder: (context, state) {
-            final courseId = state.pathParameters['course']!;
+            final courseId = state.pathParameters['courseId']!;
             final moduleId = state.pathParameters['moduleId']!;
+            final lessonId = state.pathParameters['lessonId']!;
+            final lessonTitle = state.pathParameters['lessonTitle']!;
 
-            return BlocProvider.value(
-              value: BlocProvider.of<CourseBloc>(context),
-              child: LessonScreen(
-                moduleId: moduleId,
-                courseId: courseId,
-              ),
+            return BlocProvider(
+              create: (context) => LessonBloc()
+                ..add(LoadLesson(
+                  courseId: courseId,
+                  moduleId: moduleId,
+                  lessonId: lessonId,
+                )),
+              child: LessonScreen(lessonTitle: lessonTitle),
             );
           },
         ),

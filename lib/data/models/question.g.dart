@@ -11,12 +11,12 @@ Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
       title: json['title'] as String?,
       options:
           (json['options'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      correctAnswer: json['correctAnswer'] as String?,
+      correctAnswer: json['correct_answer'] as int?,
       difficulty:
           $enumDecodeNullable(_$QuestionDifficultyEnumMap, json['difficulty']),
       weight: json['weight'] as int?,
       type: $enumDecodeNullable(_$QuestionTypeEnumMap, json['type']),
-      updatedAt: dateTimeFromTimestamp(json['updatedAt'] as Timestamp),
+      updatedAt: dateTimeFromTimestamp(json['updated_at'] as Timestamp),
     );
 
 Map<String, dynamic> _$QuestionToJson(Question instance) {
@@ -31,23 +31,23 @@ Map<String, dynamic> _$QuestionToJson(Question instance) {
   writeNotNull('id', instance.id);
   writeNotNull('title', instance.title);
   writeNotNull('options', instance.options);
-  writeNotNull('correctAnswer', instance.correctAnswer);
+  writeNotNull('correct_answer', instance.correctAnswer);
   writeNotNull('difficulty', _$QuestionDifficultyEnumMap[instance.difficulty]);
   writeNotNull('weight', instance.weight);
   writeNotNull('type', _$QuestionTypeEnumMap[instance.type]);
-  writeNotNull('updatedAt', dateTimeToTimestamp(instance.updatedAt));
+  writeNotNull('updated_at', dateTimeToTimestamp(instance.updatedAt));
   return val;
 }
 
 const _$QuestionDifficultyEnumMap = {
-  QuestionDifficulty.easy: 'easy',
-  QuestionDifficulty.normal: 'normal',
-  QuestionDifficulty.difficult: 'difficult',
+  QuestionDifficulty.easy: 'Easy',
+  QuestionDifficulty.normal: 'Normal',
+  QuestionDifficulty.difficult: 'Difficult',
 };
 
 const _$QuestionTypeEnumMap = {
-  QuestionType.radio: 'radio',
-  QuestionType.checkbox: 'checkbox',
-  QuestionType.trueFalse: 'trueFalse',
-  QuestionType.complete: 'complete',
+  QuestionType.radio: 'Radio',
+  QuestionType.checkbox: 'Checkbox',
+  QuestionType.trueFalse: 'TrueFalse',
+  QuestionType.complete: 'Complete',
 };

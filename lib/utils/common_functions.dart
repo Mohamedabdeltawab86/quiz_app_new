@@ -6,6 +6,7 @@ import 'package:quiz_app_new/utils/routes.dart';
 import '../data/models/course.dart';
 import '../data/models/lesson.dart';
 import '../data/models/module.dart';
+import '../data/models/question.dart';
 import 'constants.dart';
 
 String? isValidEmail(String? email, String message) {
@@ -50,8 +51,7 @@ Future<void> saveUserInDB(UserProfile profile) async {
   await FirebaseFirestore.instance
       .collection(usersCollection)
       .doc(profile.userId ?? getUid())
-      .set(profile.toJson(), SetOptions(merge: true))
-      .then((value) => print(profile.toJson()));
+      .set(profile.toJson(), SetOptions(merge: true));
 }
 
 Future<UserProfile> readUserFromDB() async {
@@ -103,17 +103,20 @@ Future<List<Lesson>> getLessons(String courseId, String moduleId) async {
   return lessonsData;
 }
 
-Future<Lesson> getLesson(
+Future<List<Question>> getQuestions(
     String courseId, String moduleId, String lessonId) async {
-  DocumentSnapshot lessonSnapshot = await FirebaseFirestore.instance
+  QuerySnapshot questionsSnapshot = await FirebaseFirestore.instance
       .collection(coursesCollection)
       .doc(courseId)
       .collection(modulesCollection)
       .doc(moduleId)
       .collection(lessonCollection)
       .doc(lessonId)
+  .collection(questionCollection)
       .get();
-  return Lesson.fromJson(lessonSnapshot.data() as Map<String, dynamic>);
+  List<Question> questionsData = questionsSnapshot.docs.map((doc) => Question.fromJson(doc.data() as Map<String,dynamic>)).toList();
+
+  return questionsData;
 }
 
 Future<void> saveOneCourse(Course course) async {
@@ -150,7 +153,6 @@ Future<void> saveCourseInDB(
     }
   }
   await batch.commit();
-  print("committed to firebase");
 }
 
 DateTime dateTimeFromTimestamp(Timestamp timestamp) => timestamp.toDate();
