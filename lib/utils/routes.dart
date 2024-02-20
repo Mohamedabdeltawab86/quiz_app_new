@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quiz_app_new/bloc/lesson/lesson_bloc.dart';
+import 'package:quiz_app_new/ui/screens/add_question_screen.dart';
 import 'package:quiz_app_new/ui/screens/lesson_screen.dart';
 
 import '../bloc/auth/auth_bloc.dart';
@@ -30,6 +31,7 @@ const String quiz = '/quiz';
 const String profile = '/profile';
 const String course = "/course";
 const String lessonsPage = '/lesson';
+const String addEditQuestion = '/addEditQuestion';
 
 late QuestionRepository questionRepository;
 
@@ -47,7 +49,7 @@ class AppRouter {
 
   _initRouter() {
     router = GoRouter(
-      // debugLogDiagnostics: true,
+      debugLogDiagnostics: true,
       initialLocation: initialLocation,
 
       routes: [
@@ -110,8 +112,11 @@ class AppRouter {
             );
           },
         ),
+
         GoRoute(
           path:
+
+
               '/courses/:courseId/modules/:moduleId/lessons/:lessonId/lesson/:lessonTitle',
           builder: (context, state) {
             final courseId = state.pathParameters['courseId']!;
@@ -126,7 +131,34 @@ class AppRouter {
                   moduleId: moduleId,
                   lessonId: lessonId,
                 )),
-              child: LessonScreen(lessonTitle: lessonTitle),
+              child: LessonScreen(
+                courseId: courseId,
+                moduleId: moduleId,
+                lessonId: lessonId,
+                lessonTitle: lessonTitle,
+              ),
+            );
+          },
+        ),
+        GoRoute(
+          path:
+           '/courses/:courseId/modules/:moduleId/lessons/:lessonId/addEditQuestion',
+          builder: (context, state) {
+            final courseId = state.pathParameters['courseId']!;
+            final moduleId = state.pathParameters['moduleId']!;
+            final lessonId = state.pathParameters['lessonId']!;
+
+
+            return BlocProvider(
+              create: (context) => LessonBloc(),
+
+              child: AddEditQuestionScreen(
+                courseId: courseId,
+                moduleId: moduleId,
+                lessonId: lessonId,
+
+
+              ),
             );
           },
         ),

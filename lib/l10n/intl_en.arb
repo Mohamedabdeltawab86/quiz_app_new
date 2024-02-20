@@ -49,9 +49,19 @@
   "done": "Done",
   "error": "ERROR!!",
   "editCourse": "Edit Course",
-  "addNewCourse":"Add New Course",
+  "addNewCourse":"Add Course",
+
+
   "addLesson":"Add Lesson",
+
   "addModule":"Add Module",
-  "noCourses":"No courses available"
+  "noCourses":"No courses available",
+
+  "addQuestion":"Add Question",
+  "addChoice":"Add Choice",
+
+"question": "Question",
+"questionName": "Question Name",
+  "questionNumber": "Question Number"
 
 }

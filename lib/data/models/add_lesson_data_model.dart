@@ -18,3 +18,19 @@ class ModuleData {
 }
 
 
+
+class QuestionData {
+  final TextEditingController nameController;
+  final List<ChoiceData> choices;
+
+  QuestionData({
+    required this.nameController,
+    required this.choices,
+  });
+}
+
+class ChoiceData {
+  final TextEditingController choiceController;
+
+  ChoiceData({required this.choiceController});
+}

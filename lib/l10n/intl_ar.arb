@@ -20,13 +20,10 @@
   "haveNoAccount": "إذا لم يكن لديك حسابا ",
   "clickHere": "اضغط هنا..",
   "or": "أو",
-
   "firstName": "الاسم الأول",
   "lastName": "الاسم الأخير",
   "phone": "رقم الهاتف",
-
-    "finish": "تسجيل",
-
+  "finish": "تسجيل",
   "registerTeacher": "سجل كطالب",
   "student": "طالب",
   "teacher": "مدرس",
@@ -37,7 +34,6 @@
   "registerStudentForm": "نموذج تسجيل طالب",
   "userInfoPage": "معلومات المستخدم",
   "userType": "هل أنت طالب أم مدرس؟",
-
   "courses": "مساراتي",
   "lesson": "درس",
   "module": "الوحدة",
@@ -45,13 +41,19 @@
   "title": "عنوان",
   "description": "وصف",
   "content": "محتوى",
-
   "loading": "جارٍ التحميل",
   "done": "تم",
   "error": "يبدو أن هناك خطأ!!",
+
   "editCourse": "عدل المساق",
-  "addNewCourse":"إضافة مساق جديد",
-  "addLesson":"إضافة درس",
-  "addModule":"إضافة وحدة",
-  "noCourses":"لا مساقات متاحة"
+  "addNewCourse": "إضافة مساق جديد",
+  "addLesson": "إضافة درس",
+  "addModule": "إضافة وحدة",
+  "noCourses": "لا مساقات متاحة",
+
+  "addQuestion": " أضف سؤالا",
+  "addChoice": " أضف خيارا",
+  "question": "السؤال",
+  "questionName": "اسم السؤال",
+  "questionNumber": "رقم السؤال"
 }

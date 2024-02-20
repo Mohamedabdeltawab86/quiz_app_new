@@ -15,6 +15,29 @@ class QuestionStateChanged extends LessonState{
 
 class LessonLoaded extends LessonState{
   final List<Question> questions;
+  final List<Lesson> lessons;
 
-  LessonLoaded(this.questions);
+  LessonLoaded({required this.questions, required this.lessons});
+
 }
+class LessonAdding extends LessonState{}
+class LessonAdded extends LessonState{}
+class LessonAddError extends LessonState{}
+
+class LessonDeleting extends LessonState{}
+class LessonDeleted extends LessonState{}
+class LessonDeleteError extends LessonState{}
+
+class QuestionAdding extends LessonState{}
+class QuestionAdded extends LessonState{}
+class QuestionError extends LessonState{}
+
+class QuestionDeleting extends LessonState{}
+class QuestionDeleted extends LessonState{}
+class QuestionDeleteError extends LessonState{}
+
+class ChoiceAdding extends LessonState{}
+class ChoiceAdded extends LessonState{}
+
+class ChoiceDeleting extends LessonState{}
+class ChoiceDeleted extends LessonState{}

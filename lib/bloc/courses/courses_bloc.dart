@@ -154,6 +154,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     emit(DeletingCourseSuccess());
   }
 
+
   void _deleteModule(DeleteModule event, Emitter<CoursesState> emit) {
     addEditModulesData.removeAt(event.index);
     emit(LessonDeleted());

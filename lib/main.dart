@@ -93,7 +93,7 @@ class MyApp extends StatelessWidget {
                 fontFamily:
                     (state.appSettings.local == const Language.initial(id: 1))
                         ? GoogleFonts.notoSans().fontFamily
-                        : GoogleFonts.harmattan().fontFamily,
+                        :  GoogleFonts.scheherazadeNew().fontFamily,
               ),
               themeMode:
                   state.appSettings.light ? ThemeMode.dark : ThemeMode.light,
