@@ -46,9 +46,6 @@ class MyApp extends StatelessWidget {
           buildWhen: (previous, current) =>
               previous.appSettings != current.appSettings,
           builder: (context, state) {
-            print(state.appSettings.local == const Language.initial(id: 2));
-            print(
-                "Current language is ${state.appSettings.local.name} and ID == ${state.appSettings.local.id})");
             EasyLoading.instance.maskType = EasyLoadingMaskType.black;
             return MaterialApp.router(
               debugShowCheckedModeBanner: false,
@@ -68,11 +65,10 @@ class MyApp extends StatelessWidget {
                 visualDensity: FlexColorScheme.comfortablePlatformDensity,
                 useMaterial3: true,
                 swapLegacyOnMaterial3: true,
-                // To use the Playground font, add GoogleFonts package and uncomment
-                fontFamily:
+                textTheme:
                     (state.appSettings.local == const Language.initial(id: 1))
-                        ? GoogleFonts.notoSans().fontFamily
-                        : GoogleFonts.harmattan().fontFamily,
+                        ? GoogleFonts.notoSansTextTheme()
+                        : GoogleFonts.harmattanTextTheme(),
               ),
               darkTheme: FlexThemeData.dark(
                 scheme: FlexScheme.purpleM3,
@@ -88,12 +84,10 @@ class MyApp extends StatelessWidget {
                 visualDensity: FlexColorScheme.comfortablePlatformDensity,
                 useMaterial3: true,
                 swapLegacyOnMaterial3: true,
-
-
-                fontFamily:
-                    (state.appSettings.local == const Language.initial(id: 1))
-                        ? GoogleFonts.notoSans().fontFamily
-                        :  GoogleFonts.scheherazadeNew().fontFamily,
+                textTheme:
+                    (state.appSettings.local == Language.languageList().first)
+                        ? englishTextTheme
+                        : arabicTextTheme,
               ),
               themeMode:
                   state.appSettings.light ? ThemeMode.dark : ThemeMode.light,

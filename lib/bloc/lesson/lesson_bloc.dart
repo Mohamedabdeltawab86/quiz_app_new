@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 
 import 'package:quiz_app_new/utils/common_functions.dart';
 import 'package:quiz_app_new/utils/constants.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../data/models/add_lesson_data_model.dart';
 import '../../data/models/lesson.dart';
@@ -28,22 +27,9 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
 
     on<ChangeQuestionState>(_onChangeQuestionState);
 
-    // on<LoadQuestion>(_LoadQuestion);
-    on<UpdateQuestion>(_updateQuestion);
-    on<DeleteQuestion>(_deleteQuestion);
-    on<AddQuestion>(_addQuestion);
-    on<AddChoice>(_addChoice);
-    on<RemoveChoice>(_removeChoice);
 
-    on<SetCorrectAnswer>(_setCorrectAnswer);
   }
-
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController choiceController = TextEditingController();
   final lessonKey = GlobalKey<FormState>();
-
-  List<QuestionData> addEditQuestionsData = [];
-
   List<bool> questionsState = [];
 
   void _onChangeQuestionState(event, Emitter<LessonState> emit) {
@@ -83,25 +69,7 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
     }
   }
 
-  Future<void> _addQuestion(
-      AddQuestion event, Emitter<LessonState> emit) async {
-    emit(LessonAdding());
-    try {
-      Question question = Question(
-        id: const Uuid().v4(),
-        title: titleController.text,
-        options: addEditQuestionsData.map((e) {
-          return ChoiceData(choiceController: choiceController).toString();
-        }).toList(),
-        // correctAnswer:
-      );
-      await saveQuestion(
-          event.courseId, event.moduleId, event.lessonId, question);
-      emit(LessonAdded());
-    } catch (e) {
-      emit(LessonError());
-    }
-  }
+
 
   Future<void> _updateLesson(
       UpdateLesson event, Emitter<LessonState> emit) async {}
@@ -120,43 +88,15 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
     emit(LessonDeleted());
   }
 
-  Future<void> _updateQuestion(
-      UpdateQuestion event, Emitter<LessonState> emit) async {}
 
-  Future<void> _deleteQuestion(
-      DeleteQuestion event, Emitter<LessonState> emit) async {
-    emit(QuestionDeleting());
-    await FirebaseFirestore.instance
-        .collection(coursesCollection)
-        .doc(event.courseId)
-        .collection(modulesCollection)
-        .doc(event.moduleId)
-        .collection(lessonCollection)
-        .doc(event.lessonId)
-        .collection(questionCollection)
-        .doc(event.question.id)
-        .delete();
-    emit(QuestionDeleted());
-  }
-
-  void _addChoice(AddChoice event, Emitter<LessonState> emit) {
-    emit(ChoiceAdding());
-    addEditQuestionsData[event.questionIndex].choices.add(
-          ChoiceData(
-            choiceController: TextEditingController(),
-          ),
-        );
-    emit(ChoiceAdded());
-  }
-
-  void _removeChoice(RemoveChoice event, Emitter<LessonState> emit) {
-    emit(ChoiceDeleting());
-    addEditQuestionsData[event.questionIndex]
-        .choices
-        .removeAt(event.choiceIndex);
-    emit(ChoiceDeleted());
-  }
 
   Future<void> _setCorrectAnswer(
       SetCorrectAnswer event, Emitter<LessonState> emit) async {}
+
+  // @override
+  // Future<void> close() {
+  //   titleController.dispose();
+  //   choiceController.dispose();
+  //   return super.close();
+  // }
 }

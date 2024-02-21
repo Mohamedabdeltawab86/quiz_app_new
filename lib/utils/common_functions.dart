@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quiz_app_new/data/models/user_profile.dart';
 import 'package:quiz_app_new/utils/routes.dart';
 
+import '../data/models/add_lesson_data_model.dart';
 import '../data/models/course.dart';
 import '../data/models/lesson.dart';
 import '../data/models/module.dart';
@@ -219,4 +220,23 @@ Future<String> getInitialLocation() async {
   } else {
     return login;
   }
+}
+
+Future<void> addEditQuestion(
+    Question question, QuestionScreenArguments args) async {
+  await FirebaseFirestore.instance
+      .collection(coursesCollection)
+      .doc(args.courseId)
+      .collection(modulesCollection)
+      .doc(args.moduleId)
+      .collection(lessonCollection)
+      .doc(args.lessonId)
+      .collection(questionCollection)
+      .withConverter<Question>(
+        fromFirestore: (snapshot, options) =>
+            Question.fromJson(snapshot.data()!),
+        toFirestore: (q, options) => q.toJson(),
+      )
+      .doc(question.id)
+      .set(question, SetOptions(merge: true));
 }

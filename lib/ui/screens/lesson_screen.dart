@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quiz_app_new/data/models/add_lesson_data_model.dart';
 import 'package:quiz_app_new/utils/routes.dart';
 import 'package:sizer/sizer.dart';
 
@@ -31,10 +32,9 @@ class LessonScreen extends StatelessWidget {
         child: const Icon(Icons.add),
         onPressed: () {
           context.push(
-            '/courses/$courseId/modules/$moduleId/lessons/$lessonId/addEditQuestion',
-
-
-          );
+              // '/courses/$courseId/modules/$moduleId/lessons/$lessonId/addEditQuestion',
+              addEditQuestion,
+              extra: QuestionScreenArguments(courseId, moduleId, lessonId));
         },
       ),
       body: BlocConsumer<LessonBloc, LessonState>(
@@ -65,10 +65,11 @@ class LessonScreen extends StatelessWidget {
                         icon: Icons.delete,
                         spacing: 8,
                         onPressed: (context) => bloc.add(DeleteQuestion(
-                            courseId: courseId,
-                            moduleId: moduleId,
-                            lessonId: lessonId,
-                            question: questions[i])),
+                          courseId: courseId,
+                          moduleId: moduleId,
+                          lessonId: lessonId,
+                          // question: questions[i],
+                        )),
                       ),
                       SlidableAction(
                         label: 'Edit',
@@ -206,7 +207,6 @@ class LessonScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         },
       ),
-
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quiz_app_new/bloc/lesson/lesson_bloc.dart';
+import 'package:quiz_app_new/bloc/questions/questions_bloc.dart';
+import 'package:quiz_app_new/data/models/add_lesson_data_model.dart';
 import 'package:quiz_app_new/ui/screens/add_question_screen.dart';
 import 'package:quiz_app_new/ui/screens/lesson_screen.dart';
 
@@ -51,7 +53,6 @@ class AppRouter {
     router = GoRouter(
       debugLogDiagnostics: true,
       initialLocation: initialLocation,
-
       routes: [
         GoRoute(
           path: home,
@@ -112,11 +113,8 @@ class AppRouter {
             );
           },
         ),
-
         GoRoute(
           path:
-
-
               '/courses/:courseId/modules/:moduleId/lessons/:lessonId/lesson/:lessonTitle',
           builder: (context, state) {
             final courseId = state.pathParameters['courseId']!;
@@ -141,27 +139,14 @@ class AppRouter {
           },
         ),
         GoRoute(
-          path:
-           '/courses/:courseId/modules/:moduleId/lessons/:lessonId/addEditQuestion',
-          builder: (context, state) {
-            final courseId = state.pathParameters['courseId']!;
-            final moduleId = state.pathParameters['moduleId']!;
-            final lessonId = state.pathParameters['lessonId']!;
-
-
-            return BlocProvider(
-              create: (context) => LessonBloc(),
-
-              child: AddEditQuestionScreen(
-                courseId: courseId,
-                moduleId: moduleId,
-                lessonId: lessonId,
-
-
-              ),
-            );
-          },
-        ),
+            path: addEditQuestion,
+            builder: (context, state) {
+              final arguments = state.extra as QuestionScreenArguments;
+              return BlocProvider(
+                create: (context) => QuestionsBloc(arguments),
+                child: const AddEditQuestionScreen(),
+              );
+            }),
       ],
     );
   }

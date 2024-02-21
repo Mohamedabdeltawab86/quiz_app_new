@@ -17,20 +17,10 @@ class ModuleData {
   ModuleData({required this.nameController, required this.lessons});
 }
 
+class QuestionScreenArguments {
+  final String courseId;
+  final String moduleId;
+  final String lessonId;
 
-
-class QuestionData {
-  final TextEditingController nameController;
-  final List<ChoiceData> choices;
-
-  QuestionData({
-    required this.nameController,
-    required this.choices,
-  });
-}
-
-class ChoiceData {
-  final TextEditingController choiceController;
-
-  ChoiceData({required this.choiceController});
+  QuestionScreenArguments(this.courseId, this.moduleId, this.lessonId);
 }

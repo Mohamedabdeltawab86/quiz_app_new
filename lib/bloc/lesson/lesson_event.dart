@@ -39,16 +39,9 @@ class LoadLesson extends LessonEvent {
 }
 
 class AddQuestion extends LessonEvent {
-  final String courseId;
-  final String moduleId;
-  final String lessonId;
-  final Question question;
+  final QuestionScreenArguments args;
 
-  AddQuestion(
-      {required this.courseId,
-      required this.moduleId,
-      required this.lessonId,
-      required this.question});
+  AddQuestion(this.args);
 }
 
 class UpdateQuestion extends LessonEvent {
@@ -68,13 +61,15 @@ class DeleteQuestion extends LessonEvent {
   final String courseId;
   final String moduleId;
   final String lessonId;
-  final Question question;
 
-  DeleteQuestion(
-      {required this.courseId,
-      required this.moduleId,
-      required this.lessonId,
-      required this.question});
+  // final Question question;
+
+  DeleteQuestion({
+    required this.courseId,
+    required this.moduleId,
+    required this.lessonId,
+    // required this.question,
+  });
 }
 
 class SetCorrectAnswer extends LessonEvent {
@@ -95,10 +90,8 @@ class SetCorrectAnswer extends LessonEvent {
 class AddChoice extends LessonEvent {
   final int questionIndex;
 
-
   AddChoice({
     required this.questionIndex,
-
   });
 }
 
