@@ -18,111 +18,100 @@ class AddEditCourse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<CoursesBloc>();
-    final course = bloc.selectedCourse;
-
     final l10n = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       // TODO: fixed by trial and error. the current way works with no problems.
-      child: PopScope(
-        canPop: false,
-        onPopInvoked: (bool didPop) {
-          if (!didPop && bloc.state is! AddingCourseDone) {
-            bloc.clearCourseTextFields();
-          }
-          context.pop();
-        },
-        child: Padding(
-          padding: EdgeInsets.all(8.0.sp),
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                  bloc.course != null ? l10n.editCourse : l10n.addNewCourse),
-            ),
-            body: BlocListener<CoursesBloc, CoursesState>(
-              listener: (context, state) async {
-                if (state is AddingCourseLoading) {
-                  EasyLoading.show(status: 'Loading');
-                } else if (state is AddingCourseDone) {
-                  EasyLoading.showSuccess("Done");
-                  context.pop();
-                  bloc.clearCourseTextFields();
-                } else if (state is AddingCourseError) {
-                  EasyLoading.showError("ERROR!!");
-                }
-
-              },
-              child: Form(
-                key: bloc.courseKey,
-                child: ListView(
-                  children: [
-
-                    CommonTextField(
-                      label: l10n.title,
-                      icon: Icons.abc,
-                      controller:  bloc.titleController,
-                    ),
-                    heightGap,
-                    CommonTextField(
-                      label: l10n.description,
-                      icon: Icons.text_fields,
-                      controller: bloc.descriptionController,
-
-                      keyboardType: TextInputType.multiline,
-                    ),
-                    //   TODO 1 : Add image picker to let user change user profile and save it on firebase storage
-                    const Divider(),
-                    BlocBuilder<CoursesBloc, CoursesState>(
-                      buildWhen: (_, c) =>
-                          c is LessonAdded ||
-                          c is LessonDeleted ||
-                          c is ModuleDeleted ||
-                          c is ModuleAdded,
-                      builder: (context, state) {
-                        return ListView.builder(
-                          itemCount: bloc.addEditModulesData.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, mIndex) {
-                            return AddEditModule(
-                              moduleNumber: mIndex + 1,
-                              data: bloc.addEditModulesData[mIndex],
-                              removeModule: () =>
-                                  bloc.add(DeleteModule(mIndex)),
-                              removeLesson: (lIndex) => bloc.add(
-                                DeleteLesson(
-                                  moduleIndex: mIndex,
-                                  lessonIndex: lIndex,
-                                ),
+      child: Padding(
+        padding: EdgeInsets.all(8.0.sp),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(bloc.editCourse != null
+                ? l10n.editCourse
+                : l10n.addNewCourse),
+          ),
+          body: BlocListener<CoursesBloc, CoursesState>(
+            listener: (context, state) async {
+              if (state is AddingCourseLoading) {
+                EasyLoading.show(status: 'Loading');
+              } else if (state is AddingCourseDone) {
+                EasyLoading.showSuccess("Done");
+                context.pop();
+              } else if (state is AddingCourseError) {
+                EasyLoading.showError("ERROR!!");
+              } else if (state is LoadingModulesAndLessons) {
+                EasyLoading.show(status: "Loading");
+              }
+            },
+            child: Form(
+              key: bloc.courseKey,
+              child: ListView(
+                children: [
+                  CommonTextField(
+                    label: l10n.title,
+                    icon: Icons.abc,
+                    controller: bloc.titleController,
+                  ),
+                  heightGap,
+                  CommonTextField(
+                    label: l10n.description,
+                    icon: Icons.text_fields,
+                    controller: bloc.descriptionController,
+                    keyboardType: TextInputType.multiline,
+                  ),
+                  //   TODO 1 : Add image picker to let user change user profile and save it on firebase storage
+                  const Divider(),
+                  BlocBuilder<CoursesBloc, CoursesState>(
+                    buildWhen: (_, c) =>
+                        c is LessonAdded ||
+                        c is LessonDeleted ||
+                        c is ModuleDeleted ||
+                        c is ModuleAdded ||
+                        c is ModulesAndLessonsLoaded,
+                    builder: (context, state) {
+                      return ListView.builder(
+                        itemCount: bloc.addEditModulesData.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, mIndex) {
+                          return AddEditModule(
+                            moduleNumber: mIndex + 1,
+                            data: bloc.addEditModulesData[mIndex],
+                            removeModule: () =>
+                                bloc.add(DeleteModule(mIndex)),
+                            removeLesson: (lIndex) => bloc.add(
+                              DeleteLesson(
+                                moduleIndex: mIndex,
+                                lessonIndex: lIndex,
                               ),
-                              addLesson: () => bloc.add(AddLesson(mIndex)),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                    Gap(8.sp),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 50.w,
-                          child: CommonButton(
-                            onPressed: () => bloc.add(AddModule()),
-                            icon: Icons.add,
-                            label: l10n.addModule,
-                          ),
+                            ),
+                            addLesson: () => bloc.add(AddLesson(mIndex)),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  Gap(8.sp),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 50.w,
+                        child: CommonButton(
+                          onPressed: () => bloc.add(AddModule()),
+                          icon: Icons.add,
+                          label: l10n.addModule,
                         ),
-                      ],
-                    ),
-                    const Divider(),
-                    CommonButton(
-                      onPressed: () => bloc.add(AddCourse()),
-                      icon: Icons.add,
-                      label: l10n.addNewCourse,
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+                  CommonButton(
+                    onPressed: () => bloc.add(AddCourse()),
+                    icon: Icons.add,
+                    label: l10n.addNewCourse,
+                  ),
+                ],
               ),
             ),
           ),

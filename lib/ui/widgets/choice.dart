@@ -23,6 +23,7 @@ class Choice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final answers = context.read<QuestionsBloc>().answers;
     // TODO: add radio for correct answer
     return Stack(
       children: [
@@ -37,12 +38,16 @@ class Choice extends StatelessWidget {
                   Gap(5.sp),
                   ListTile(
                     title: QuizTextField(
-                      controller: TextEditingController(),
+                      controller: answers[choiceNumber],
                       icon: Icons.title,
                       label: l10n.addChoice,
                       validator: (v) {
-                        if(v != null && v.isEmpty){
+                        if (v != null && v.isEmpty) {
                           return "Must Enter Choice";
+                        } else if (answers.asMap().entries.any((element) =>
+                            element.key != choiceNumber &&
+                            element.value.text == v)) {
+                          return "Already $v is entered";
                         } else {
                           return null;
                         }
@@ -60,7 +65,7 @@ class Choice extends StatelessWidget {
             ),
           ),
         ),
-        if (context.read<QuestionsBloc>().answers.length > 2)
+        if (answers.length > 2)
           Positioned(
             right: 0,
             child: IconButton(

@@ -154,16 +154,6 @@ Future<void> saveLesson(String courseId, String moduleId, Lesson lesson) async {
   await updatedLesson.doc(lesson.id).set(lesson);
 }
 
-Future<void> saveOneCourse(Course course) async {
-  final updatedCourse = FirebaseFirestore.instance
-      .collection(coursesCollection)
-      .withConverter<Course>(
-        fromFirestore: (snapshot, options) => Course.fromJson(snapshot.data()!),
-        toFirestore: (course, options) => course.toJson(),
-      );
-  await updatedCourse.doc(course.id).set(course);
-}
-
 Future<void> saveCourseInDB(
     Course course, List<(Module, List<Lesson>)> modulesData) async {
   final courses = FirebaseFirestore.instance

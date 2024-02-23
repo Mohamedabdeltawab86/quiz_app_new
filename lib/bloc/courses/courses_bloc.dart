@@ -15,11 +15,8 @@ part 'courses_event.dart';
 part 'courses_state.dart';
 
 class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
-  final Course? course;
-
-  CoursesBloc({this.course}) : super(CourseInitial()) {
-    if (course != null) initCourse();
-
+  Course? editCourse;
+  CoursesBloc() : super(CourseInitial()) {
     on<AddCourse>(_addCourse);
     on<FetchCourses>(_fetchCourses);
 
@@ -28,33 +25,55 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     // add delete course
     on<DeleteCourse>(_deleteCourse);
     // edit course
-    on<UpdateCourse>(_updateCourse);
     on<DeleteModule>(_deleteModule);
     on<DeleteLesson>(_deleteLesson);
+    on<UpdateCourse>(_updateCourse);
   }
 
   void initInfoPage(Course course) {
-    titleController.text = course.title ?? "";
+    titleController.text = course.title;
     descriptionController.text = course.description ?? "";
-
   }
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
- Course? selectedCourse;
-
-
 
   // TODO 2: Add image of the course
   final courseKey = GlobalKey<FormState>();
   List<Course> courses = [];
   List<ModuleData> addEditModulesData = [];
 
-  Future<void> initCourse() async {
-    titleController.text = course!.title;
-    descriptionController.text = course!.description!;
-    // titleController.text = course!.title;
-    courses = await readCoursesFromDB();
+  Future<void> _updateCourse(UpdateCourse event, Emitter<CoursesState> emit) async {
+    emit(LoadingModulesAndLessons());
+    editCourse = event.course;
+    titleController.text = event.course.title;
+    descriptionController.text = event.course.description ?? "";
+    // load addEditModulesData
+    final List<Module> modules = await getModules(event.course.id!);
+    for (Module module in modules) {
+      final List<Lesson> lessons =
+          await getLessons(event.course.id!, module.id!);
+      List<LessonData> lessonsData = [];
+      for (Lesson lesson in lessons) {
+        lessonsData.add(
+          LessonData(
+            lessonTitleController: TextEditingController(
+              text: lesson.title,
+            ),
+            lessonContentController: TextEditingController(
+              text: lesson.content,
+            ),
+          ),
+        );
+      }
+      addEditModulesData.add(
+        ModuleData(
+          nameController: TextEditingController(text: module.title),
+          lessons: lessonsData,
+        ),
+      );
+    }
+    emit(ModulesAndLessonsLoaded());
   }
 
   Course getCourseByID(String id) {
@@ -68,7 +87,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
         id: const Uuid().v4(),
         title: titleController.text,
         description: descriptionController.text,
-        createdAt: this.course?.createdAt ?? DateTime.now(),
+        createdAt: editCourse?.createdAt ?? DateTime.now(),
         createdBy: getUid(),
         updatedAt: DateTime.now(),
       );
@@ -127,23 +146,6 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     emit(LessonAdded());
   }
 
-
-  Future<void> _updateCourse(
-      UpdateCourse event, Emitter<CoursesState> emit) async {
-    emit(UpdatingCourseLoading());
-    final updatedCourse = Course(
-      id: event.courseId,
-      title: titleController.text,
-      description: descriptionController.text,
-      createdBy: getUid(),
-      createdAt: course?.createdAt ?? DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
-
-    await saveOneCourse(updatedCourse);
-    emit(UpdatingCourseSuccess());
-  }
-
   Future<void> _deleteCourse(
       DeleteCourse event, Emitter<CoursesState> emit) async {
     emit(DeletingCourseLoading());
@@ -153,7 +155,6 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
         .delete();
     emit(DeletingCourseSuccess());
   }
-
 
   void _deleteModule(DeleteModule event, Emitter<CoursesState> emit) {
     addEditModulesData.removeAt(event.index);

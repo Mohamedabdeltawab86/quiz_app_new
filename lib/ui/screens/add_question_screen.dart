@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -72,6 +74,7 @@ class AddEditQuestionScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return Choice(
                             choiceNumber: index,
+
                             removeChoice: () => bloc.add(RemoveChoice(index)),
                             groupValue: bloc.correctAnswerIndex,
                             onChanged: (_) => bloc.add(SetCorrectAnswer(index)),

@@ -31,3 +31,8 @@ class DeletingCourseSuccess extends CoursesState {}
 
 class UpdatingCourseLoading extends CoursesState {}
 class UpdatingCourseSuccess extends CoursesState {}
+
+
+class LoadingModulesAndLessons extends CoursesState {}
+
+class ModulesAndLessonsLoaded extends CoursesState {}

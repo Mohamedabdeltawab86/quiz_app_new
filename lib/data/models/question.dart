@@ -35,6 +35,7 @@ class Question extends Equatable {
   final int? correctAnswer;
   final QuestionDifficulty? difficulty;
   final int? weight;
+  final String? feedback;
   final QuestionType? type;
   @JsonKey(
     fromJson: dateTimeFromTimestamp,
@@ -51,6 +52,7 @@ class Question extends Equatable {
     this.difficulty,
     this.weight,
     this.type,
+    this.feedback,
     this.updatedAt,
   });
 

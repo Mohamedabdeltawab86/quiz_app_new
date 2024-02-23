@@ -68,46 +68,12 @@ class HomePage extends StatelessWidget {
                               backgroundColor: Colors.amber,
                               icon: Icons.edit,
                               spacing: 8,
-                              onPressed: (context) {
-                                bloc.selectedCourse;
-
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return SizedBox(
-                                      height: 600,
-                                      child: AlertDialog(
-                                        title: const Text("Edit Course title"),
-                                        content: Column(
-                                          children: [
-                                            TextField(
-                                              controller: bloc.titleController,
-                                            ),
-                                            TextField(
-                                              controller:
-                                                  bloc.descriptionController,
-                                            ),
-                                          ],
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () => context.pop(),
-                                            child: const Text("Cancel"),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              bloc.add(
-                                                UpdateCourse(selectedCourse.id!),
-                                              );
-                                              context.pop();
-                                            },
-                                            child: const Text("OK"),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
+                              onPressed: (_) {
+                                context.push(
+                                  addEditCourse,
+                                  extra: bloc,
                                 );
+                                bloc.add(UpdateCourse(selectedCourse));
                               },
                             ),
                           ],
@@ -117,7 +83,8 @@ class HomePage extends StatelessWidget {
                             bloc.courses[index].title,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          onTap: () => context.push(course, extra: selectedCourse),
+                          onTap: () =>
+                              context.push(course, extra: selectedCourse),
                           subtitle: Text(
                             bloc.courses[index].description.toString(),
                           ),
