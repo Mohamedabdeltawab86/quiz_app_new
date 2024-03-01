@@ -32,7 +32,7 @@ Total : 34 files,  647 codes, 52 comments, 104 blanks, all 803 lines
 | [lib/main.dart](/lib/main.dart) | Dart | 1 | 0 | 0 | 1 |
 | [lib/ui/screens/add_edit_course.dart](/lib/ui/screens/add_edit_course.dart) | Dart | 53 | 2 | 1 | 56 |
 | [lib/ui/screens/course_page.dart](/lib/ui/screens/course_page.dart) | Dart | 94 | 0 | 5 | 99 |
-| [lib/ui/screens/home.dart](/lib/ui/screens/home.dart) | Dart | 18 | -1 | 3 | 20 |
+| [lib/ui/screens/home.dart](/lib/ui/screens/teachers_home.dart) | Dart | 18 | -1 | 3 | 20 |
 | [lib/ui/screens/profile_screen.dart](/lib/ui/screens/profile_screen.dart) | Dart | 3 | 0 | 0 | 3 |
 | [lib/ui/screens/quiz/quiz_view.dart](/lib/ui/screens/quiz/quiz_view.dart) | Dart | -39 | 41 | -2 | 0 |
 | [lib/ui/screens/register_page.dart](/lib/ui/screens/register_page.dart) | Dart | 0 | 1 | 1 | 2 |

@@ -26,7 +26,7 @@ Total : 27 files,  520 codes, 6 comments, 72 blanks, all 598 lines
 | [lib/data/models/user_profile.g.dart](/lib/data/models/user_profile.g.dart) | Dart | 28 | 4 | 7 | 39 |
 | [lib/main.dart](/lib/main.dart) | Dart | 1 | 0 | 0 | 1 |
 | [lib/ui/screens/add_edit_course.dart](/lib/ui/screens/add_edit_course.dart) | Dart | 65 | 2 | 4 | 71 |
-| [lib/ui/screens/home.dart](/lib/ui/screens/home.dart) | Dart | 25 | 0 | -1 | 24 |
+| [lib/ui/screens/home.dart](/lib/ui/screens/teachers_home.dart) | Dart | 25 | 0 | -1 | 24 |
 | [lib/ui/screens/login_page.dart](/lib/ui/screens/login_page.dart) | Dart | 3 | 0 | 0 | 3 |
 | [lib/ui/screens/profile_screen.dart](/lib/ui/screens/profile_screen.dart) | Dart | 78 | 1 | 4 | 83 |
 | [lib/ui/screens/register_page.dart](/lib/ui/screens/register_page.dart) | Dart | 51 | 4 | 1 | 56 |

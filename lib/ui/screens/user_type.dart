@@ -54,7 +54,7 @@ class UserTypeAndInfo extends StatelessWidget {
                       onPressed: bloc.userType != null
                           ? () {
                               bloc.add(UserInfoSubmitted());
-                              context.go(home);
+                              context.go(teachersHome);
                             }
                           : null,
                       icon: const FaIcon(FontAwesomeIcons.diceOne),

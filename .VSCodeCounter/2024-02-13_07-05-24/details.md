@@ -87,7 +87,7 @@ Total : 129 files,  5036 codes, 408 comments, 784 blanks, all 6228 lines
 | [lib/ui/common.dart](/lib/ui/common.dart) | Dart | 3 | 0 | 2 | 5 |
 | [lib/ui/screens/add_edit_course.dart](/lib/ui/screens/add_edit_course.dart) | Dart | 118 | 4 | 5 | 127 |
 | [lib/ui/screens/course_page.dart](/lib/ui/screens/course_page.dart) | Dart | 94 | 0 | 5 | 99 |
-| [lib/ui/screens/home.dart](/lib/ui/screens/home.dart) | Dart | 105 | 1 | 6 | 112 |
+| [lib/ui/screens/home.dart](/lib/ui/screens/teachers_home.dart) | Dart | 105 | 1 | 6 | 112 |
 | [lib/ui/screens/login_page.dart](/lib/ui/screens/login_page.dart) | Dart | 117 | 2 | 3 | 122 |
 | [lib/ui/screens/profile_screen.dart](/lib/ui/screens/profile_screen.dart) | Dart | 81 | 1 | 4 | 86 |
 | [lib/ui/screens/quiz/quiz_screen.dart](/lib/ui/screens/quiz/quiz_screen.dart) | Dart | 0 | 0 | 1 | 1 |

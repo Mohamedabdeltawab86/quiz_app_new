@@ -11,8 +11,8 @@ import 'package:sizer/sizer.dart';
 import '../../bloc/courses/courses_bloc.dart';
 import '../widgets/home_widgets/drawer.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class TeachersHome extends StatelessWidget {
+  const TeachersHome({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
                                   addEditCourse,
                                   extra: bloc,
                                 );
-                                bloc.add(UpdateCourse(selectedCourse));
+                                bloc.add(InitCourse(selectedCourse));
                               },
                             ),
                           ],

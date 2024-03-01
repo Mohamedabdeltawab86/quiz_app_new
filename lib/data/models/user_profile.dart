@@ -28,6 +28,7 @@ class UserProfile extends Equatable {
   )
   final UserType? userType;
   final String? photoUrl;
+  final List<String> subscribedCourses;
 
   const UserProfile({
     this.createdAt,
@@ -38,6 +39,7 @@ class UserProfile extends Equatable {
     this.phoneNumber,
     this.userType,
     this.photoUrl = dummyProfilePicUrl,
+    this.subscribedCourses = const [],
   });
 
   UserProfile copyWith({
@@ -46,15 +48,18 @@ class UserProfile extends Equatable {
     String? phoneNumber,
     UserType? userType,
     String? photoUrl,
+    List<String>? subscribedCourses,
   }) {
     return UserProfile(
-        createdAt: createdAt,
-        userId: userId,
-        email: email,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
-        phoneNumber: phoneNumber ?? this.phoneNumber,
-        photoUrl: photoUrl ?? this.photoUrl);
+      createdAt: createdAt,
+      userId: userId,
+      email: email,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      photoUrl: photoUrl ?? this.photoUrl,
+      subscribedCourses: subscribedCourses ?? this.subscribedCourses,
+    );
   }
 
   Map<String, dynamic> toJson() => _$UserProfileToJson(this);

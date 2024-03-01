@@ -45,14 +45,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: emailRegisterController.text,
           password: passRegisterController.text,
         );
-        await saveUserInDB(UserProfile(
-          firstName: firstNameController.text,
-          lastName: lastNameController.text,
-          phoneNumber: phoneNumberController.text,
-          email: emailRegisterController.text,
-          userType: userType,
-          createdAt: DateTime.now(),
-        ));
+        await saveUserInDB(
+          UserProfile(
+            userId: getUid(),
+            firstName: firstNameController.text,
+            lastName: lastNameController.text,
+            phoneNumber: phoneNumberController.text,
+            email: emailRegisterController.text,
+            userType: userType,
+            createdAt: DateTime.now(),
+          ),
+        );
         emit(RegisterSuccess(hasInfo: true));
       } on FirebaseException catch (e) {
         if (e.code == 'weak-password') {
@@ -122,7 +125,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       await saveUserInDB(UserProfile.fromGoogle(userCredential));
-      bool hasData = await doesUserHasInfo(userCredential.user!.uid);
+      bool hasData = await doesUserHasInfo();
       // TODO: if user doesn't have info, go to user info screen ONLY to update the user type.
       emit(LoginSuccess(hasInfo: hasData));
     } on FirebaseException catch (e) {

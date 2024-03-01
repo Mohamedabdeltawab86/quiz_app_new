@@ -15,6 +15,10 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => UserProfile(
       phoneNumber: json['phoneNumber'] as String?,
       userType: UserProfile.userTypeFromJson(json['userType']),
       photoUrl: json['photoUrl'] as String? ?? dummyProfilePicUrl,
+      subscribedCourses: (json['subscribedCourses'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$UserProfileToJson(UserProfile instance) {
@@ -34,5 +38,6 @@ Map<String, dynamic> _$UserProfileToJson(UserProfile instance) {
   writeNotNull('phoneNumber', instance.phoneNumber);
   writeNotNull('userType', UserProfile.usertypeToJson(instance.userType));
   writeNotNull('photoUrl', instance.photoUrl);
+  val['subscribedCourses'] = instance.subscribedCourses;
   return val;
 }

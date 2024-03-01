@@ -16,6 +16,7 @@ Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
           $enumDecodeNullable(_$QuestionDifficultyEnumMap, json['difficulty']),
       weight: json['weight'] as int?,
       type: $enumDecodeNullable(_$QuestionTypeEnumMap, json['type']),
+      feedback: json['feedback'] as String?,
       updatedAt: dateTimeFromTimestamp(json['updated_at'] as Timestamp),
     );
 
@@ -34,6 +35,7 @@ Map<String, dynamic> _$QuestionToJson(Question instance) {
   writeNotNull('correct_answer', instance.correctAnswer);
   writeNotNull('difficulty', _$QuestionDifficultyEnumMap[instance.difficulty]);
   writeNotNull('weight', instance.weight);
+  writeNotNull('feedback', instance.feedback);
   writeNotNull('type', _$QuestionTypeEnumMap[instance.type]);
   writeNotNull('updated_at', dateTimeToTimestamp(instance.updatedAt));
   return val;

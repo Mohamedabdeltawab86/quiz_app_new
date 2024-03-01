@@ -15,9 +15,9 @@ class AddLesson extends CoursesEvent {
 
 class AddModule extends CoursesEvent {}
 
-class UpdateCourse extends CoursesEvent {
+class InitCourse extends CoursesEvent {
   final Course course;
-  UpdateCourse(this.course);
+  InitCourse(this.course);
 }
 
 class DeleteCourse extends CoursesEvent {

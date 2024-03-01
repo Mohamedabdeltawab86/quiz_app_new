@@ -9,6 +9,8 @@ import 'package:quiz_app_new/ui/widgets/login_form_text_field.dart';
 import 'package:quiz_app_new/ui/widgets/custom_image.dart';
 import 'package:sizer/sizer.dart';
 import '../../bloc/settings_bloc/bloc/app_settings_bloc.dart';
+import '../../data/models/user_profile.dart';
+import '../../utils/common_functions.dart';
 import '../../utils/routes.dart';
 import '../common.dart';
 
@@ -23,10 +25,17 @@ class LoginPage extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is LoginSuccess) {
             if (state.hasInfo) {
-              context.go(home);
+              await getCurrentUser().then((currentUser) {
+                if (currentUser != null &&
+                    currentUser.userType == UserType.teacher) {
+                  context.go(teachersHome);
+                } else {
+                  context.go(studentsHome);
+                }
+              });
             } else {
               context.go(userTypeAndInfo, extra: bloc);
             }
@@ -72,7 +81,9 @@ class LoginPage extends StatelessWidget {
                     icon: FontAwesomeIcons.envelope,
                     label: l10n.email,
                     keyboardType: TextInputType.emailAddress,
-                    inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))],
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))
+                    ],
                   ),
                   heightGap,
                   QuizTextField(

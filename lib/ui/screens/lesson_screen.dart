@@ -7,6 +7,7 @@ import 'package:quiz_app_new/utils/routes.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../bloc/lesson/lesson_bloc.dart';
+import '../../bloc/questions/questions_bloc.dart';
 
 class LessonScreen extends StatelessWidget {
   final String courseId;
@@ -14,12 +15,11 @@ class LessonScreen extends StatelessWidget {
   final String lessonId;
   final String lessonTitle;
 
-  const LessonScreen(
-      {super.key,
-      required this.courseId,
-      required this.moduleId,
-      required this.lessonId,
-      required this.lessonTitle});
+  const LessonScreen({super.key,
+    required this.courseId,
+    required this.moduleId,
+    required this.lessonId,
+    required this.lessonTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +32,20 @@ class LessonScreen extends StatelessWidget {
         child: const Icon(Icons.add),
         onPressed: () {
           context.push(
-              // '/courses/$courseId/modules/$moduleId/lessons/$lessonId/addEditQuestion',
+            // '/courses/$courseId/modules/$moduleId/lessons/$lessonId/addEditQuestion',
               addEditQuestion,
               extra: QuestionScreenArguments(courseId, moduleId, lessonId));
         },
       ),
       body: BlocConsumer<LessonBloc, LessonState>(
         listener: (context, state) {
-          if (state is QuestionDeleted) {
-            bloc.add(LoadLesson(
-                courseId: courseId, moduleId: moduleId, lessonId: lessonId));
-          }
+          // if (state is QuestionDeleted) {
+          //   bloc.add(LoadLesson(
+          //       courseId: courseId, moduleId: moduleId, lessonId: lessonId));
+          // }
         },
         buildWhen: (previous, current) =>
-            current is LessonLoaded || current is QuestionDeleted,
+        current is LessonLoaded ,
         builder: (context, lessonState) {
           if (lessonState is LessonLoaded) {
             final questions = lessonState.questions;
@@ -53,23 +53,28 @@ class LessonScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: questions.length,
               itemBuilder: (context, i) {
+                final question = questions[i];
                 // todo: add edit & delete with slidable package
                 return Slidable(
                   // key: ValueKey(lessons[i].id),
                   endActionPane: ActionPane(
                     motion: const ScrollMotion(),
                     children: [
-                      SlidableAction(
-                        label: 'Delete',
-                        backgroundColor: Colors.amber,
-                        icon: Icons.delete,
-                        spacing: 8,
-                        onPressed: (context) => bloc.add(DeleteQuestion(
-                          courseId: courseId,
-                          moduleId: moduleId,
-                          lessonId: lessonId,
-                          // question: questions[i],
-                        )),
+                      BlocBuilder<QuestionsBloc, QuestionsState>(
+                        builder: (context, state) {
+                          final bloc2 = context.read<QuestionsBloc>();
+                          return SlidableAction(
+                            label: 'Delete',
+                            backgroundColor: Colors.amber,
+                            icon: Icons.delete,
+                            spacing: 8,
+                            onPressed: (context) =>
+                                bloc2.add(DeleteQuestion(
+                                  question.id!
+                                  // question: questions[i],
+                                )),
+                          );
+                        },
                       ),
                       SlidableAction(
                         label: 'Edit',
@@ -89,12 +94,12 @@ class LessonScreen extends StatelessWidget {
                                   content: const Column(
                                     children: [
                                       TextField(
-                                          // controller: bloc.titleController,
-                                          ),
+                                        // controller: bloc.titleController,
+                                      ),
                                       TextField(
-                                          // controller:
-                                          // bloc.descriptionController,
-                                          ),
+                                        // controller:
+                                        // bloc.descriptionController,
+                                      ),
                                     ],
                                   ),
                                   actions: [
@@ -133,22 +138,22 @@ class LessonScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child:
-                            // Slidable(
-                            //   // key: ValueKey(lessons[i].id),
-                            //   endActionPane: ActionPane(
-                            //     motion: const ScrollMotion(),
-                            //     children: [
-                            //     SlidableAction(
-                            //     label: 'Delete',
-                            //     backgroundColor: Colors.amber,
-                            //     icon: Icons.delete,
-                            //     spacing: 8,
-                            //     onPressed: (context) => bloc.add(DeleteLesson(courseId: courseId, moduleId: moduleId, lessonId: lessonId)),
-                            //   ),
-                            //   ],
-                            //   ),
-                            //   child:
-                            ExpansionTile(
+                        // Slidable(
+                        //   // key: ValueKey(lessons[i].id),
+                        //   endActionPane: ActionPane(
+                        //     motion: const ScrollMotion(),
+                        //     children: [
+                        //     SlidableAction(
+                        //     label: 'Delete',
+                        //     backgroundColor: Colors.amber,
+                        //     icon: Icons.delete,
+                        //     spacing: 8,
+                        //     onPressed: (context) => bloc.add(DeleteLesson(courseId: courseId, moduleId: moduleId, lessonId: lessonId)),
+                        //   ),
+                        //   ],
+                        //   ),
+                        //   child:
+                        ExpansionTile(
                           onExpansionChanged: (bool expanded) {
                             bloc.add(
                               ChangeQuestionState(
@@ -160,13 +165,13 @@ class LessonScreen extends StatelessWidget {
                           tilePadding: EdgeInsets.symmetric(horizontal: 4.sp),
                           title: BlocBuilder<LessonBloc, LessonState>(
                             buildWhen: (_, c) =>
-                                c is QuestionStateChanged && c.index == i,
+                            c is QuestionStateChanged && c.index == i,
                             builder: (context, state) {
                               return Text(
                                 questions[i].title ?? "N/A",
                                 maxLines: qStates[i] ? null : 1,
                                 overflow:
-                                    qStates[i] ? null : TextOverflow.ellipsis,
+                                qStates[i] ? null : TextOverflow.ellipsis,
                               );
                             },
                           ),
@@ -174,7 +179,7 @@ class LessonScreen extends StatelessWidget {
                           // todo: check for language to edit alignment
                           expandedAlignment: Alignment.centerRight,
                           children: questions[i].options!.map(
-                            (option) {
+                                (option) {
                               return Padding(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 10.sp,
@@ -183,13 +188,14 @@ class LessonScreen extends StatelessWidget {
                                 child: ListTile(
                                   title: Text(option),
                                   trailing: questions[i].correctAnswer ==
-                                          questions[i].options!.indexOf(option)
+                                      questions[i].options!.indexOf(option)
                                       ? Icon(
-                                          Icons.check,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
-                                        )
+                                    Icons.check,
+                                    color: Theme
+                                        .of(context)
+                                        .colorScheme
+                                        .tertiary,
+                                  )
                                       : const SizedBox(),
                                 ),
                               );

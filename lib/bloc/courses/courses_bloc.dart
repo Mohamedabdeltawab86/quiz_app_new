@@ -16,8 +16,9 @@ part 'courses_state.dart';
 
 class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
   Course? editCourse;
+
   CoursesBloc() : super(CourseInitial()) {
-    on<AddCourse>(_addCourse);
+    on<AddCourse>(_addEditCourse);
     on<FetchCourses>(_fetchCourses);
 
     on<AddModule>(_addModule);
@@ -27,7 +28,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     // edit course
     on<DeleteModule>(_deleteModule);
     on<DeleteLesson>(_deleteLesson);
-    on<UpdateCourse>(_updateCourse);
+    on<InitCourse>(_initCourse);
   }
 
   void initInfoPage(Course course) {
@@ -43,7 +44,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
   List<Course> courses = [];
   List<ModuleData> addEditModulesData = [];
 
-  Future<void> _updateCourse(UpdateCourse event, Emitter<CoursesState> emit) async {
+  Future<void> _initCourse(InitCourse event, Emitter<CoursesState> emit) async {
     emit(LoadingModulesAndLessons());
     editCourse = event.course;
     titleController.text = event.course.title;
@@ -80,11 +81,13 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     return courses.firstWhere((course) => course.id == id);
   }
 
-  Future<void> _addCourse(AddCourse event, Emitter<CoursesState> emit) async {
+  Future<void> _addEditCourse(
+      AddCourse event, Emitter<CoursesState> emit) async {
     if (courseKey.currentState!.validate()) {
       emit(AddingCourseLoading());
       Course course = Course(
-        id: const Uuid().v4(),
+        id: editCourse?.id ??
+            const Uuid().v4().replaceAll("-", "").substring(0, 12),
         title: titleController.text,
         description: descriptionController.text,
         createdAt: editCourse?.createdAt ?? DateTime.now(),

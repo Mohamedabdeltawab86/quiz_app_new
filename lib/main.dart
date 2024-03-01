@@ -8,7 +8,6 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quiz_app_new/bloc/settings_bloc/bloc/app_settings_bloc.dart';
 import 'package:quiz_app_new/bloc_observer.dart';
-import 'package:quiz_app_new/utils/color_schemes.g.dart';
 import 'package:quiz_app_new/utils/common_functions.dart';
 import 'package:quiz_app_new/utils/routes.dart';
 import 'package:quiz_app_new/utils/typography.dart';

@@ -39,7 +39,9 @@ class AddEditCourse extends StatelessWidget {
             ),
             body: BlocListener<CoursesBloc, CoursesState>(
               listener: (context, state) async {
-                if (state is AddingCourseLoading) {
+                if (state is LoadingModulesAndLessons) {
+                  EasyLoading.show(status: "Loading");
+                } else if (state is AddingCourseLoading) {
                   EasyLoading.show(status: 'Loading');
                 } else if (state is AddingCourseDone) {
                   EasyLoading.showSuccess("Done");
@@ -48,8 +50,6 @@ class AddEditCourse extends StatelessWidget {
                   bloc.clearCourseTextFields();
                 } else if (state is AddingCourseError) {
                   EasyLoading.showError("ERROR!!");
-                } else if (state is LoadingModulesAndLessons) {
-                  EasyLoading.show(status: "Loading");
                 }
               },
               child: Form(

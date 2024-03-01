@@ -190,10 +190,23 @@ Timestamp? dateTimeToTimestamp(DateTime? dateTime) {
   }
 }
 
-Future<bool> doesUserHasInfo(String uid) async {
+Future<UserProfile?> getCurrentUser() async {
+  final currentUser = await FirebaseFirestore.instance
+      .collection(usersCollection)
+      .withConverter(
+          fromFirestore: (snapshot, _) =>
+              UserProfile.fromJson(snapshot.data()!),
+          toFirestore: (value, _) => value.toJson())
+      .doc(getUid())
+      .get();
+
+  return currentUser.data();
+}
+
+Future<bool> doesUserHasInfo() async {
   final snapshot = await FirebaseFirestore.instance
       .collection(usersCollection)
-      .doc(uid)
+      .doc(getUid())
       .get();
 
   return snapshot.data()?['userType'] != null;
@@ -203,8 +216,13 @@ String getUid() => FirebaseAuth.instance.currentUser!.uid;
 
 Future<String> getInitialLocation() async {
   if (FirebaseAuth.instance.currentUser != null) {
-    if (await doesUserHasInfo(getUid())) {
-      return home;
+    if (await doesUserHasInfo()) {
+      final currentUser = await getCurrentUser();
+      if (currentUser != null && currentUser.userType == UserType.teacher) {
+        return teachersHome;
+      } else {
+        return studentsHome;
+      }
     }
     return userTypeAndInfo;
   } else {

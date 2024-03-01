@@ -74,7 +74,7 @@ Total : 110 files,  3869 codes, 350 comments, 608 blanks, all 4827 lines
 | [lib/firebase_options.dart](/lib/firebase_options.dart) | Dart | 64 | 12 | 6 | 82 |
 | [lib/main.dart](/lib/main.dart) | Dart | 67 | 0 | 5 | 72 |
 | [lib/ui/common.dart](/lib/ui/common.dart) | Dart | 3 | 0 | 2 | 5 |
-| [lib/ui/screens/home.dart](/lib/ui/screens/home.dart) | Dart | 62 | 2 | 4 | 68 |
+| [lib/ui/screens/home.dart](/lib/ui/screens/teachers_home.dart) | Dart | 62 | 2 | 4 | 68 |
 | [lib/ui/screens/login_page.dart](/lib/ui/screens/login_page.dart) | Dart | 114 | 2 | 3 | 119 |
 | [lib/ui/screens/quiz/quiz_screen.dart](/lib/ui/screens/quiz/quiz_screen.dart) | Dart | 0 | 0 | 1 | 1 |
 | [lib/ui/screens/quiz/quiz_view.dart](/lib/ui/screens/quiz/quiz_view.dart) | Dart | 39 | 1 | 3 | 43 |

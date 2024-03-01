@@ -1,4 +1,5 @@
 const String usersCollection = 'users';
+const String subscribedCourses = 'subscribedCourses';
 const String coursesCollection = 'courses';
 const String lessonCollection = 'lessons';
 const String modulesCollection = 'modules';

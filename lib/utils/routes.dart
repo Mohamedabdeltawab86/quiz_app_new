@@ -5,6 +5,7 @@ import 'package:quiz_app_new/bloc/questions/questions_bloc.dart';
 import 'package:quiz_app_new/data/models/add_lesson_data_model.dart';
 import 'package:quiz_app_new/ui/screens/add_question_screen.dart';
 import 'package:quiz_app_new/ui/screens/lesson_screen.dart';
+import 'package:quiz_app_new/ui/screens/students_home.dart';
 
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/course/course_bloc.dart';
@@ -12,16 +13,18 @@ import '../bloc/courses/courses_bloc.dart';
 import '../bloc/user/user_info_bloc.dart';
 import '../data/models/course.dart';
 import '../data/repositories/question_repo.dart';
+import '../data/repositories/students_repo/students_repo.dart';
 import '../ui/screens/add_edit_course.dart';
 import '../ui/screens/course_page.dart';
-import '../ui/screens/home.dart';
+import '../ui/screens/teachers_home.dart';
 import '../ui/screens/login_page.dart';
 import '../ui/screens/profile_screen.dart';
 import '../ui/screens/register_page.dart';
 import '../ui/screens/settings.dart';
 import '../ui/screens/user_type.dart';
 
-const String home = '/';
+const String teachersHome = '/';
+const String studentsHome = '/studentsHome';
 const String settings = '/settings';
 const String login = '/login';
 const String register = '/register';
@@ -55,11 +58,20 @@ class AppRouter {
       initialLocation: initialLocation,
       routes: [
         GoRoute(
-          path: home,
+          path: teachersHome,
           builder: (context, state) {
             return BlocProvider(
               create: (context) => CoursesBloc()..add(FetchCourses()),
-              child: const HomePage(),
+              child: const TeachersHome(),
+            );
+          },
+        ),
+        GoRoute(
+          path: studentsHome,
+          builder: (context, state) {
+            return RepositoryProvider(
+              create: (context) => StudentsRepo(),
+              child: const StudentsHome(),
             );
           },
         ),
