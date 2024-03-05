@@ -9,30 +9,37 @@ import '../data/models/lesson.dart';
 import '../data/models/module.dart';
 import '../data/models/question.dart';
 import 'constants.dart';
+final regex = RegExp(
+    r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
 
-String? isValidEmail(String? email, String message) {
-  final regex = RegExp(
-      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
-  // TODO I want to add different validation messages
-  // 1. for empty fields =>> field could not be empty
-  // 2. not matching email regex
-  // 3. FirebaseAuth Exception
-  // if(email == null || email.isEmpty){}
+// String? isValidEmail(String? email) {
+//   final regex = RegExp(
+//       r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+//   // TODO I want to add different validation messages
+//   // 1. for empty fields =>> field could not be empty
+//   // 2. not matching email regex
+//   // 3. FirebaseAuth Exception
+//   // if(email == null || email.isEmpty){}
+//
+//   if (email == null && email!.isEmpty) {
+//     print('emaiullllllllllll');
+//     return "Field cannot be empty";
+//
+//   }else if(regex.hasMatch(email)){
+//     print(regex);
+//     return "Invalid email format";
+//   } else {
+//     return null;
+//   }
+// }
 
-  if (email != null && regex.hasMatch(email)) {
-    return null;
-  } else {
-    return message;
-  }
-}
-
-String? isValidPassword(String? password, String message) {
-  if (password != null && password.length >= 8) {
-    return null;
-  } else {
-    return message;
-  }
-}
+// String? isValidPassword(String? password, String message) {
+//   if (password != null && password.length >= 8) {
+//     return null;
+//   } else {
+//     return message;
+//   }
+// }
 
 String? isSamePassword({
   required String pass,

@@ -15,9 +15,9 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
+    on<RegisterWithEmailPassword>(_onEmailPasswordRegister);
     on<LoginWithUserPassword>(_onEmailPasswordLogin);
     on<LoginWithGoogle>(_onGoogleLogin);
-    on<RegisterWithEmailPassword>(_onEmailPasswordRegister);
     on<SignOut>(_onSignOut);
     on<ChangeType>(_changeUserType);
     on<UserInfoSubmitted>(_submitUserInfo);
@@ -42,10 +42,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (registerFormKey.currentState!.validate()) {
       emit(RegisterLoading());
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailRegisterController.text,
           password: passRegisterController.text,
         );
+        userCredential.user?.sendEmailVerification();
         await saveUserInDB(
           UserProfile(
             userId: getUid(),
@@ -57,7 +58,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             createdAt: DateTime.now(),
           ),
         );
-        emit(RegisterSuccess(hasInfo: true));
+
       } on FirebaseException catch (e) {
         if (e.code == 'weak-password') {
           const String message = 'The password provided is too weak.';
@@ -68,6 +69,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthError(message));
           EasyLoading.showError(message);
         }
+        emit(RegisterSuccess(hasInfo: true));
       } catch (e) {
         emit(AuthError(e.toString()));
         log(e.toString());
@@ -174,6 +176,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       UserProfile userProfile = UserProfile(userType: userType);
       await saveUserInDB(userProfile);
       emit(UserInfoUpdated());
+    }
+  }
+  Future<void> sendEmailVerification(User user) async{
+    if (!user.emailVerified){
+      await user.sendEmailVerification();
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -36,7 +37,7 @@ class LoginPage extends StatelessWidget {
                   context.go(studentsHome);
                 }
               });
-            } else {
+            } else if (!state.hasInfo) {
               context.go(userTypeAndInfo, extra: bloc);
             }
           }
@@ -81,9 +82,17 @@ class LoginPage extends StatelessWidget {
                     icon: FontAwesomeIcons.envelope,
                     label: l10n.email,
                     keyboardType: TextInputType.emailAddress,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))
-                    ],
+                    // inputFormatters: [
+                    //   FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))
+                    // ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return l10n.enterEmail;
+                      } else if (!regex.hasMatch(value)) {
+                        return "Invalid email format";
+                      }
+                      return null;
+                    },
                   ),
                   heightGap,
                   QuizTextField(
@@ -92,12 +101,28 @@ class LoginPage extends StatelessWidget {
                     label: l10n.password,
                     isEmail: false,
                     obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return l10n.enterPass;
+                      } else if (value.length < 8) {
+                        return "Password is too short";
+                      }
+                      return null;
+                    },
                   ),
                   heightGap,
-                  ElevatedButton.icon(
-                    onPressed: () => bloc.add(LoginWithUserPassword()),
-                    icon: const FaIcon(FontAwesomeIcons.user),
-                    label: Text(l10n.login),
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      return ElevatedButton.icon(
+                        onPressed: () => bloc.add(LoginWithUserPassword()),
+                        icon: (state is LoginLoading)
+                            ? const Center(child: CircularProgressIndicator())
+                            : const FaIcon(FontAwesomeIcons.user),
+                        label: (state is LoginLoading)
+                            ? const Text("")
+                            : Text(l10n.login),
+                      );
+                    },
                   ),
                   heightGap,
                   Center(child: Text(l10n.or)),

@@ -51,10 +51,10 @@ class QuizTextField extends StatelessWidget {
         ),
       ),
       controller: controller,
-      validator: validator
-          ?? (value) => isEmail
-          ? isValidEmail(value, l10n.emptyField)
-          : isValidPassword(value, l10n.emptyField),
+      validator: validator,
+          // ?? (value) => isEmail
+          // ? isValidEmail(value)
+          // : isValidPassword(value, l10n.emptyField),
       enabled: enabled,
       obscureText: obscureText,
       keyboardType: keyboardType,

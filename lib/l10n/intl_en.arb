@@ -12,8 +12,12 @@
   "register": "Create an Account",
   "signOut": "Sign Out",
   "email": "E-mail",
+  "enterEmail": "Please enter an email",
+  "enterPass": "Please enter password",
+  "invalidEmail": "Please enter a valid email",
   "mismatch": "Please enter the same password",
   "emptyField": "This field can not be empty",
+
   "password": "Password",
   "confirmPassword": "Confirm Password",
   "passwordsDoNotMatch": "Passwords do not match",

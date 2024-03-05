@@ -21,7 +21,7 @@ class StudentsHome extends StatelessWidget {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text("Course Enroll"),
+                title: const Text("Course Enroll"),
                 content: QuizTextField(
                   controller: TextEditingController(),
                   icon: Icons.attach_file,
@@ -39,7 +39,7 @@ class StudentsHome extends StatelessWidget {
                         }
                       });
                     },
-                    child: Text("Add"),
+                    child: const Text("Add"),
                   ),
                 ],
               );

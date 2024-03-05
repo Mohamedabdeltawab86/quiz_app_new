@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quiz_app_new/bloc/settings_bloc/bloc/app_settings_bloc.dart';
@@ -25,8 +24,18 @@ Future<void> main() async {
         : await getTemporaryDirectory(),
   );
   Bloc.observer = MyBlocObserver();
+
+    const FirebaseOptions firebaseOptions  = FirebaseOptions(
+    apiKey: 'AIzaSyAjFuhBiHYLjki9YMtfERcBiQpjxGRznSM',
+    appId: '1:750644874695:web:39948395a79bfadec2dde2',
+    messagingSenderId: '750644874695',
+    projectId: 'quiz-8a2ac',
+    authDomain: 'quiz-8a2ac.firebaseapp.com',
+     
+  );
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    // options: DefaultFirebaseOptions.currentPlatform,
+    options: firebaseOptions,
   );
   runApp(MyApp(appRouter: AppRouter(await getInitialLocation())));
 }
@@ -65,9 +74,9 @@ class MyApp extends StatelessWidget {
                 useMaterial3: true,
                 swapLegacyOnMaterial3: true,
                 textTheme:
-                    (state.appSettings.local == const Language.initial(id: 1))
-                        ? GoogleFonts.notoSansTextTheme()
-                        : GoogleFonts.harmattanTextTheme(),
+                    (state.appSettings.local == Language.languageList().first)
+                        ? englishTextTheme
+                        : arabicTextTheme,
               ),
               darkTheme: FlexThemeData.dark(
                 scheme: FlexScheme.purpleM3,

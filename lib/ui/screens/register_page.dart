@@ -83,15 +83,23 @@ class RegisterPage extends StatelessWidget {
                   heightGap,
                   // DONE: use the LoginTextField widget
                   QuizTextField(
-                    controller: bloc.emailRegisterController,
-                    icon: FontAwesomeIcons.envelope,
-                    label: l10n.email,
-                    keyboardType: TextInputType.emailAddress,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))
-                    ],
-                    // validator: bloc.validate('Please enter your email!'),
-                  ),
+                      controller: bloc.emailRegisterController,
+                      icon: FontAwesomeIcons.envelope,
+                      label: l10n.email,
+                      keyboardType: TextInputType.emailAddress,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))
+                      ],
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return l10n.enterEmail;
+                        } else if (!regex.hasMatch(value)) {
+                          return "Invalid email format";
+                        }
+                        return null;
+                      }
+                      // validator: bloc.validate('Please enter your email!'),
+                      ),
                   // Gap(5.sp),
                   heightGap,
                   QuizTextField(
@@ -99,10 +107,12 @@ class RegisterPage extends StatelessWidget {
                     icon: Icons.person,
                     label: l10n.firstName,
                     validator: (value) {
-                      if (value != null && value.isNotEmpty) {
-                        return null;
-                      } else {
+                      if (value == null || value.isEmpty) {
                         return l10n.emptyField;
+                      } else if (value.length < 3) {
+                        return 'Too short';
+                      } else {
+                        return null;
                       }
                     },
                   ),
@@ -113,10 +123,12 @@ class RegisterPage extends StatelessWidget {
                     icon: Icons.person,
                     label: l10n.lastName,
                     validator: (value) {
-                      if (value != null && value.isNotEmpty) {
-                        return null;
-                      } else {
+                      if (value == null || value.isEmpty) {
                         return l10n.emptyField;
+                      } else if (value.length < 3) {
+                        return 'Too short';
+                      } else {
+                        return null;
                       }
                     },
                   ),
@@ -130,10 +142,12 @@ class RegisterPage extends StatelessWidget {
                     label: l10n.phone,
                     // TODO: later: validate phone number passed on country
                     validator: (value) {
-                      if (value != null && value.isNotEmpty) {
-                        return null;
-                      } else {
+                      if (value == null || value.isEmpty) {
                         return l10n.emptyField;
+                      } else if (value.length < 12) {
+                        return 'Too short';
+                      } else {
+                        return null;
                       }
                     },
                   ),
@@ -144,6 +158,14 @@ class RegisterPage extends StatelessWidget {
                     label: l10n.password,
                     isEmail: false,
                     obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return l10n.enterPass;
+                      } else if (value.length < 6) {
+                        return "Password is too short";
+                      }
+                      return null;
+                    },
                   ),
                   heightGap,
                   QuizTextField(
