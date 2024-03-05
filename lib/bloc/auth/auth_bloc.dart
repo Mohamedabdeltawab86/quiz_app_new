@@ -34,7 +34,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final formKey = GlobalKey<FormState>();
   final registerFormKey = GlobalKey<FormState>();
   final userInfoKey = GlobalKey<FormState>();
-  UserType? userType;
+  // make user type a student as default to be shown in create account page,
+  UserType? userType = UserType.student;
 
   void _onEmailPasswordRegister(
       AuthEvent event, Emitter<AuthState> emit) async {

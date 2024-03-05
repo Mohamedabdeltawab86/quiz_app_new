@@ -92,7 +92,8 @@ class RegisterPage extends StatelessWidget {
                     ],
                     // validator: bloc.validate('Please enter your email!'),
                   ),
-                  Gap(5.sp),
+                  // Gap(5.sp),
+                  heightGap,
                   QuizTextField(
                     controller: bloc.firstNameController,
                     icon: Icons.person,
@@ -105,14 +106,22 @@ class RegisterPage extends StatelessWidget {
                       }
                     },
                   ),
-                  Gap(5.sp),
+                  // Gap(5.sp),
+                  heightGap,
                   QuizTextField(
                     controller: bloc.lastNameController,
                     icon: Icons.person,
                     label: l10n.lastName,
-                    validator: (_) => null,
+                    validator: (value) {
+                      if (value != null && value.isNotEmpty) {
+                        return null;
+                      } else {
+                        return l10n.emptyField;
+                      }
+                    },
                   ),
-                  Gap(5.sp),
+                  // Gap(5.sp),
+                  heightGap,
                   QuizTextField(
                     controller: bloc.phoneNumberController,
                     icon: Icons.phone,
@@ -120,7 +129,13 @@ class RegisterPage extends StatelessWidget {
                     digitsOnly: true,
                     label: l10n.phone,
                     // TODO: later: validate phone number passed on country
-                    validator: (_) => null,
+                    validator: (value) {
+                      if (value != null && value.isNotEmpty) {
+                        return null;
+                      } else {
+                        return l10n.emptyField;
+                      }
+                    },
                   ),
                   heightGap,
                   QuizTextField(
