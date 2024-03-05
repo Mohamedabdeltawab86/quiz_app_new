@@ -55,5 +55,15 @@
   "addChoice": " أضف خيارا",
   "question": "السؤال",
   "questionName": "اسم السؤال",
-  "questionNumber": "رقم السؤال"
+  "questionNumber": "رقم السؤال",
+
+  "edit": "تعديل",
+  "delete": "حذف",
+
+
+  "ok": "حسنا",
+  "cancel": "إلغاء",
+
+  "questionDeleted": "تم حذف السؤال بنجاح",
+  "questionAdded": "تم إضافة السؤال بنجاح"
 }

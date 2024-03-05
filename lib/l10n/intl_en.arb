@@ -62,6 +62,16 @@
 
 "question": "Question",
 "questionName": "Question Name",
-  "questionNumber": "Question Number"
+  "questionNumber": "Question Number",
+
+  "edit": "Edit",
+  "delete": "Delete",
+
+  "ok": "OK",
+  "cancel": "Cancel",
+
+  "questionDeleted": "Question Deleted Successfully",
+  "questionAdded": "Question Added Successfully"
+
 
 }

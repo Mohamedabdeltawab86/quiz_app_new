@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:quiz_app_new/bloc/questions/questions_bloc.dart';
 import 'package:quiz_app_new/ui/widgets/choice.dart';
+import 'package:quiz_app_new/utils/routes.dart';
 
 import 'package:sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -74,7 +75,6 @@ class AddEditQuestionScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return Choice(
                             choiceNumber: index,
-
                             removeChoice: () => bloc.add(RemoveChoice(index)),
                             groupValue: bloc.correctAnswerIndex,
                             onChanged: (_) => bloc.add(SetCorrectAnswer(index)),
@@ -115,6 +115,7 @@ class AddEditQuestionScreen extends StatelessWidget {
                     child: CommonButton(
                       onPressed: () {
                         bloc.add(AddQuestion());
+
                       },
                       icon: Icons.add,
                       label: l10n.addQuestion,

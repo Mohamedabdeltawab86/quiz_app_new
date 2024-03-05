@@ -57,20 +57,20 @@ class UpdateQuestion extends LessonEvent {
       required this.question});
 }
 
-// class DeleteQuestion extends LessonEvent {
-//   final String courseId;
-//   final String moduleId;
-//   final String lessonId;
+class DeleteQuestion extends LessonEvent {
+  final String courseId;
+  final String moduleId;
+  final String lessonId;
 
-  // final Question question;
+  final Question question;
 
-//   DeleteQuestion({
-//     required this.courseId,
-//     required this.moduleId,
-//     required this.lessonId,
-//     // required this.question,
-//   });
-// }
+  DeleteQuestion({
+    required this.courseId,
+    required this.moduleId,
+    required this.lessonId,
+    required this.question,
+  });
+}
 
 class SetCorrectAnswer extends LessonEvent {
   final String courseId;

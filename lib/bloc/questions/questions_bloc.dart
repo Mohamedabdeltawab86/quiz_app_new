@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz_app_new/bloc/courses/courses_bloc.dart';
 import 'package:quiz_app_new/data/models/question.dart';
 import 'package:uuid/uuid.dart';
 
@@ -65,6 +66,7 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
   Future<void> _updateQuestion(
       UpdateQuestion event, Emitter<QuestionsState> emit) async {
     // TODO: finish
+
     await FirebaseFirestore.instance
         .collection(coursesCollection)
         .doc(args.courseId)

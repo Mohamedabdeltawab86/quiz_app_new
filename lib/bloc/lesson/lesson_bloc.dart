@@ -24,6 +24,7 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
     on<UpdateLesson>(_updateLesson);
     on<DeleteLesson>(_deleteLesson);
     on<AddLesson>(_addLesson);
+    on<DeleteQuestion>(_deleteQuestion);
 
     on<ChangeQuestionState>(_onChangeQuestionState);
 
@@ -88,6 +89,21 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
     emit(LessonDeleted());
   }
 
+  Future<void> _deleteQuestion(
+      DeleteQuestion event, Emitter<LessonState> emit) async {
+    emit(QuestionDeleting());
+    await FirebaseFirestore.instance
+        .collection(coursesCollection)
+        .doc(event.courseId)
+        .collection(modulesCollection)
+        .doc(event.moduleId)
+        .collection(lessonCollection)
+        .doc(event.lessonId)
+        .collection(questionCollection)
+        .doc(event.question.id)
+        .delete();
+    emit(QuestionDeleted());
+  }
 
 
   Future<void> _setCorrectAnswer(
