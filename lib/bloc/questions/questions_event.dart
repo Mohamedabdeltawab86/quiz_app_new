@@ -6,9 +6,9 @@ abstract class QuestionsEvent {}
 class AddQuestion extends QuestionsEvent {}
 
 class UpdateQuestion extends QuestionsEvent {
-  final String id;
+  final Question question;
 
-  UpdateQuestion(this.id);
+  UpdateQuestion(this.question);
 }
 
 class DeleteQuestion extends QuestionsEvent {
@@ -17,12 +17,13 @@ class DeleteQuestion extends QuestionsEvent {
   DeleteQuestion(this.id);
 }
 
+
+
 class SetCorrectAnswer extends QuestionsEvent {
   final int id;
 
   SetCorrectAnswer(this.id);
 }
-
 
 class AddChoice extends QuestionsEvent {}
 

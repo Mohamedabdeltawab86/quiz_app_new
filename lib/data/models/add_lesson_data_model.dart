@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app_new/data/models/question.dart';
 
 class LessonData {
   final TextEditingController lessonTitleController;
@@ -21,6 +22,7 @@ class QuestionScreenArguments {
   final String courseId;
   final String moduleId;
   final String lessonId;
+  final Question? question;
 
-  QuestionScreenArguments(this.courseId, this.moduleId, this.lessonId);
+  QuestionScreenArguments(this.courseId, this.moduleId, this.lessonId, this.question);
 }

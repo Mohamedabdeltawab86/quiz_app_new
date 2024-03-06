@@ -163,7 +163,9 @@ class AppRouter {
               final arguments = state.extra as QuestionScreenArguments;
               return BlocProvider(
                 create: (context) => QuestionsBloc(arguments),
-                child: const AddEditQuestionScreen(),
+                child: const AddEditQuestionScreen(
+                  
+                ),
               );
             }),
       ],

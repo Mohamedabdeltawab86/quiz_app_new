@@ -37,7 +37,7 @@ class LessonScreen extends StatelessWidget {
           context.push(
               // '/courses/$courseId/modules/$moduleId/lessons/$lessonId/addEditQuestion',
               addEditQuestion,
-              extra: QuestionScreenArguments(courseId, moduleId, lessonId));
+              extra: QuestionScreenArguments(courseId, moduleId, lessonId,question));
         },
       ),
       body: BlocConsumer<LessonBloc, LessonState>(
@@ -91,44 +91,10 @@ class LessonScreen extends StatelessWidget {
                         spacing: 8,
                         onPressed: (context) {
                           bloc.question;
-
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return SizedBox(
-                                height: 600,
-                                child: AlertDialog(
-                                  title: Text(l10n.edit),
-                                  content: const Column(
-                                    children: [
-                                      TextField(
-                                          // controller: bloc.question.,
-                                          ),
-                                      TextField(
-                                          // controller:
-                                          // bloc.descriptionController,
-                                          ),
-                                    ],
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => context.pop(),
-                                      child: Text(l10n.cancel),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        // bloc.add(
-                                        // UpdateLessonCourse(selectedCourse.id!),
-                                        // );
-                                        context.pop();
-                                      },
-                                      child: Text(l10n.ok),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
+                          context.push(
+                           addEditQuestion,
+                              extra: QuestionScreenArguments(
+                                  courseId, moduleId, lessonId, question));
                         },
                       ),
                     ],

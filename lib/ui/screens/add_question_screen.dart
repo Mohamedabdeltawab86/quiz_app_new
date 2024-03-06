@@ -24,6 +24,11 @@ class AddEditQuestionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<QuestionsBloc>();
+    final args = bloc.args;
+    if(args.question !=null){
+      bloc.initInfoPage(args.question);
+
+    }
     // final question = bloc.question;
 
     final l10n = AppLocalizations.of(context)!;
@@ -42,7 +47,7 @@ class AddEditQuestionScreen extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               title: Text(
-                bloc.question != null ? l10n.editCourse : l10n.addQuestion,
+                bloc.questionToEdit != null ? l10n.editCourse : l10n.addQuestion,
               ),
             ),
             body: Form(

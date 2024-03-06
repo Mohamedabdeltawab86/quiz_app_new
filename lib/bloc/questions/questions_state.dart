@@ -12,6 +12,10 @@ class QuestionDeleting extends QuestionsState{}
 class QuestionDeleted extends QuestionsState{}
 class QuestionDeleteError extends QuestionsState{}
 
+class QuestionUpdating extends QuestionsState{}
+class QuestionUpdated extends QuestionsState{}
+class QuestionUpdateError extends QuestionsState{}
+
 class AddingChoice extends QuestionsState{}
 class ChoiceAdded extends QuestionsState{}
 class ChoiceAdditionError extends QuestionsState{}

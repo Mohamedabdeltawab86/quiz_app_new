@@ -17,13 +17,18 @@ part 'questions_state.dart';
 class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
   late final QuestionScreenArguments args;
 
-  // TODO: initiate when editing.
-  Question? question;
-   void initInfoPage(Question question) {
-    titleController.text = question.title!;
-    // descriptionController.text = course.description ?? "";
-  }
+  Question? questionToEdit;
 
+  void initInfoPage(Question? question) {
+    if (question != null) {
+      questionToEdit = question;
+      titleController.text = question.title ?? "";
+      question.options?.forEach((answer) {
+        answers.add(TextEditingController(text: answer));
+      });
+      correctAnswerIndex = question.correctAnswer!;
+    }
+  }
 
   QuestionsBloc(this.args) : super(QuestionsInitial()) {
     on<AddQuestion>(_addQuestion);
@@ -69,18 +74,46 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
 
   Future<void> _updateQuestion(
       UpdateQuestion event, Emitter<QuestionsState> emit) async {
-    // TODO: finish
+    emit(QuestionUpdating());
+    
+    questionToEdit = event.question;
+    titleController.text = event.question.title ?? "";
 
-    await FirebaseFirestore.instance
-        .collection(coursesCollection)
-        .doc(args.courseId)
-        .collection(modulesCollection)
-        .doc(args.moduleId)
-        .collection(lessonCollection)
-        .doc(args.lessonId)
-        .collection(questionCollection)
-        .doc(event.id)
-        .delete();
+    final List options = event.question.options?? [];
+    for (int i = 0; i < options.length; i++) {
+      answers[i].text = options[i];
+    }
+    correctAnswerIndex = event.question.correctAnswer!;
+    // update question
+    
+    Question question = Question(
+      id:questionToEdit?.id,
+      title: titleController.text,
+      correctAnswer: correctAnswerIndex,
+      options: answers.map((e) => e.text).toList(),
+      updatedAt: DateTime.now(),
+    );
+
+    if (questionKey.currentState!.validate()) {
+      try {
+        
+        addEditQuestion(question, args);
+        emit(QuestionUpdated());
+      } catch (e) {
+        emit(QuestionUpdateError());
+      }
+    }
+
+    // await FirebaseFirestore.instance
+    //     .collection(coursesCollection)
+    //     .doc(args.courseId)
+    //     .collection(modulesCollection)
+    //     .doc(args.moduleId)
+    //     .collection(lessonCollection)
+    //     .doc(args.lessonId)
+    //     .collection(questionCollection)
+    //     .doc(event.id)
+    //     .delete();
   }
 
   Future<void> _deleteQuestion(
@@ -127,7 +160,10 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
   @override
   Future<void> close() {
     titleController.dispose();
-    // TODO: dispose choices
+    
+    for (var controller in answers) {
+      controller.dispose();
+    }
     return super.close();
   }
 }

@@ -31,15 +31,15 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     on<InitCourse>(_initCourse);
   }
 
-  void initInfoPage(Course course) {
-    titleController.text = course.title;
-    descriptionController.text = course.description ?? "";
-  }
+  // void initInfoPage(Course course) {
+  //   titleController.text = course.title;
+  //   descriptionController.text = course.description ?? "";
+  // }
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  // TODO 2: Add image of the course
+
   final courseKey = GlobalKey<FormState>();
   List<Course> courses = [];
   List<ModuleData> addEditModulesData = [];
