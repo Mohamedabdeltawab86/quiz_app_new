@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:quiz_app_new/bloc/lesson/lesson_bloc.dart';
 import 'package:quiz_app_new/bloc/questions/questions_bloc.dart';
 import 'package:quiz_app_new/data/models/add_lesson_data_model.dart';
+import 'package:quiz_app_new/ui/auth/login_page.dart';
 import 'package:quiz_app_new/ui/screens/add_question_screen.dart';
 import 'package:quiz_app_new/ui/screens/lesson_screen.dart';
 import 'package:quiz_app_new/ui/screens/students_home.dart';
@@ -14,20 +15,22 @@ import '../bloc/user/user_info_bloc.dart';
 import '../data/models/course.dart';
 import '../data/repositories/question_repo.dart';
 import '../data/repositories/students_repo/students_repo.dart';
+import '../ui/auth/profile_screen.dart';
+import '../ui/auth/register_page.dart';
+import '../ui/auth/user_type.dart';
+import '../ui/auth/verify_email.dart';
 import '../ui/screens/add_edit_course.dart';
 import '../ui/screens/course_page.dart';
 import '../ui/screens/teachers_home.dart';
-import '../ui/screens/login_page.dart';
-import '../ui/screens/profile_screen.dart';
-import '../ui/screens/register_page.dart';
+
 import '../ui/screens/settings.dart';
-import '../ui/screens/user_type.dart';
 
 const String teachersHome = '/';
 const String studentsHome = '/studentsHome';
 const String settings = '/settings';
 const String login = '/login';
 const String register = '/register';
+const String verifyEmail = '/verifyEmail';
 const String registerStudent = '/register_student';
 const String registerTeacher = '/register_teacher';
 const String userTypeAndInfo = '/userTypeAndInfo';
@@ -41,14 +44,11 @@ const String addEditQuestion = '/addEditQuestion';
 late QuestionRepository questionRepository;
 
 class AppRouter {
-  // TODO: Pass initialLocation through the constructor
   final String initialLocation;
 
-  // TODO: note that the router is late, as we will init it using _initRouter()
   late final GoRouter router;
 
   AppRouter(this.initialLocation) {
-    // TODO: Initialize the router with the provided initialLocation
     _initRouter();
   }
 
@@ -91,6 +91,13 @@ class AppRouter {
           builder: (context, state) => BlocProvider.value(
             value: state.extra! as AuthBloc,
             child: const RegisterPage(),
+          ),
+        ),
+        GoRoute(
+          path: verifyEmail,
+          builder: (context, state) => BlocProvider.value(
+            value: state.extra! as AuthBloc,
+            child: const EmailVerificationScreen(),
           ),
         ),
         GoRoute(

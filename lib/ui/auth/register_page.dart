@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,17 +31,23 @@ class RegisterPage extends StatelessWidget {
       listener: (context, state) async {
         if (state is RegisterSuccess) {
           if (state.hasInfo) {
-            await getCurrentUser().then((currentUser) {
-              if (currentUser != null &&
-                  currentUser.userType == UserType.teacher) {
-                context.go(teachersHome);
-              } else {
-                context.go(studentsHome);
-              }
-            });
-          } else {
-            context.push(userTypeAndInfo, extra: bloc);
-          }
+              await getCurrentUser().then((currentUser) {
+                if (currentUser != null &&
+                    !FirebaseAuth.instance.currentUser!.emailVerified) {
+                  context.go(verifyEmail);
+                } else {
+                  if (currentUser?.userType == UserType.teacher) {
+                    log("verified");
+                    context.go(teachersHome);
+                  } else {
+                    log("verified");
+                    context.go(studentsHome);
+                  }
+                }
+              });
+            } else if (!state.hasInfo) {
+              context.go(userTypeAndInfo, extra: bloc);
+            }
         }
       },
       child: GestureDetector(
@@ -172,6 +181,7 @@ class RegisterPage extends StatelessWidget {
                     controller: bloc.passConfirmController,
                     icon: FontAwesomeIcons.lock,
                     label: l10n.confirmPassword,
+                    
                     isEmail: false,
                     obscureText: true,
                     validator: (confirmedPassword) => isSamePassword(

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:quiz_app_new/bloc/courses/courses_bloc.dart';
 import 'package:quiz_app_new/data/models/question.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,6 +19,11 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
 
   // TODO: initiate when editing.
   Question? question;
+   void initInfoPage(Question question) {
+    titleController.text = question.title!;
+    // descriptionController.text = course.description ?? "";
+  }
+
 
   QuestionsBloc(this.args) : super(QuestionsInitial()) {
     on<AddQuestion>(_addQuestion);

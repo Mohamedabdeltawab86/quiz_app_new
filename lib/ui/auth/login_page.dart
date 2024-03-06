@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,10 +33,16 @@ class LoginPage extends StatelessWidget {
             if (state.hasInfo) {
               await getCurrentUser().then((currentUser) {
                 if (currentUser != null &&
-                    currentUser.userType == UserType.teacher) {
-                  context.go(teachersHome);
+                    !FirebaseAuth.instance.currentUser!.emailVerified) {
+                  context.go(verifyEmail);
                 } else {
-                  context.go(studentsHome);
+                  if (currentUser?.userType == UserType.teacher) {
+                    log("verified");
+                    context.go(teachersHome);
+                  } else {
+                    log("verified");
+                    context.go(studentsHome);
+                  }
                 }
               });
             } else if (!state.hasInfo) {

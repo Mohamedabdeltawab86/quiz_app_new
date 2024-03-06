@@ -21,6 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignOut>(_onSignOut);
     on<ChangeType>(_changeUserType);
     on<UserInfoSubmitted>(_submitUserInfo);
+    on<ResendEmailVerification>(_onResendEmailVerification);
   }
 
   final emailController = TextEditingController();
@@ -42,7 +43,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (registerFormKey.currentState!.validate()) {
       emit(RegisterLoading());
       try {
-        final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailRegisterController.text,
           password: passRegisterController.text,
         );
@@ -58,7 +60,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             createdAt: DateTime.now(),
           ),
         );
-
       } on FirebaseException catch (e) {
         if (e.code == 'weak-password') {
           const String message = 'The password provided is too weak.';
@@ -84,11 +85,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (formKey.currentState!.validate()) {
       emit(LoginLoading());
       try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text,
           password: passController.text,
         );
-        emit(LoginSuccess(hasInfo: true));
+        final user = userCredential.user;
+
+        if (user != null && user.emailVerified) {
+          emit(LoginSuccess(hasInfo: true));
+        } else {
+          emit(AuthError("Please verify your email first"));
+          EasyLoading.showError("Please verify your email first");
+        }
       } on FirebaseException catch (e) {
         if (e.code == 'user-not-found') {
           const String message = 'No user found for that email.';
@@ -96,6 +105,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           EasyLoading.showError(message);
         } else if (e.code == 'wrong-password') {
           const String message = 'Wrong password provided for that user.';
+          emit(AuthError(message));
+
+          EasyLoading.showError(message);
+        } else if (e.code == 'account-exists-with-different-credential') {
+          const String message =
+              "An account already exists with the same email address but different sign-in credentials. Please use Google to sign in.";
           emit(AuthError(message));
           EasyLoading.showError(message);
         }
@@ -178,9 +193,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(UserInfoUpdated());
     }
   }
-  Future<void> sendEmailVerification(User user) async{
-    if (!user.emailVerified){
+
+  Future<void> sendEmailVerification(User user) async {
+    if (!user.emailVerified) {
       await user.sendEmailVerification();
+    }
+  }
+
+  Future<void> _onResendEmailVerification(
+    ResendEmailVerification event,
+    Emitter<AuthState> emit,
+  ) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null && !user.emailVerified) {
+      try {
+        await user.sendEmailVerification();
+        emit(EmailVerificationSent());
+      } catch (e) {
+        emit(AuthError(e.toString()));
+      }
     }
   }
 

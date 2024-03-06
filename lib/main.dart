@@ -25,17 +25,17 @@ Future<void> main() async {
   );
   Bloc.observer = MyBlocObserver();
 
-    const FirebaseOptions firebaseOptions  = FirebaseOptions(
-    apiKey: 'AIzaSyAjFuhBiHYLjki9YMtfERcBiQpjxGRznSM',
-    appId: '1:750644874695:web:39948395a79bfadec2dde2',
-    messagingSenderId: '750644874695',
-    projectId: 'quiz-8a2ac',
-    authDomain: 'quiz-8a2ac.firebaseapp.com',
-     
-  );
+  //   const FirebaseOptions firebaseOptions  = FirebaseOptions(
+  //   apiKey: 'AIzaSyAjFuhBiHYLjki9YMtfERcBiQpjxGRznSM',
+  //   appId: '1:750644874695:web:39948395a79bfadec2dde2',
+  //   messagingSenderId: '750644874695',
+  //   projectId: 'quiz-8a2ac',
+  //   authDomain: 'quiz-8a2ac.firebaseapp.com',
+  // );
+
   await Firebase.initializeApp(
-    // options: DefaultFirebaseOptions.currentPlatform,
-    options: firebaseOptions,
+    options: DefaultFirebaseOptions.currentPlatform,
+    // options: firebaseOptions,
   );
   runApp(MyApp(appRouter: AppRouter(await getInitialLocation())));
 }

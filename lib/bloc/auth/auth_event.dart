@@ -17,3 +17,4 @@ class ChangeType extends AuthEvent{
 }
 
 class UserInfoSubmitted extends AuthEvent{}
+class ResendEmailVerification extends AuthEvent{}

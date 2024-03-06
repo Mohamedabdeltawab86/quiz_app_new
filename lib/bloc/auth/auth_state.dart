@@ -32,3 +32,5 @@ class AuthError extends AuthState {
 
   AuthError(this.error);
 }
+
+class EmailVerificationSent extends AuthState{}

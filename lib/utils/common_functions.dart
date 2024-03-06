@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
 import 'package:quiz_app_new/data/models/user_profile.dart';
 import 'package:quiz_app_new/utils/routes.dart';
 
@@ -9,6 +10,7 @@ import '../data/models/lesson.dart';
 import '../data/models/module.dart';
 import '../data/models/question.dart';
 import 'constants.dart';
+
 final regex = RegExp(
     r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
 
@@ -225,10 +227,15 @@ Future<String> getInitialLocation() async {
   if (FirebaseAuth.instance.currentUser != null) {
     if (await doesUserHasInfo()) {
       final currentUser = await getCurrentUser();
-      if (currentUser != null && currentUser.userType == UserType.teacher) {
-        return teachersHome;
+      if (currentUser != null &&
+          !FirebaseAuth.instance.currentUser!.emailVerified) {
+        return verifyEmail;
       } else {
-        return studentsHome;
+        if (currentUser?.userType == UserType.teacher) {
+          return teachersHome;
+        } else {
+          return studentsHome;
+        }
       }
     }
     return userTypeAndInfo;
