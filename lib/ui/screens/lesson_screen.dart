@@ -8,7 +8,6 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../bloc/lesson/lesson_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-// import '../../bloc/questions/questions_bloc.dart';
 
 class LessonScreen extends StatelessWidget {
   final String courseId;
@@ -29,26 +28,30 @@ class LessonScreen extends StatelessWidget {
     final qStates = bloc.questionsState;
     final question = bloc.question;
     final l10n = AppLocalizations.of(context)!;
+    final loadLesson =
+        LoadLesson(courseId: courseId, moduleId: moduleId, lessonId: lessonId);
+    final questionScreenArgs =
+        QuestionScreenArguments(courseId, moduleId, lessonId, question);
     return Scaffold(
       appBar: AppBar(title: Text(lessonTitle)),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {
-          context.push(
-              // '/courses/$courseId/modules/$moduleId/lessons/$lessonId/addEditQuestion',
-              addEditQuestion,
-              extra: QuestionScreenArguments(courseId, moduleId, lessonId,question));
+        onPressed: () async {
+          // TODO: see how i'm waiting for the value from the next page.
+          var questionAdded =
+              await context.push(addEditQuestion, extra: questionScreenArgs);
+          if (questionAdded is bool && questionAdded) {
+            bloc.add(loadLesson);
+          }
         },
       ),
       body: BlocConsumer<LessonBloc, LessonState>(
         listener: (context, state) {
           if (state is QuestionAdded) {
-            bloc.add(LoadLesson(
-                courseId: courseId, moduleId: moduleId, lessonId: lessonId));
+            bloc.add(loadLesson);
             EasyLoading.showSuccess(l10n.questionAdded);
           } else if (state is QuestionDeleted) {
-            bloc.add(LoadLesson(
-                courseId: courseId, moduleId: moduleId, lessonId: lessonId));
+            bloc.add(loadLesson);
             EasyLoading.showSuccess(l10n.questionDeleted);
           }
         },
@@ -59,7 +62,6 @@ class LessonScreen extends StatelessWidget {
         builder: (context, lessonState) {
           if (lessonState is LessonLoaded) {
             final questions = lessonState.questions;
-            final lessons = lessonState.lessons;
             return ListView.builder(
               itemCount: questions.length,
               itemBuilder: (context, i) {
@@ -90,11 +92,10 @@ class LessonScreen extends StatelessWidget {
                         icon: Icons.edit,
                         spacing: 8,
                         onPressed: (context) {
-                          bloc.question;
                           context.push(
-                           addEditQuestion,
-                              extra: QuestionScreenArguments(
-                                  courseId, moduleId, lessonId, question));
+                            addEditQuestion,
+                            extra: questionScreenArgs,
+                          );
                         },
                       ),
                     ],
@@ -127,14 +128,9 @@ class LessonScreen extends StatelessWidget {
                             //   ),
                             //   child:
                             ExpansionTile(
-                          onExpansionChanged: (bool expanded) {
-                            bloc.add(
-                              ChangeQuestionState(
-                                state: expanded,
-                                index: i,
-                              ),
-                            );
-                          },
+                          onExpansionChanged: (bool expanded) => bloc.add(
+                            ChangeQuestionState(state: expanded, index: i),
+                          ),
                           tilePadding: EdgeInsets.symmetric(horizontal: 4.sp),
                           title: BlocBuilder<LessonBloc, LessonState>(
                             buildWhen: (_, c) =>

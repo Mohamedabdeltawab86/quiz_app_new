@@ -58,6 +58,8 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
       for (Lesson lesson in lessons) {
         lessonsData.add(
           LessonData(
+            // TODO: loaded the lessonId here
+            lessonId: lesson.id,
             lessonTitleController: TextEditingController(
               text: lesson.title,
             ),
@@ -69,6 +71,8 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
       }
       addEditModulesData.add(
         ModuleData(
+          // TODO: loaded the moduleId here
+          moduleId: module.id,
           nameController: TextEditingController(text: module.title),
           lessons: lessonsData,
         ),
@@ -98,14 +102,14 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
       List<(Module, List<Lesson>)> modulesData = addEditModulesData.map((m) {
         final now = DateTime.now();
         final Module module = Module(
-          id: const Uuid().v4(),
+          id: m.moduleId ?? const Uuid().v4(), // TODO: used moduleId here after being loaded.
           title: m.nameController.text,
           createdAt: now,
           updatedAt: now,
         );
         final List<Lesson> lessons = m.lessons.map((l) {
           return Lesson(
-            id: const Uuid().v4(),
+            id: l.lessonId ?? const Uuid().v4(), // TODO: used lessonId here after being loaded.
             title: l.lessonTitleController.text,
             content: l.lessonContentController.text,
             createdAt: now,

@@ -1,14 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:go_router/go_router.dart';
 
 import 'package:quiz_app_new/bloc/questions/questions_bloc.dart';
 import 'package:quiz_app_new/ui/widgets/choice.dart';
-import 'package:quiz_app_new/utils/routes.dart';
 
 import 'package:sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -27,7 +23,6 @@ class AddEditQuestionScreen extends StatelessWidget {
     final args = bloc.args;
     if(args.question !=null){
       bloc.initInfoPage(args.question);
-
     }
     // final question = bloc.question;
 
@@ -104,9 +99,9 @@ class AddEditQuestionScreen extends StatelessWidget {
                   const Divider(),
                   BlocListener<QuestionsBloc, QuestionsState>(
                     listener: (context, state) {
-                      // TODO: implement listener
                       if (state is QuestionAdded) {
-                        context.pop();
+                        // Todo: see how i'm passing the value to the previous page.
+                        context.pop(true);
                       } else if (state is QuestionError) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

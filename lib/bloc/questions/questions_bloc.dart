@@ -23,6 +23,8 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
     if (question != null) {
       questionToEdit = question;
       titleController.text = question.title ?? "";
+      // TODO: clear the list of answers when editing a question.
+      answers.clear();
       question.options?.forEach((answer) {
         answers.add(TextEditingController(text: answer));
       });
