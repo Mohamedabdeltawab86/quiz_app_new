@@ -100,10 +100,10 @@ class TeachersHome extends StatelessWidget {
           },
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => context.push(
-            addEditCourse,
-            extra: bloc,
-          ),
+          onPressed: () {
+            bloc.editCourse = null;
+            context.push(addEditCourse, extra: bloc);
+          },
           child: const Icon(Icons.add),
         ),
       ),

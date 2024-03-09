@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quiz_app_new/bloc/enrolledCourses/enrolled_bloc.dart';
 import 'package:quiz_app_new/bloc/lesson/lesson_bloc.dart';
 import 'package:quiz_app_new/bloc/questions/questions_bloc.dart';
 import 'package:quiz_app_new/data/models/add_lesson_data_model.dart';
@@ -69,8 +70,8 @@ class AppRouter {
         GoRoute(
           path: studentsHome,
           builder: (context, state) {
-            return RepositoryProvider(
-              create: (context) => StudentsRepo(),
+            return BlocProvider(
+              create: (context) => EnrolledBloc()..add(FetchEnrolledCourses()),
               child: const StudentsHome(),
             );
           },

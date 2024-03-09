@@ -29,6 +29,7 @@ class StudentsRepo {
   Future<bool> enrollCourse(String courseId) async {
     final Course? course = (await _coursesRef.doc(courseId).get()).data();
     final UserProfile? currentUser = await getCurrentUser();
+    // TODO: 1. check if the course id exists or not first.
     if (course != null && currentUser != null) {
       await _usersRef
           .doc(getUid())
@@ -40,7 +41,27 @@ class StudentsRepo {
             ),
             SetOptions(merge: true),
           );
-      print("HELLO!!");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> getEnrolledCourse(String courseId) async {
+    final Course? course = (await _coursesRef.doc(courseId).get()).data();
+    final UserProfile? currentUser = await getCurrentUser();
+    // TODO: 1. check if the course id exists or not first.
+    if (course != null && currentUser != null) {
+      await _usersRef
+          .doc(getUid())
+          .set(
+        currentUser.copyWith(
+          subscribedCourses: ([...currentUser.subscribedCourses, courseId])
+              .toSet()
+              .toList(),
+        ),
+        SetOptions(merge: true),
+      );
       return true;
     } else {
       return false;
