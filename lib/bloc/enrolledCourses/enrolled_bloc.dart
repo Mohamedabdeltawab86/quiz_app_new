@@ -32,7 +32,7 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
           .where("createdBy", isEqualTo: event.teacherId)
           .get();
 
-      print("teacherSnapshot ${teacherSnapshot.docs.first.data()}");
+      // print("teacherSnapshot ${teacherSnapshot.docs.first.data()}");
 
       List<Course> teacherCourses = teacherSnapshot.docs
           .map((doc) => Course.fromJson(doc.data() as Map<String, dynamic>))
@@ -41,10 +41,10 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
       final UserProfile? currentUser = await getCurrentUser();
 
       if (currentUser != null) {
-        bool alreadySubscribed = teacherCourses
-            .any((course) => currentUser.subscribedCourses.contains(course.id));
+        bool alreadySubcribedInAllCourses = teacherCourses.every(
+            (course) => currentUser.subscribedCourses.contains(course.id));
 
-        if (!alreadySubscribed) {
+        if (!alreadySubcribedInAllCourses) {
           List<String> teacherCoursesIds =
               teacherCourses.map((course) => course.id!).toList();
 
@@ -55,8 +55,9 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
               subscribedCourses.add(courseId);
             }
           }
+
           await _usersRef.doc(currentUser.userId).update({
-            'subscribedCourses': subscribedCourses.toSet().toList(),
+            'subscribedCourses': subscribedCourses.toList(), //toSet(), I removed it as I've already filtered out the courses that the user is already subscribed to.
           });
           emit(EnrollMyTeacherCoursesSuccess());
         }
@@ -73,7 +74,7 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
       EnrollCourse event, Emitter<EnrolledState> emit) async {
     final Course? course = (await _coursesRef.doc(event.courseId).get()).data();
     final UserProfile? currentUser = await getCurrentUser();
-    // TODO: 1. check if the course id exists or not first.
+    // DONE: 1. check if the course id exists or not first.
     if (course != null && currentUser != null) {
       if (!currentUser.subscribedCourses.contains(event.courseId)) {
         final updatedCourses = [
