@@ -33,11 +33,14 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
           .get();
 
       // print("teacherSnapshot ${teacherSnapshot.docs.first.data()}");
+<<<<<<< HEAD
       if (teacherSnapshot.docs.isEmpty) {
         emit(SubscribeToTeacherError(
             "Invalid Teacher ID or no courses available"));
         return;
       }
+=======
+>>>>>>> 67b38e9aef67cf3be026eba3f04fef41e29a42da
 
       List<Course> teacherCourses = teacherSnapshot.docs
           .map((doc) => Course.fromJson(doc.data() as Map<String, dynamic>))
@@ -46,12 +49,19 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
       final UserProfile? currentUser = await getCurrentUser();
 
       if (currentUser != null) {
+<<<<<<< HEAD
         bool alreadySubscribedInAllCourses = teacherCourses.every(
             (course) => currentUser.subscribedCourses.contains(course.id));
 
         if (alreadySubscribedInAllCourses) {
           emit(SubscribeToTeacherAlreadySubscribed());
         } else {
+=======
+        bool alreadySubcribedInAllCourses = teacherCourses.every(
+            (course) => currentUser.subscribedCourses.contains(course.id));
+
+        if (!alreadySubcribedInAllCourses) {
+>>>>>>> 67b38e9aef67cf3be026eba3f04fef41e29a42da
           List<String> teacherCoursesIds =
               teacherCourses.map((course) => course.id!).toList();
 
@@ -62,8 +72,9 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
               subscribedCourses.add(courseId);
             }
           }
+
           await _usersRef.doc(currentUser.userId).update({
-            'subscribedCourses': subscribedCourses.toSet().toList(),
+            'subscribedCourses': subscribedCourses.toList(), //toSet(), I removed it as I've already filtered out the courses that the user is already subscribed to.
           });
           emit(SubscribeToTeacherSuccess());
           add(FetchEnrolledCourses());
