@@ -25,14 +25,19 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
 
   Future<void> _subscribeToTeacher(
       SubscribeToTeacher event, Emitter<EnrolledState> emit) async {
-    emit(EnrollMyTeacherCoursesFetching());
+    emit(SubscribeToTeacherFetching());
     try {
       final QuerySnapshot teacherSnapshot = await FirebaseFirestore.instance
           .collection(coursesCollection)
           .where("createdBy", isEqualTo: event.teacherId)
           .get();
 
-      print("teacherSnapshot ${teacherSnapshot.docs.first.data()}");
+      // print("teacherSnapshot ${teacherSnapshot.docs.first.data()}");
+      if (teacherSnapshot.docs.isEmpty) {
+        emit(SubscribeToTeacherError(
+            "Invalid Teacher ID or no courses available"));
+        return;
+      }
 
       List<Course> teacherCourses = teacherSnapshot.docs
           .map((doc) => Course.fromJson(doc.data() as Map<String, dynamic>))
@@ -41,10 +46,12 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
       final UserProfile? currentUser = await getCurrentUser();
 
       if (currentUser != null) {
-        bool alreadySubscribed = teacherCourses
-            .any((course) => currentUser.subscribedCourses.contains(course.id));
+        bool alreadySubscribedInAllCourses = teacherCourses.every(
+            (course) => currentUser.subscribedCourses.contains(course.id));
 
-        if (!alreadySubscribed) {
+        if (alreadySubscribedInAllCourses) {
+          emit(SubscribeToTeacherAlreadySubscribed());
+        } else {
           List<String> teacherCoursesIds =
               teacherCourses.map((course) => course.id!).toList();
 
@@ -58,10 +65,12 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
           await _usersRef.doc(currentUser.userId).update({
             'subscribedCourses': subscribedCourses.toSet().toList(),
           });
-          emit(EnrollMyTeacherCoursesSuccess());
+          emit(SubscribeToTeacherSuccess());
+          add(FetchEnrolledCourses());
         }
       } else {
-        emit(EnrollMyTeacherCoursesAlreadySubscribed());
+        emit(SubscribeToTeacherError(
+            "Failed to fetch user profile: No teacher with this code"));
       }
     } catch (e) {
       emit(EnrolledCourseFetchingError(e.toString()));
@@ -73,7 +82,7 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
       EnrollCourse event, Emitter<EnrolledState> emit) async {
     final Course? course = (await _coursesRef.doc(event.courseId).get()).data();
     final UserProfile? currentUser = await getCurrentUser();
-    // TODO: 1. check if the course id exists or not first.
+    // DONE: 1. check if the course id exists or not first.
     if (course != null && currentUser != null) {
       if (!currentUser.subscribedCourses.contains(event.courseId)) {
         final updatedCourses = [
@@ -104,9 +113,25 @@ class EnrolledBloc extends Bloc<EnrolledEvent, EnrolledState> {
         for (String courseId in currentUser.subscribedCourses) {
           var courseDoc = await _coursesRef.doc(courseId).get();
           if (courseDoc.exists) {
-            courses.add(courseDoc.data()!);
+            courses.add(courseDoc.data()!.copyWith(isEnrolled: true));
           }
         }
+        final QuerySnapshot teacherSnapshot = await FirebaseFirestore.instance
+            .collection(coursesCollection)
+            .where("createdBy", isEqualTo: currentUser.userId)
+            .get();
+
+        print("teacherSnapshot ${teacherSnapshot.docs.first.data()}");
+
+        List<Course> teacherCourses = teacherSnapshot.docs
+            .map((doc) => Course.fromJson(doc.data() as Map<String, dynamic>))
+            .toList();
+
+        courses
+            .where(
+                (course) => !currentUser.subscribedCourses.contains(course.id))
+            .map((course) => course.copyWith(isEnrolled: false));
+
         myCourses = courses;
         emit(EnrolledCourseFetched(myCourses));
       }

@@ -106,16 +106,6 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
       }
     }
 
-    // await FirebaseFirestore.instance
-    //     .collection(coursesCollection)
-    //     .doc(args.courseId)
-    //     .collection(modulesCollection)
-    //     .doc(args.moduleId)
-    //     .collection(lessonCollection)
-    //     .doc(args.lessonId)
-    //     .collection(questionCollection)
-    //     .doc(event.id)
-    //     .delete();
   }
 
   Future<void> _deleteQuestion(

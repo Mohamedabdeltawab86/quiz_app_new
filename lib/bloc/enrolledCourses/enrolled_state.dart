@@ -19,16 +19,16 @@ class EnrolledCourseFetchingError extends EnrolledState {
   EnrolledCourseFetchingError(this.message);
 }
 
-class EnrollMyTeacherCoursesFetching extends EnrolledState {}
+class SubscribeToTeacherFetching extends EnrolledState {}
 
-class EnrollMyTeacherCoursesSuccess extends EnrolledState {}
+class SubscribeToTeacherSuccess extends EnrolledState {}
 
-class EnrollMyTeacherCoursesAlreadySubscribed extends EnrolledState {}
+class SubscribeToTeacherAlreadySubscribed extends EnrolledState {}
 
-class EnrollMyTeacherCoursesError extends EnrolledState {
+class SubscribeToTeacherError extends EnrolledState {
   final String message;
 
-  EnrollMyTeacherCoursesError(this.message);
+  SubscribeToTeacherError(this.message);
 }
 
 class EnrolledCourseSuccess extends EnrolledState {}

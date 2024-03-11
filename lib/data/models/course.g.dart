@@ -14,6 +14,7 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       createdBy: json['createdBy'] as String? ?? "Test",
       createdAt: dateTimeFromTimestamp(json['createdAt'] as Timestamp),
       updatedAt: dateTimeFromTimestamp(json['updatedAt'] as Timestamp),
+      isEnrolled: json['isEnrolled'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$CourseToJson(Course instance) {
@@ -32,5 +33,6 @@ Map<String, dynamic> _$CourseToJson(Course instance) {
   val['createdBy'] = instance.createdBy;
   writeNotNull('createdAt', dateTimeToTimestamp(instance.createdAt));
   writeNotNull('updatedAt', dateTimeToTimestamp(instance.updatedAt));
+  val['isEnrolled'] = instance.isEnrolled;
   return val;
 }
