@@ -5,11 +5,12 @@ abstract class EnrolledEvent {}
 
 class FetchEnrolledCourses extends EnrolledEvent {}
 
-class SubscribeToTeacher extends EnrolledEvent {
-  // final List<Course> teacherCourses;
-  final String teacherId;
+class ChangeIsPathValue extends EnrolledEvent {}
 
-  SubscribeToTeacher(this.teacherId);
+class SubscribeToCode extends EnrolledEvent {
+  final String code;
+
+  SubscribeToCode(this.code);
 }
 
 class EnrollCourse extends EnrolledEvent {

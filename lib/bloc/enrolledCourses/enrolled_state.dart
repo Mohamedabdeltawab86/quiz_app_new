@@ -7,11 +7,7 @@ class EnrolledInitial extends EnrolledState {}
 
 class EnrolledCourseFetching extends EnrolledState {}
 
-class EnrolledCourseFetched extends EnrolledState {
-  final List<Course> courses;
-
-  EnrolledCourseFetched(this.courses);
-}
+class EnrolledCourseFetched extends EnrolledState {}
 
 class EnrolledCourseFetchingError extends EnrolledState {
   final String message;
@@ -19,17 +15,17 @@ class EnrolledCourseFetchingError extends EnrolledState {
   EnrolledCourseFetchingError(this.message);
 }
 
-class SubscribeToTeacherFetching extends EnrolledState {}
+class SubscribeToCodeLoading extends EnrolledState {}
 
-class SubscribeToTeacherSuccess extends EnrolledState {}
+class SubscribeToCodeSuccess extends EnrolledState {}
 
-class SubscribeToTeacherAlreadySubscribed extends EnrolledState {}
-
-class SubscribeToTeacherError extends EnrolledState {
+class SubscribeToCodeError extends EnrolledState {
   final String message;
 
-  SubscribeToTeacherError(this.message);
+  SubscribeToCodeError(this.message);
 }
+
+class IsPathValueChanged extends EnrolledState {}
 
 class EnrolledCourseSuccess extends EnrolledState {}
 

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quiz_app_new/data/models/user_profile.dart';
 import 'package:quiz_app_new/utils/routes.dart';
@@ -198,6 +199,11 @@ Timestamp? dateTimeToTimestamp(DateTime? dateTime) {
     return null;
   }
 }
+TimeOfDay? timeOfDayFromTimestamp(Timestamp timestamp) {
+  DateTime dateTime = timestamp.toDate();
+  return TimeOfDay(hour: dateTime.hour, minute: dateTime.minute);
+ 
+}
 
 Future<UserProfile?> getCurrentUser() async {
   final currentUser = await FirebaseFirestore.instance
@@ -261,4 +267,23 @@ Future<void> addEditQuestion(
       )
       .doc(question.id)
       .set(question, SetOptions(merge: true));
+}
+
+Future<void> saveUserAnswers(
+    String courseId, String moduleId, String lessonId, Map<String, bool> answers) async {
+  final userAnswersRef = FirebaseFirestore.instance
+      .collection(coursesCollection)
+      .doc(courseId)
+      .collection(modulesCollection)
+      .doc(moduleId)
+      .collection(lessonCollection)
+      .doc(lessonId)
+      .collection('userAnswers')
+      .doc(getUid());
+
+  await userAnswersRef.set({
+    'userId': getUid(),
+    'answers': answers,
+    'submittedAt': FieldValue.serverTimestamp(),
+  });
 }

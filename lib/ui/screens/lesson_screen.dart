@@ -112,21 +112,7 @@ class LessonScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child:
-                            // Slidable(
-                            //   // key: ValueKey(lessons[i].id),
-                            //   endActionPane: ActionPane(
-                            //     motion: const ScrollMotion(),
-                            //     children: [
-                            //     SlidableAction(
-                            //     label: 'Delete',
-                            //     backgroundColor: Colors.amber,
-                            //     icon: Icons.delete,
-                            //     spacing: 8,
-                            //     onPressed: (context) => bloc.add(DeleteLesson(courseId: courseId, moduleId: moduleId, lessonId: lessonId)),
-                            //   ),
-                            //   ],
-                            //   ),
-                            //   child:
+                      
                             ExpansionTile(
                           onExpansionChanged: (bool expanded) => bloc.add(
                             ChangeQuestionState(state: expanded, index: i),

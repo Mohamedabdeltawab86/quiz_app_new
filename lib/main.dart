@@ -9,12 +9,14 @@ import 'package:quiz_app_new/bloc/settings_bloc/bloc/app_settings_bloc.dart';
 import 'package:quiz_app_new/bloc_observer.dart';
 import 'package:quiz_app_new/utils/common_functions.dart';
 import 'package:quiz_app_new/utils/routes.dart';
-import 'package:quiz_app_new/utils/typography.dart';
+
 import 'package:sizer/sizer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'data/models/language.dart';
 import 'firebase_options.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'utils/typography.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

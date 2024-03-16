@@ -23,7 +23,6 @@ class Course extends Equatable {
     toJson: dateTimeToTimestamp,
   )
   final DateTime updatedAt;
-  final bool isEnrolled;
 
   const Course({
     this.id,
@@ -33,7 +32,6 @@ class Course extends Equatable {
     this.createdBy = "Test",
     required this.createdAt,
     required this.updatedAt,
-    this.isEnrolled = false,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
@@ -47,7 +45,6 @@ class Course extends Equatable {
     String? createdBy,
     DateTime? createdAt,
     DateTime? updatedAt,
-    bool? isEnrolled,
   }) {
     return Course(
       id: id ?? this.id,
@@ -56,7 +53,6 @@ class Course extends Equatable {
       createdBy: createdBy ?? this.createdBy,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      isEnrolled: isEnrolled ?? this.isEnrolled,
     );
   }
 

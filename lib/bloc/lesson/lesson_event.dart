@@ -109,5 +109,36 @@ class ChangeQuestionState extends LessonEvent {
   final bool state;
   final int index;
 
-  ChangeQuestionState({required this.state, required this.index});
+  ChangeQuestionState({
+    required this.state,
+    required this.index,
+  });
+}
+
+class OptionSelected extends LessonEvent {
+  final String questionId;
+  final int questionIndex;
+  final int optionIndex;
+
+  OptionSelected({
+    required this.questionId,
+    required this.questionIndex,
+    required this.optionIndex,
+  });
+}
+
+class SubmitAnswers extends LessonEvent {
+
+  final List<Question> questionList;
+  final String courseId;
+  final String moduleId;
+  final String lessonId;
+
+  SubmitAnswers({
+
+    required this.questionList,
+    required this.courseId,
+    required this.moduleId,
+    required this.lessonId,
+  });
 }

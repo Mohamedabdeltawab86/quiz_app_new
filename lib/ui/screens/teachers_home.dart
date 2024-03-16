@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:quiz_app_new/utils/routes.dart';
@@ -87,7 +88,9 @@ class TeachersHome extends StatelessWidget {
                               context.push(course, extra: selectedCourse),
                           subtitle: Text(
                             bloc.courses[index].description.toString(),
+
                           ),
+                          trailing: const FaIcon(Icons.bookmark)
                         ),
                       ),
                     );

@@ -7,6 +7,8 @@ import 'package:quiz_app_new/data/models/add_lesson_data_model.dart';
 import 'package:quiz_app_new/ui/auth/login_page.dart';
 import 'package:quiz_app_new/ui/screens/add_question_screen.dart';
 import 'package:quiz_app_new/ui/screens/lesson_screen.dart';
+import 'package:quiz_app_new/ui/screens/student_course_details_screen.dart';
+import 'package:quiz_app_new/ui/screens/student_lesson_screen.dart';
 import 'package:quiz_app_new/ui/screens/students_home.dart';
 
 import '../bloc/auth/auth_bloc.dart';
@@ -15,7 +17,6 @@ import '../bloc/courses/courses_bloc.dart';
 import '../bloc/user/user_info_bloc.dart';
 import '../data/models/course.dart';
 import '../data/repositories/question_repo.dart';
-import '../data/repositories/students_repo/students_repo.dart';
 import '../ui/auth/profile_screen.dart';
 import '../ui/auth/register_page.dart';
 import '../ui/auth/user_type.dart';
@@ -40,7 +41,11 @@ const String quiz = '/quiz';
 const String profile = '/profile';
 const String course = "/course";
 const String lessonsPage = '/lesson';
+const String studentLessonsPage = '/student_lesson';
+
 const String addEditQuestion = '/addEditQuestion';
+
+const String studentCourseDetail = '/studentCourseDetail';
 
 late QuestionRepository questionRepository;
 
@@ -73,6 +78,16 @@ class AppRouter {
             return BlocProvider(
               create: (context) => EnrolledBloc()..add(FetchEnrolledCourses()),
               child: const StudentsHome(),
+            );
+          },
+        ),
+        GoRoute(
+          path: studentCourseDetail,
+          builder: (context, state) {
+            return BlocProvider(
+              create: (context) =>
+                  CourseBloc(state.extra as Course)..add(LoadModules()),
+              child: const StudentCourseDetailsScreen(),
             );
           },
         ),
@@ -159,16 +174,40 @@ class AppRouter {
           },
         ),
         GoRoute(
-            path: addEditQuestion,
-            builder: (context, state) {
-              final arguments = state.extra as QuestionScreenArguments;
-              return BlocProvider(
-                create: (context) => QuestionsBloc(arguments),
-                child: const AddEditQuestionScreen(
-                  
-                ),
-              );
-            }),
+          path: addEditQuestion,
+          builder: (context, state) {
+            final arguments = state.extra as QuestionScreenArguments;
+            return BlocProvider(
+              create: (context) => QuestionsBloc(arguments),
+              child: const AddEditQuestionScreen(),
+            );
+          },
+        ),
+                GoRoute(
+          path:
+              '/courses/:courseId/modules/:moduleId/lessons/:lessonId',
+          builder: (context, state) {
+            final courseId = state.pathParameters['courseId']!;
+            final moduleId = state.pathParameters['moduleId']!;
+            final lessonId = state.pathParameters['lessonId']!;
+
+
+            return BlocProvider(
+              create: (context) => LessonBloc()
+                ..add(LoadLesson(
+                  courseId: courseId,
+                  moduleId: moduleId,
+                  lessonId: lessonId,
+                )),
+              child: StudentLessonScreen(
+                courseId: courseId,
+                moduleId: moduleId,
+                lessonId: lessonId,
+
+              ),
+            );
+          },
+        ),
       ],
     );
   }
