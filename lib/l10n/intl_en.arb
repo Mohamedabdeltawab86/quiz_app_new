@@ -70,6 +70,7 @@
 
   "edit": "Edit",
   "delete": "Delete",
+  "confirmDelete": "Are you sure you want to delete",
 
   "ok": "OK",
   "cancel": "Cancel",

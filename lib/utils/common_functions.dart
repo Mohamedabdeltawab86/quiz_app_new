@@ -11,6 +11,7 @@ import '../data/models/lesson.dart';
 import '../data/models/module.dart';
 import '../data/models/question.dart';
 import 'constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final regex = RegExp(
     r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
@@ -286,4 +287,28 @@ Future<void> saveUserAnswers(
     'answers': answers,
     'submittedAt': FieldValue.serverTimestamp(),
   });
+}
+
+Future<bool?> showDeleteConfirmationDialog(
+    BuildContext context, String itemName) async {
+  return showDialog<bool>(
+    context: context,
+    builder: (context) {
+      final l10n = AppLocalizations.of(context)!;
+      return AlertDialog(
+        title: Text(l10n.delete + itemName),
+        content: Text('${l10n.confirmDelete}$itemName?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.delete),
+          ),
+        ],
+      );
+    },
+  );
 }

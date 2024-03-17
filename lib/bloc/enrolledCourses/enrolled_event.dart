@@ -18,3 +18,5 @@ class EnrollCourse extends EnrolledEvent {
 
   EnrollCourse(this.courseId);
 }
+
+

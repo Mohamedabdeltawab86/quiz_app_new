@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'data/models/language.dart';
 import 'firebase_options.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in_dartio/google_sign_in_dartio.dart';
 
 import 'utils/typography.dart';
 
@@ -27,18 +31,27 @@ Future<void> main() async {
   );
   Bloc.observer = MyBlocObserver();
 
-  //   const FirebaseOptions firebaseOptions  = FirebaseOptions(
-  //   apiKey: 'AIzaSyAjFuhBiHYLjki9YMtfERcBiQpjxGRznSM',
-  //   appId: '1:750644874695:web:39948395a79bfadec2dde2',
-  //   messagingSenderId: '750644874695',
-  //   projectId: 'quiz-8a2ac',
-  //   authDomain: 'quiz-8a2ac.firebaseapp.com',
-  // );
+  const FirebaseOptions firebaseOptions = FirebaseOptions(
+    apiKey: 'AIzaSyAjFuhBiHYLjki9YMtfERcBiQpjxGRznSM',
+    appId: '1:750644874695:web:39948395a79bfadec2dde2',
+    messagingSenderId: '750644874695',
+    projectId: 'quiz-8a2ac',
+    authDomain: 'quiz-8a2ac.firebaseapp.com',
+  );
 
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-    // options: firebaseOptions,
+    // options: DefaultFirebaseOptions.currentPlatform,
+    options: firebaseOptions,
   );
+  // if (Platform.isWindows) {
+  //   await GoogleSignInDart.register(
+  //     exchangeEndpoint:
+  //         'https://us-central1-flutter-sdk.cloudfunctions.net/authHandler',
+  //     clientId:
+  //        '750644874695-1tkop1sga57k6319o2hurgmdi7p4p0ga.apps.googleusercontent.com'  );
+  // }
+  
+
   runApp(MyApp(appRouter: AppRouter(await getInitialLocation())));
 }
 

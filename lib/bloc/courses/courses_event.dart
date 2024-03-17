@@ -38,3 +38,9 @@ class DeleteLesson extends CoursesEvent {
 
   DeleteLesson({required this.moduleIndex, required this.lessonIndex});
 }
+
+class CopyCourseId extends CoursesEvent{
+  final String courseId;
+
+  CopyCourseId(this.courseId);
+}

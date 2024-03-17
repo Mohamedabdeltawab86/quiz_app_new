@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quiz_app_new/utils/common_functions.dart';
 
 import 'package:quiz_app_new/utils/routes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,6 +12,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../bloc/courses/courses_bloc.dart';
 import '../widgets/home_widgets/drawer.dart';
+import 'package:share_plus/share_plus.dart';
 
 class TeachersHome extends StatelessWidget {
   const TeachersHome({super.key});
@@ -29,7 +31,7 @@ class TeachersHome extends StatelessWidget {
         body: BlocConsumer<CoursesBloc, CoursesState>(
           listener: (context, state) {
             if (state is CourseFetching) {
-              EasyLoading.show(status: "Loading");
+              EasyLoading.show(status: l10n.loading);
             } else if (state is AddingCourseDone) {
               bloc.add(FetchCourses());
             } else if (state is DeletingCourseSuccess) {
@@ -50,25 +52,48 @@ class TeachersHome extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final selectedCourse = bloc.courses[index];
                     return Card(
-                      // TODO 3: make edit available
                       child: Slidable(
                         endActionPane: ActionPane(
                           motion: const ScrollMotion(),
                           children: [
                             SlidableAction(
-                              label: 'Delete',
-                              backgroundColor: Colors.amber,
-                              icon: Icons.delete,
-                              spacing: 8,
-                              onPressed: (context) => bloc.add(
-                                DeleteCourse(selectedCourse.id!),
-                              ),
+                              label: "Copy ID",
+                              // backgroundColor: Colors.amber,
+                              icon: Icons.copy,
+                              // spacing: 8,
+                              onPressed: (_) {
+                                context.read<CoursesBloc>().add(CopyCourseId(bloc.courses[index].id!));
+                              },
                             ),
                             SlidableAction(
-                              label: 'Edit',
-                              backgroundColor: Colors.amber,
+                              label: "share",
+                              // backgroundColor: Colors.blue,
+                              icon: Icons.share,
+                              // spacing: 8,
+                              onPressed: (_) {
+                                Share.share('Share Course Id: ${selectedCourse.id}');
+                              },
+                            ),
+
+                            SlidableAction(
+                              label: l10n.delete,
+                              // backgroundColor: Colors.amber,
+                              icon: Icons.delete,
+                              // spacing: 8,
+                              onPressed: (_) async{
+                                bool? isConfirmed = await showDeleteConfirmationDialog(context, selectedCourse.id!);
+                                if (isConfirmed == true) {
+                                  bloc.add(
+                                    DeleteCourse(selectedCourse.id!),
+                                  );
+                                }
+                              },
+                            ),
+                            SlidableAction(
+                              label: l10n.edit,
+                              // backgroundColor: Colors.amber,
                               icon: Icons.edit,
-                              spacing: 8,
+                              // spacing: 8,
                               onPressed: (_) {
                                 context.push(
                                   addEditCourse,
@@ -80,18 +105,23 @@ class TeachersHome extends StatelessWidget {
                           ],
                         ),
                         child: ListTile(
-                          title: Text(
-                            bloc.courses[index].title,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          onTap: () =>
-                              context.push(course, extra: selectedCourse),
-                          subtitle: Text(
-                            bloc.courses[index].description.toString(),
+                            title: Text(
+                              bloc.courses[index].title,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            onTap: () {},
+                                // context.push(course, extra: selectedCourse),
+                            subtitle: Text(
+                              bloc.courses[index].description.toString(),
+                            ),
+                            trailing: IconButton(
 
-                          ),
-                          trailing: const FaIcon(Icons.bookmark)
-                        ),
+                              onPressed: () {
+                                context.read<CoursesBloc>().add(CopyCourseId(bloc.courses[index].id!));
+                              },
+                              icon: const FaIcon(Icons.bookmark),
+                            )),
                       ),
                     );
                   },

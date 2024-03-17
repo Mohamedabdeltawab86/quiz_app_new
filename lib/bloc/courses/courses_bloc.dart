@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:quiz_app_new/data/models/course.dart';
 import 'package:quiz_app_new/data/models/lesson.dart';
 import 'package:quiz_app_new/utils/constants.dart';
@@ -29,6 +30,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     on<DeleteModule>(_deleteModule);
     on<DeleteLesson>(_deleteLesson);
     on<InitCourse>(_initCourse);
+    on<CopyCourseId>(_copyCourseId);
   }
 
   // void initInfoPage(Course course) {
@@ -38,7 +40,6 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-
 
   final courseKey = GlobalKey<FormState>();
   List<Course> courses = [];
@@ -102,14 +103,16 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
       List<(Module, List<Lesson>)> modulesData = addEditModulesData.map((m) {
         final now = DateTime.now();
         final Module module = Module(
-          id: m.moduleId ?? const Uuid().v4(), // TODO: used moduleId here after being loaded.
+          id: m.moduleId ?? const Uuid().v4(),
+          // TODO: used moduleId here after being loaded.
           title: m.nameController.text,
           createdAt: now,
           updatedAt: now,
         );
         final List<Lesson> lessons = m.lessons.map((l) {
           return Lesson(
-            id: l.lessonId ?? const Uuid().v4(), // TODO: used lessonId here after being loaded.
+            id: l.lessonId ?? const Uuid().v4(),
+            // TODO: used lessonId here after being loaded.
             title: l.lessonTitleController.text,
             content: l.lessonContentController.text,
             createdAt: now,
@@ -184,6 +187,11 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
       }
     }
     addEditModulesData.clear();
+  }
+
+  Future<void> _copyCourseId(
+      CopyCourseId event, Emitter<CoursesState> emit) async {
+    await Clipboard.setData(ClipboardData(text: event.courseId));
   }
 
   @override
