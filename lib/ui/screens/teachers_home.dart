@@ -38,11 +38,14 @@ class TeachersHome extends StatelessWidget {
               bloc.add(FetchCourses());
             } else if (state is UpdatingCourseSuccess) {
               bloc.add(FetchCourses());
+            } else if (state is CoursesDuplicationSuccess) {
+              bloc.add(FetchCourses());
             } else {
               EasyLoading.dismiss();
             }
           },
-          buildWhen: (previous, current) => current is CourseFetched || current is CoursesDuplicationSuccess,
+          buildWhen: (previous, current) =>
+              current is CourseFetched || current is CoursesDuplicationSuccess,
           builder: (context, state) {
             if (bloc.courses.isNotEmpty) {
               return RefreshIndicator(
@@ -62,7 +65,8 @@ class TeachersHome extends StatelessWidget {
                               icon: Icons.copy,
                               // spacing: 8,
                               onPressed: (_) {
-                                context.read<CoursesBloc>().add(DuplicateCourse(bloc.courses[index].id!));
+                                context.read<CoursesBloc>().add(
+                                    DuplicateCourse(bloc.courses[index].id!));
                               },
                             ),
                             SlidableAction(
@@ -71,17 +75,19 @@ class TeachersHome extends StatelessWidget {
                               icon: Icons.share,
                               // spacing: 8,
                               onPressed: (_) {
-                                Share.share('${l10n.shareCourse} ${selectedCourse.title} ${selectedCourse.id}');
+                                Share.share(
+                                    '${l10n.shareCourse} ${selectedCourse.title} ${selectedCourse.id}');
                               },
                             ),
-
                             SlidableAction(
                               label: l10n.delete,
                               // backgroundColor: Colors.amber,
                               icon: Icons.delete,
                               // spacing: 8,
-                              onPressed: (_) async{
-                                bool? isConfirmed = await showDeleteConfirmationDialog(context, selectedCourse.id!);
+                              onPressed: (_) async {
+                                bool? isConfirmed =
+                                    await showDeleteConfirmationDialog(
+                                        context, selectedCourse.id!);
                                 if (isConfirmed == true) {
                                   bloc.add(
                                     DeleteCourse(selectedCourse.id!),
@@ -111,14 +117,15 @@ class TeachersHome extends StatelessWidget {
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             onTap: () {},
-                                // context.push(course, extra: selectedCourse),
+                            // context.push(course, extra: selectedCourse),
                             subtitle: Text(
                               bloc.courses[index].description.toString(),
                             ),
                             trailing: IconButton(
-
                               onPressed: () {
-                                context.read<CoursesBloc>().add(CopyCourseId(bloc.courses[index].id!));
+                                context
+                                    .read<CoursesBloc>()
+                                    .add(CopyCourseId(bloc.courses[index].id!));
                               },
                               icon: const FaIcon(Icons.bookmark),
                             )),
