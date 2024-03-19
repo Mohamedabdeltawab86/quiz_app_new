@@ -31,6 +31,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
     on<DeleteLesson>(_deleteLesson);
     on<InitCourse>(_initCourse);
     on<CopyCourseId>(_copyCourseId);
+    on<DuplicateCourse>(_duplicateCourse);
   }
 
   // void initInfoPage(Course course) {
@@ -59,7 +60,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
       for (Lesson lesson in lessons) {
         lessonsData.add(
           LessonData(
-            // TODO: loaded the lessonId here
+            // Done: loaded the lessonId here
             lessonId: lesson.id,
             lessonTitleController: TextEditingController(
               text: lesson.title,
@@ -72,7 +73,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
       }
       addEditModulesData.add(
         ModuleData(
-          // TODO: loaded the moduleId here
+          // Done: loaded the moduleId here
           moduleId: module.id,
           nameController: TextEditingController(text: module.title),
           lessons: lessonsData,
@@ -104,7 +105,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
         final now = DateTime.now();
         final Module module = Module(
           id: m.moduleId ?? const Uuid().v4(),
-          // TODO: used moduleId here after being loaded.
+          // Done: used moduleId here after being loaded.
           title: m.nameController.text,
           createdAt: now,
           updatedAt: now,
@@ -112,7 +113,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
         final List<Lesson> lessons = m.lessons.map((l) {
           return Lesson(
             id: l.lessonId ?? const Uuid().v4(),
-            // TODO: used lessonId here after being loaded.
+            // Done: used lessonId here after being loaded.
             title: l.lessonTitleController.text,
             content: l.lessonContentController.text,
             createdAt: now,
@@ -193,6 +194,65 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
       CopyCourseId event, Emitter<CoursesState> emit) async {
     await Clipboard.setData(ClipboardData(text: event.courseId));
   }
+    Future<void> _duplicateCourse(
+      DuplicateCourse event, Emitter<CoursesState> emit) async {
+    emit(CoursesDuplicationLoading());
+    final Course courseToClone = getCourseByID(event.courseId);
+    final String newCourseId = const Uuid().v4();
+
+    Course newCourse = Course(
+      id: newCourseId,
+      title: '${courseToClone.title} - Copy',
+      description: courseToClone.description,
+      createdAt: DateTime.now(),
+      createdBy: getUid(),
+      updatedAt: DateTime.now(),
+    );
+    final modulesData = await _duplicateModulesAndLessons(courseToClone.id!, newCourseId);
+
+    await saveCourseInDB(newCourse, modulesData);
+    emit(CoursesDuplicationSuccess());
+  }
+
+  
+     Future<List<(Module, List<Lesson>)>> _duplicateModulesAndLessons(
+    String oldCourseId,
+    String newCourseId,
+  ) async {
+    final List<Module> oldModules = await getModules(oldCourseId);
+    final List<(Module, List<Lesson>)> newModulesData = [];
+
+    for (final oldModule in oldModules) {
+      final List<Lesson> oldLessons = await getLessons(oldCourseId, oldModule.id!);
+      final List<Lesson> newLessons = oldLessons.map((oldLesson) {
+        return Lesson(
+          id: const Uuid().v4(),
+          title: oldLesson.title,
+          content: oldLesson.content,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          moduleId: null, // Will be set later
+        );
+      }).toList();
+
+      final newModule = Module(
+        id: const Uuid().v4(),
+        title: oldModule.title,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+
+      // // Set moduleId for new lessons
+      // for (final newLesson in newLessons) {
+      //   newLesson.moduleId = newModule.id;
+      // }
+
+      newModulesData.add((newModule, newLessons));
+    }
+
+    return newModulesData;
+  }
+
 
   @override
   Future<void> close() {

@@ -42,7 +42,7 @@ class TeachersHome extends StatelessWidget {
               EasyLoading.dismiss();
             }
           },
-          buildWhen: (previous, current) => current is CourseFetched,
+          buildWhen: (previous, current) => current is CourseFetched || current is CoursesDuplicationSuccess,
           builder: (context, state) {
             if (bloc.courses.isNotEmpty) {
               return RefreshIndicator(
@@ -57,12 +57,12 @@ class TeachersHome extends StatelessWidget {
                           motion: const ScrollMotion(),
                           children: [
                             SlidableAction(
-                              label: "Copy ID",
+                              label: "Copy Course",
                               // backgroundColor: Colors.amber,
                               icon: Icons.copy,
                               // spacing: 8,
                               onPressed: (_) {
-                                context.read<CoursesBloc>().add(CopyCourseId(bloc.courses[index].id!));
+                                context.read<CoursesBloc>().add(DuplicateCourse(bloc.courses[index].id!));
                               },
                             ),
                             SlidableAction(
@@ -71,7 +71,7 @@ class TeachersHome extends StatelessWidget {
                               icon: Icons.share,
                               // spacing: 8,
                               onPressed: (_) {
-                                Share.share('Share Course Id: ${selectedCourse.id}');
+                                Share.share('${l10n.shareCourse} ${selectedCourse.title} ${selectedCourse.id}');
                               },
                             ),
 

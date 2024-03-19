@@ -44,3 +44,9 @@ class CopyCourseId extends CoursesEvent{
 
   CopyCourseId(this.courseId);
 }
+
+class DuplicateCourse extends CoursesEvent {
+  final String courseId;
+
+  DuplicateCourse(this.courseId);
+}

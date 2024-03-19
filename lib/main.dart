@@ -40,8 +40,8 @@ Future<void> main() async {
   );
 
   await Firebase.initializeApp(
-    // options: DefaultFirebaseOptions.currentPlatform,
-    options: firebaseOptions,
+    options: DefaultFirebaseOptions.currentPlatform,
+    // options: firebaseOptions,
   );
   // if (Platform.isWindows) {
   //   await GoogleSignInDart.register(

@@ -36,3 +36,7 @@ class UpdatingCourseSuccess extends CoursesState {}
 class LoadingModulesAndLessons extends CoursesState {}
 
 class ModulesAndLessonsLoaded extends CoursesState {}
+
+class CoursesDuplicationLoading extends CoursesState {}
+class CoursesDuplicationSuccess extends CoursesState {}
+
