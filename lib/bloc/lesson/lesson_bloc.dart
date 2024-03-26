@@ -20,7 +20,6 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
   Question? question;
   late final QuestionScreenArguments args;
 
-
   LessonBloc({this.question}) : super(LessonInitial()) {
     on<LoadLesson>(_onLoadLesson);
     on<UpdateLesson>(_updateLesson);
@@ -30,47 +29,47 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
     on<ChangeQuestionState>(_onChangeQuestionState);
     on<OptionSelected>(_onOptionSelected);
     on<SubmitAnswers>(_onSubmitAnswers);
+    on<ResetAnswers>(_resetAnswers);
   }
 
   final lessonKey = GlobalKey<FormState>();
   List<bool> questionsState = [];
   Map<String, int?> selectedOptions = {};
-  List<bool> questionSelected =[];
+  List<bool> questionSelected = [];
   // questionSelected = List.filled(questions.length, false);
 
-
-  Future<void> _onSubmitAnswers(SubmitAnswers event, Emitter<LessonState>emit) async {
-    final Map<String, bool> correctAnswers = {};
+  Future<void> _onSubmitAnswers(
+      SubmitAnswers event, Emitter<LessonState> emit) async {
+    final Map<String, int> answers = {};
     int score = 0;
 
     final questions = event.questionList;
     for (final question in questions) {
       final selectedOptionIndex = selectedOptions[question.id];
       final isCorrect = selectedOptionIndex == question.correctAnswer;
-      correctAnswers[question.id!] = isCorrect;
+      // TODO: make sure all answers are not null
+      answers[question.id!] = selectedOptionIndex!;
       if (isCorrect) {
         score++;
       }
-
-
     }
     await saveUserAnswers(
       event.courseId,
       event.moduleId,
       event.lessonId,
-      correctAnswers,
+      answers,
     );
-    emit(AnswersSubmitted(score: score, correctAnswers: correctAnswers));
+    emit(AnswersSubmitted(score: score, correctAnswers: answers));
   }
 
   void _onOptionSelected(OptionSelected event, Emitter<LessonState> emit) {
-      selectedOptions[event.questionId] = event.optionIndex;
+    selectedOptions[event.questionId] = event.optionIndex;
 
-      // questionSelected[event.questionIndex] = true;
-      emit(OptionSelectedState());
-
+    // questionSelected[event.questionIndex] = true;
+    emit(OptionSelectedState(selectedOptions: selectedOptions));
   }
-  bool isSubmitEnabled(){
+
+  bool isSubmitEnabled() {
     return questionSelected.every((element) => element);
   }
 
@@ -78,23 +77,32 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
     questionsState[event.index] = event.state;
     emit(QuestionStateChanged(event.index));
   }
+    void _resetAnswers(ResetAnswers event, Emitter<LessonState>emit)
+    {
+      selectedOptions.clear();
+      emit(OptionSelectedState(selectedOptions: selectedOptions));
+    }
 
   Future<void> _onLoadLesson(
       LoadLesson event, Emitter<LessonState> emit) async {
     emit(LessonLoading());
     try {
-      print(event.lessonId);
+      debugPrint(event.lessonId);
       final questions = await getQuestions(
         event.courseId,
         event.moduleId,
         event.lessonId,
       );
-      print(questions);
+      // debugPrint(questions as String?);
       // for (int i = 0; i < questions.length; i++) {
       //   questionsState.add(false);
       // }
-      final lessons = await getLessons(event.courseId, event.moduleId);
-      emit(LessonLoaded(questions: questions, lessons: lessons));
+      final previousAnswers = await getPreviousAnswers(
+        event.courseId,
+        event.moduleId,
+        event.lessonId,
+      );
+      emit(LessonLoaded(questions: questions, previousAnswers: previousAnswers));
     } catch (e) {
       log(e.toString());
       emit(LessonError());
@@ -146,9 +154,8 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
     emit(QuestionDeleted());
   }
 
-
-  Future<void> _setCorrectAnswer(
-      SetCorrectAnswer event, Emitter<LessonState> emit) async {}
+  // Future<void> _setCorrectAnswer(
+  //     SetCorrectAnswer event, Emitter<LessonState> emit) async {}
 
 // @override
 // Future<void> close() {

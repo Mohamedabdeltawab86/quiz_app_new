@@ -43,6 +43,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
     // options: firebaseOptions,
   );
+  // this way is to run google sign in in windows but it is not working
   // if (Platform.isWindows) {
   //   await GoogleSignInDart.register(
   //     exchangeEndpoint:

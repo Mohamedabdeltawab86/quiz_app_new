@@ -201,10 +201,10 @@ Timestamp? dateTimeToTimestamp(DateTime? dateTime) {
     return null;
   }
 }
+
 TimeOfDay? timeOfDayFromTimestamp(Timestamp timestamp) {
   DateTime dateTime = timestamp.toDate();
   return TimeOfDay(hour: dateTime.hour, minute: dateTime.minute);
- 
 }
 
 Future<UserProfile?> getCurrentUser() async {
@@ -271,8 +271,8 @@ Future<void> addEditQuestion(
       .set(question, SetOptions(merge: true));
 }
 
-Future<void> saveUserAnswers(
-    String courseId, String moduleId, String lessonId, Map<String, bool> answers) async {
+Future<void> saveUserAnswers(String courseId, String moduleId, String lessonId,
+    Map<String, int> answers) async {
   final userAnswersRef = FirebaseFirestore.instance
       .collection(coursesCollection)
       .doc(courseId)
@@ -283,11 +283,17 @@ Future<void> saveUserAnswers(
       .collection('userAnswers')
       .doc(getUid());
 
-  await userAnswersRef.set({
-    'userId': getUid(),
+  final data = {
     'answers': answers,
     'submittedAt': FieldValue.serverTimestamp(),
-  });
+  };
+
+
+  // resets the latest answer
+  await userAnswersRef.set(data, SetOptions(merge: true));
+
+  // saves the answer to history
+  await userAnswersRef.collection("history").add(data);
 }
 
 Future<bool?> showDeleteConfirmationDialog(
@@ -312,4 +318,26 @@ Future<bool?> showDeleteConfirmationDialog(
       );
     },
   );
+}
+
+Future<Map<String, int>> getPreviousAnswers(
+    String courseId, String moduleId, String lessonId) async {
+  final answersSnapshot = await FirebaseFirestore.instance
+      .collection(coursesCollection)
+      .doc(courseId)
+      .collection(modulesCollection)
+      .doc(moduleId)
+      .collection(lessonCollection)
+      .doc(lessonId)
+      .collection('userAnswers')
+      .doc('answers')
+      .get();
+
+  if (answersSnapshot.exists) {
+    final data = answersSnapshot.data();
+    final previousAnswers = data?['answers'] as Map<String, int>? ?? {};
+    return previousAnswers.map((key, value) => MapEntry(key, value));
+  }
+
+  return {};
 }

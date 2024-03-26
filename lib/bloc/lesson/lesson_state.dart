@@ -16,11 +16,11 @@ class QuestionStateChanged extends LessonState {
 
 class LessonLoaded extends LessonState {
   final List<Question> questions;
-  final List<Lesson> lessons;
+  final Map<String, int> previousAnswers;
 
   LessonLoaded({
     required this.questions,
-    required this.lessons,
+    required this.previousAnswers,
   });
 }
 
@@ -56,10 +56,14 @@ class ChoiceDeleting extends LessonState {}
 
 class ChoiceDeleted extends LessonState {}
 
-class OptionSelectedState extends LessonState {}
+class OptionSelectedState extends LessonState {
+  final Map<String, int?> selectedOptions;
+
+  OptionSelectedState({required this.selectedOptions});
+}
 
 class AnswersSubmitted extends LessonState {
-  final Map<String, bool> correctAnswers;
+  final Map<String, int> correctAnswers;
   final int score;
 
   AnswersSubmitted({
@@ -67,3 +71,5 @@ class AnswersSubmitted extends LessonState {
     required this.score,
   });
 }
+
+class AnswerReset extends LessonState {}

@@ -142,3 +142,4 @@ class SubmitAnswers extends LessonEvent {
     required this.lessonId,
   });
 }
+class ResetAnswers extends LessonEvent{}

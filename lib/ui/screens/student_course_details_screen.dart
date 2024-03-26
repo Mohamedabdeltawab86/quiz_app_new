@@ -67,7 +67,7 @@ class StudentCourseDetailsScreen extends StatelessWidget {
                                   onTap: () {
 
                                     context.push(
-                                        '/courses/${bloc.course.id}/modules/${module.id}/lessons/${lesson.id}');
+                                        '/courses/${bloc.course.id}/modules/${module.id}/lessons/${lesson.id}/lesson/${lesson.title}');
                                   },
                                 );
                               },

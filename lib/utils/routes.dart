@@ -185,11 +185,12 @@ class AppRouter {
         ),
                 GoRoute(
           path:
-              '/courses/:courseId/modules/:moduleId/lessons/:lessonId',
+              '/courses/:courseId/modules/:moduleId/lessons/:lessonId/lesson/lessonTitle',
           builder: (context, state) {
             final courseId = state.pathParameters['courseId']!;
             final moduleId = state.pathParameters['moduleId']!;
             final lessonId = state.pathParameters['lessonId']!;
+            final lessonTitle = state.pathParameters['lessonTitle']!;
 
 
             return BlocProvider(
@@ -203,6 +204,7 @@ class AppRouter {
                 courseId: courseId,
                 moduleId: moduleId,
                 lessonId: lessonId,
+                  lessonTitle: lessonTitle,
 
               ),
             );
