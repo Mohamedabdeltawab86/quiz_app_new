@@ -5,18 +5,22 @@ import 'package:quiz_app_new/bloc/lesson/lesson_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../data/models/lesson.dart';
+
 class StudentLessonScreen extends StatelessWidget {
   final String courseId;
   final String moduleId;
   final String lessonId;
-  final String lessonTitle;
+  // final String lessonTitle;
+  // final String lessonContent;
 
   const StudentLessonScreen({
     super.key,
     required this.courseId,
     required this.moduleId,
     required this.lessonId,
-    required this.lessonTitle,
+    // required this.lessonTitle,
+    // required this.lessonContent,
 
   });
 
@@ -26,7 +30,7 @@ class StudentLessonScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("lessonTitle")),
+      appBar: AppBar(title:  Text("lessonTitle")),
       body: BlocConsumer<LessonBloc, LessonState>(
         listener: (context, state) {
           if (state is AnswersSubmitted) {
@@ -50,9 +54,9 @@ class StudentLessonScreen extends StatelessWidget {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Text(
-                              lessonTitle,
-                              style: const TextStyle(
+                              Text(
+                              "lessonContent",
+                              style:  const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
                               ),

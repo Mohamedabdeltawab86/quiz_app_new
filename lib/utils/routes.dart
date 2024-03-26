@@ -16,6 +16,7 @@ import '../bloc/course/course_bloc.dart';
 import '../bloc/courses/courses_bloc.dart';
 import '../bloc/user/user_info_bloc.dart';
 import '../data/models/course.dart';
+import '../data/models/lesson.dart';
 import '../data/repositories/question_repo.dart';
 import '../ui/auth/profile_screen.dart';
 import '../ui/auth/register_page.dart';
@@ -185,12 +186,14 @@ class AppRouter {
         ),
                 GoRoute(
           path:
-              '/courses/:courseId/modules/:moduleId/lessons/:lessonId/lesson/lessonTitle',
+              '/courses/:courseId/modules/:moduleId/lessons/:lessonId',
+              // '/courses/:courseId/modules/:moduleId/lessons/:lessonId/lessonTitle/:lessonTitle/lessonContent/:lessonContent',
           builder: (context, state) {
             final courseId = state.pathParameters['courseId']!;
             final moduleId = state.pathParameters['moduleId']!;
             final lessonId = state.pathParameters['lessonId']!;
-            final lessonTitle = state.pathParameters['lessonTitle']!;
+            // final lessonTitle = state.pathParameters['lessonTitle']!;
+            // final lessonContent = state.pathParameters['lessonContent']!;
 
 
             return BlocProvider(
@@ -204,7 +207,8 @@ class AppRouter {
                 courseId: courseId,
                 moduleId: moduleId,
                 lessonId: lessonId,
-                  lessonTitle: lessonTitle,
+
+
 
               ),
             );
